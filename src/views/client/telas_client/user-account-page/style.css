@@ -5,7 +5,7 @@ body {
     background-color: #1B1244; /*fundo roxo*/
     color: white;
 
-    background-image: url("../imgs/engrenagem_left.png"), url("../imgs/engrenagem_right.png");
+    background-image: url("../images/engrenagem_left.png"), url("../images/engrenagem_right.png");
     background-repeat: no-repeat, no-repeat;
     background-position: bottom left, bottom right;
     background-size: 225px, 200px;
