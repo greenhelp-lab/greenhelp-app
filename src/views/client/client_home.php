@@ -4,17 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GreenHelp Home</title>
-  <link rel="stylesheet" href="/src/views/assets/css/main.css">
-  <link rel="stylesheet" href="/src/views/assets/css/client.css">
+  <link rel="stylesheet" href="/greenhelp-app/public/css/main.css">
+  <link rel="stylesheet" href="/greenhelp-app/public/css/client.css">
 </head>
 <body>
-  <php? include 'src/views/partials/header.php'; ?> <!-- 'include' header php for code optimization -->
+  <!-- <?php phpinfo(); ?> -->
+  <?php include __DIR__ . '/../partials/header.php'; ?> <!-- 'include' header php for code optimization -->
   <main class="home">
     <div class="home-container">
       <h1 class="home-title">Home</h1>
 
       <div class="home-profile-image">
-        <img src="/src/views/assets/imgs/add-photo.png" alt="Placeholder de um ícone de imagem com um sinal de mais no canto para adicionar foto de perfil" class="profile-image"> <!-- imagem placeholder, substituir pela imagem do cliente -->
+        <img src="src/views/assets/imgs/add-photo.png" alt="Placeholder de um ícone de imagem com um sinal de mais no canto para adicionar foto de perfil" class="profile-image"> <!-- imagem placeholder, substituir pela imagem do cliente -->
       </div>
       <!-- realizar requisição no código para mostrar foto, caso não tenha foto, permitir adicionar através de um botão específico próximo a foto -->
 
@@ -54,7 +55,7 @@
   </main>
   <!-- seção de pontuação de sustentabilidade em T.I. da empresa do cliente -->
   <section class="points-section">
-    <img src="/src/views/assets/imgs/badge-icon.svg" alt="ícone de medalha de pontuação" class="points-icon">
+    <img src="src/views/assets/imgs/badge-icon.svg" alt="ícone de medalha de pontuação" class="points-icon">
     <h2 class="points-title">Pontuações Verdes</h2>
     <p class="points-text">Ganhe mais pontos  através da compra de serviços e melhoras sustentáveis na sua empresa</p>
     <div class="points-container">
@@ -136,6 +137,6 @@
     </div>
 
   </section>
-  <php? include 'src/views/partials/footer.php'; ?> <!-- 'include' footer php for code optimization -->
+  <?php include __DIR__ . '/../partials/footer.php'; ?> <!-- 'include' footer php for code optimization -->
 </body>
 </html>

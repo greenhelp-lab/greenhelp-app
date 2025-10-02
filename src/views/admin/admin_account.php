@@ -4,17 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Conta</title>
-  <link rel="stylesheet" href="/src/views/assets/css/main.css">
-  <link rel="stylesheet" href="/src/views/assets/css/admins.css">
+  <link rel="stylesheet" href="/greenhelp-app/public/css/main.css">
+  <link rel="stylesheet" href="/greenhelp-app/public/css/admin.css">
 </head>
 <body>
-  <?php include 'src/views/partials/header.php'; ?> <!-- 'include' header php for code optimization -->
+   <?php include __DIR__ . '/../partials/header.php'; ?> <!-- 'include' header php for code optimization -->
   <main class="account">
     <div class="account-container">
       <h1 class="account-title">Minha Conta</h1>
-
       <div class="account-profile-image">
-        <img src="/src/views/assets/imgs/add-photo.png" alt="Placeholder de um ícone de imagem com um sinal de mais no canto para adicionar foto de perfil" class="profile-image"> <!-- imagem placeholder, substituir pela imagem do cliente -->
+        <img src="/greenhelp-app/public/imgs/add-photo.png" alt="Placeholder de um ícone de imagem com um sinal de mais no canto para adicionar foto de perfil" class="profile-image"> <!-- imagem placeholder, substituir pela imagem do cliente -->
       </div>
       <!-- realizar requisição no código para mostrar foto, caso não tenha foto, permitir adicionar através de um botão específico próximo a foto -->
 
@@ -67,7 +66,7 @@
       </button>
     </div>
   </main>
-  <img src="/src/views/assets/imgs/engines-icons.svg" alt="Ícones de engrenagens decorativas" class="engines-icons">
+  <img src="/greenhelp-app/public/imgs/engines-icons.svg" alt="Ícones de engrenagens decorativas" class="engines-icons">
   
 </body>
 </html>
