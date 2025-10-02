@@ -1,0 +1,170 @@
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    background-image: linear-gradient(180deg, #1B1244 0%, #1C1331 60%, #0b0821 100%);
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.home-title {
+  color: #8ff05c;
+  font-size: 35px;
+  margin-bottom: 20px;
+}
+
+.home-profile-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  height: 250px;
+  width: 280px;
+  padding-bottom: 25px;
+}
+
+.home-company-name {
+  color: #8ff05c;
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.company-info {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 300px;
+  margin-bottom: 30px;
+}
+
+.home-info-field {
+  display: flex;
+  justify-content: space-between;
+  background-color: transparent;
+  border: 2px solid #6A2FCF;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 8px 0;
+  color: white;
+  font-size: 12px;
+}
+
+.field-label {
+  font-weight: bold;
+  color: #60E395;
+}
+
+.field-value {
+  color: #fff;
+}
+
+.points-section {
+  width: 90%;
+  max-width: 320px;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 15px;
+  border: 2px solid #60E395;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.points-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+.points-title {
+  margin: 0;
+  font-size: 20px;
+  color: #28d87a;
+  font-weight: 700;
+  text-align: center;
+}
+
+.points-text {
+  text-align: center;
+  font-size: 13px;
+  margin: 5px 0 15px;
+  color: #e0e0e0;
+  line-height: 1.4;
+}
+
+.points-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.points-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: 2px solid #60E395;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.points-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.points-card-level {
+  color: #60E395;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0;
+}
+
+.points-card-points {
+  color: #60E395;
+  font-size: 12px;
+}
+
+.points-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.points-card-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #1c1c3a;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.points-card-progress {
+  height: 100%;
+  background: #60E395;
+  width: 60%; /* valor exemplo, ajustar dinamicamente */
+}
+
+.points-total-points {
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.points-total-points-number {
+  color: #60E395;
+  font-size: 20px;
+}
