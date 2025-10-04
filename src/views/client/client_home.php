@@ -69,7 +69,7 @@
             <div class="points-card-progress"></div>
           </div>
         </div>
-          <div class="points-card-right">>
+          <div class="points-card-right">
             <h3 class="points-card-title">Infraestrutura Eficiente</h3>
           </div>
       </div>
@@ -83,7 +83,7 @@
             <div class="points-card-progress"></div>
           </div>
         </div>
-          <div class="points-card-right">>
+          <div class="points-card-right">
             <h3 class="points-card-title">Energia Renovável</h3>
           </div>
       </div>
@@ -97,7 +97,7 @@
             <div class="points-card-progress"></div>
           </div>
         </div>
-          <div class="points-card-right">>
+          <div class="points-card-right">
             <h3 class="points-card-title">Descarte de Lixo Eletrônico</h3>
           </div>
       </div>
@@ -111,7 +111,7 @@
             <div class="points-card-progress"></div>
           </div>
         </div>
-          <div class="points-card-right">>
+          <div class="points-card-right">
             <h3 class="points-card-title">Computação em Nuvem</h3>
           </div>
       </div>
@@ -125,7 +125,7 @@
             <div class="points-card-progress"></div>
           </div>
         </div>
-          <div class="points-card-right">>
+          <div class="points-card-right">
             <h3 class="points-card-title">Políticas de TI Verde</h3>
           </div>
       </div>
