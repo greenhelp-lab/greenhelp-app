@@ -1,5 +1,3 @@
-/* Estilos para sobre_servico — alinhados com servicos_cliente.css e global.css */
-
 /* Container principal */
 .service-detail-page {
   width: 100%;
@@ -233,6 +231,12 @@
 }
 
 /* RESPONSIVE */
+@media (min-width: 1200px) {
+  body {
+    transform: scale(1.5);
+  }
+}
+
 @media (max-width: 900px) {
   .detail-main {
     grid-template-columns: 1fr 300px;

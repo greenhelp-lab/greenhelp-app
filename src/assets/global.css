@@ -14,7 +14,12 @@
   --red: #70204a;
   --purple: #3a3a9b;
   --green: #26a35c;
-
+  --card-bg: linear-gradient(
+    180deg,
+    rgba(20, 20, 40, 0.6),
+    rgba(10, 10, 28, 0.6)
+  );
+  --metric-accent: var(--accent);
   --font-family: 'Poppins', sans-serif;
 }
 
@@ -43,7 +48,9 @@ body {
   place-items: start center;
   padding: 20px 0;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* opcional, para efeito fixo */
+  background-attachment: fixed;
+  transition: transform 0.3s ease;
+  transform-origin: top center;
 }
 
 h1,
@@ -98,6 +105,14 @@ button {
   font-weight: 600;
   font-family: var(--font-family);
 }
+
+/* Quando a tela for maior que 1200px, aplica zoom de 150%  */
+/* @media (min-width: 1200px) {
+  body {
+    transform: scale(1.5);
+  }
+} */
+
 /* .header {
   display: flex;
   flex-direction: row;
