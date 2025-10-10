@@ -18,7 +18,7 @@
   gap: 0.75rem;
 }
 .dash-card {
-  background: var(--dash-card-bg);
+  background: var(--card-bg);
   border: 1px solid var(--stroke);
   border-radius: 14px;
   padding: 14px;
@@ -47,7 +47,7 @@
   gap: 0.75rem;
 }
 .info-card {
-  background: var(--dash-card-bg);
+  background: var(--card-bg);
   border: 1px solid var(--stroke);
   border-radius: 14px;
   padding: 12px;
@@ -67,7 +67,7 @@
   gap: 0.75rem;
 }
 .insights {
-  background: var(--dash-card-bg);
+  background: var(--card-bg);
   border: 1px solid var(--stroke);
   border-radius: 14px;
   padding: 12px;
