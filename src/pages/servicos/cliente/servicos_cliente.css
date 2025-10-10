@@ -170,6 +170,7 @@
   color: var(--muted);
   font-size: 0.9rem;
 }
+/* CARDS DE SERVIÇOS NA LOJA */
 .service-cards {
   width: 100%;
   display: grid;
@@ -197,7 +198,6 @@
 .service-card-icon {
   width: 60px;
   height: 60px;
-  margin-right: 8px;
 }
 .service-header {
   display: flex;
@@ -236,11 +236,11 @@
   transform: scale(1.08);
   box-shadow: 0 0 14px var(--accent(0.8));
 }
-.add-cart-icon {
-  width: 25px;
+.service-footer svg {
+  width: 28px;
   height: 25px;
 }
-
+/* SEÇÃO DE REGISTROS */
 .records {
   width: 100%;
   max-width: 800px;
