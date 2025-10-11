@@ -1,7 +1,3 @@
-/* carrinho.css — estilo para a página de carrinho de serviços
-   Segue identidade visual e variáveis do projeto (global.css)
-*/
-
 /* Layout base */
 .container {
   width: min(1100px, 95%);
@@ -132,42 +128,6 @@
   color: var(--txt);
 }
 
-/* Quantidade */
-.item-qty {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(10, 10, 30, 0.03);
-  padding: 6px;
-  border-radius: 8px;
-}
-
-.qty-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  background: transparent;
-  border: 1px solid rgba(9, 10, 25, 0.06);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  font-weight: 700;
-  color: var(--txt);
-  transition: transform 120ms ease;
-}
-.qty-btn:active {
-  transform: scale(0.98);
-}
-
-.qty-input {
-  width: 46px;
-  text-align: center;
-  border: none;
-  background: transparent;
-  font-weight: 700;
-  color: var(--txt);
-}
-
 .item-remove {
   background: transparent;
   border: none;
@@ -213,7 +173,7 @@
   margin: 8px 0 12px 0;
   width: 100%;
   align-items: center;
-  flex-wrap: wrap; /* permite quebra em telas pequenas */
+  flex-wrap: wrap;
 }
 .coupon-input {
   flex: 1;
@@ -231,8 +191,8 @@
   color: #06101a;
   font-weight: 700;
   border: none;
-  flex: 0 0 auto; /* não encolhe ou cresce, mantém o tamanho */
-  white-space: nowrap; /* evita quebra dentro do botão */
+  flex: 0 0 auto;
+  white-space: nowrap;
   box-sizing: border-box;
 }
 
@@ -326,19 +286,27 @@
   .cart-content {
     grid-template-columns: 1fr;
   }
-  .item-right {
-    align-items: flex-start;
-  }
   .item-price {
     font-size: 16px;
   }
-  /* Em telas pequenas, garantir que o botão aplicar e continuar ocupem toda a largura disponível */
   .coupon-row {
     gap: 6px;
   }
   .btn-apply {
     flex: 1 0 auto;
     width: auto;
+  }
+}
+
+@media (max-width: 500px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .item-right {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
