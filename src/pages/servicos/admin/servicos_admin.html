@@ -11,10 +11,8 @@
 <body>
     <h1 class="service-title">Serviços</h1>
     <div class="shortcuts">
-      <button>Seus Registros</button>
-      <button>Seus Chamados</button>
-      <button>Seu Carrinho</button>
-      <button>Dados de Pagamento</button>
+      <button>Registros</button>
+      <button>Chamados</button>
     </div>
 
   <!-- Dashboard Admin -->
@@ -94,16 +92,6 @@
   </section>
 </section>
 
-  <script src="./servicos_admin.js"></script>
-  <script>
-    // wire the refresh button to a mock update (textual overviews)
-    document.addEventListener('DOMContentLoaded', function () {
-      const btn = document.getElementById('btn-refresh');
-      if (btn) btn.addEventListener('click', function () {
-        window.GreenHelpAdmin.updateMetrics({ revenueLastMonth: 14000.12, topService: 'Consultoria de Energia', topArea: 'Energia', ticketsOpen: 9, ticketsResolved: 95, satisfaction: 4.7, salesLast: 14000.12, salesTrend: 'Positiva', ticketsAvg6: 18, distTop3: ['Energia','Infra','Nuvem'] });
-      });
-    });
-  </script>
   <!-- Seção Loja de Serviços -->
   <section class="shop-section">
     <h2>Loja de Serviços</h2>
