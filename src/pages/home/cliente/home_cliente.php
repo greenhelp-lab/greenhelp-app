@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GreenHelp Home</title>
-  <link rel="stylesheet" href="/greenhelp-app/public/css/main.css">
-  <link rel="stylesheet" href="/greenhelp-app/public/css/client.css">
+  <link rel="stylesheet" href="../../../assets/global.css">
+  <link rel="stylesheet" href="/greenhelp-app/src/pages/home/cliente/home_cliente.css">
 </head>
 <body>
   <!-- <?php phpinfo(); ?> -->
-  <?php include __DIR__ . '/../partials/header.php'; ?> <!-- 'include' header php for code optimization -->
+  <?php include __DIR__ . '../../../partials/header/header.php'; ?> <!-- 'include' header php for code optimization -->
   <main class="home">
     <div class="home-container">
       <h1 class="home-title">Home</h1>
@@ -137,6 +137,6 @@
     </div>
 
   </section>
-  <?php include __DIR__ . '/../partials/footer.php'; ?> <!-- 'include' footer php for code optimization -->
+  <?php include __DIR__ . '../../../partials/footer/footer.php'; ?> <!-- 'include' footer php for code optimization -->
 </body>
 </html>

@@ -7,7 +7,7 @@
   <li><a href="">Conheça a Equipe</a></li>
 </ul>
 <div class="footer-row">
-   <img src="/src/views/assets/imgs/logo.png" alt="footer-logo">
+   <img src="/greenhelp-app/src/assets/imgs/logo.png" alt="footer-logo">
     <p>&copy; 2025 GreenHelp. Todos os direitos reservados.</p>
 </div>
 </footer>
