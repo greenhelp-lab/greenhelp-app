@@ -4,11 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Conta</title>
-  <link rel="stylesheet" href="/greenhelp-app/public/css/main.css">
-  <link rel="stylesheet" href="/greenhelp-app/public/css/client.css">
+  <link rel="stylesheet" href="/greenhelp-app/src/css_to_review/client.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../partials/header.php'; ?> <!-- 'include' header php for code optimization -->
+  <?php include __DIR__ . '../../../partials/header/header.php'; ?> <!-- 'include' header php for code optimization -->
   <main class="account">
     <div class="account-container">
       <h1 class="account-title">Minha Conta</h1>
