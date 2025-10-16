@@ -10,131 +10,94 @@
 <body>
   <!-- <?php phpinfo(); ?> -->
   <?php include __DIR__ . '../../../partials/header/header.php'; ?> <!-- 'include' header php for code optimization -->
-  <main class="home">
-    <div class="home-container">
-      <h1 class="home-title">Home</h1>
+   <main class="container">
+    <h1>Home</h1>
 
-      <div class="home-profile-image">
-        <img src="src/views/assets/imgs/add-photo.png" alt="Placeholder de um ícone de imagem com um sinal de mais no canto para adicionar foto de perfil" class="profile-image"> <!-- imagem placeholder, substituir pela imagem do cliente -->
-      </div>
-      <!-- realizar requisição no código para mostrar foto, caso não tenha foto, permitir adicionar através de um botão específico próximo a foto -->
+    <div class="user-photo">
+      <img src="../imgs/foto_user.png" alt="Alterar foto do usuário">
+    </div>
 
-      <h2 class="home-company-name">Nome da Empresa X</h2> <!-- conectado ao banco de dados, exibindo as informações do cliente cadastrado -->
+    <h1>Nome da empresa</h1>
 
-      <section class="company-info">
-        <div class="home-info-field">
-          <span class="field-label">Nome</span>
-          <span class="field-value"></span> <!-- conectado ao banco de dados, exibindo as informações do cliente cadastrado -->
+    <form>
+      <input type="text" placeholder="Nome Completo">
+      <input type="text" placeholder="Cargo">
+      <input type="text" placeholder="Perfil">
+      <input type="tel" placeholder="Telefone">
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Senha">
+      <input type="text" placeholder="ID da Empresa">
+
+    <section class="pontuacoes">
+        <div class="pontuacoes-header">
+          <img src="../imgs/pontuação_verde.png" alt="Pontuações Verdes" class="pontuacoes-img">
+          <h2 class="pontuacoes-title">Pontuações Verdes</h2>
         </div>
-        <div class="home-info-field">
-          <span class="field-label">CNPJ</span>
-          <span class="field-value"></span>
+      
+        <p class="pontuacoes-desc">
+          Ganhe mais pontos através da <span class="cor_verde">compra de serviços</span> e 
+          <span class="cor_verde">melhoras sustentáveis</span> na sua empresa
+        </p>
+      
+        <div class="niveis">
+          <div class="nivel-card">
+            <div class="nivel-left">
+              <span class="nivel">Nível 7</span>
+              <span class="faltam">Faltam 1435 pontos</span>
+            </div>
+            <div class="nivel-desc">Infraestrutura Eficiente</div>
+            <div class="progress-bar">
+              <div class="progress" style="width: 60%;"></div>
+            </div>
+          </div>
+      
+          <div class="nivel-card">
+            <div class="nivel-left">
+              <span class="nivel">Nível 7</span>
+              <span class="faltam">Faltam 1435 pontos</span>
+            </div>
+            <div class="nivel-desc">Energia Renovável</div>
+            <div class="progress-bar">
+              <div class="progress" style="width: 60%;"></div>
+            </div>
+          </div>
+      
+          <div class="nivel-card">
+            <div class="nivel-left">
+              <span class="nivel">Nível 7</span>
+              <span class="faltam">Faltam 1435 pontos</span>
+            </div>
+            <div class="nivel-desc">Descarte de Lixo Eletrônico</div>
+            <div class="progress-bar">
+              <div class="progress" style="width: 60%;"></div>
+            </div>
+          </div>
+      
+          <div class="nivel-card">
+            <div class="nivel-left">
+              <span class="nivel">Nível 7</span>
+              <span class="faltam">Faltam 1435 pontos</span>
+            </div>
+            <div class="nivel-desc">Computação em Nuvem</div>
+            <div class="progress-bar">
+              <div class="progress" style="width: 60%;"></div>
+            </div>
+          </div>
+      
+          <div class="nivel-card">
+            <div class="nivel-left">
+              <span class="nivel">Nível 7</span>
+              <span class="faltam">Faltam 1435 pontos</span>
+            </div>
+            <div class="nivel-desc">Políticas de TI Verde</div>
+            <div class="progress-bar">
+              <div class="progress" style="width: 60%;"></div>
+            </div>
+          </div>
         </div>
-        <div class="home-info-field">
-          <span class="field-label">Indústria</span>
-          <span class="field-value"></span>
-        </div>
-        <div class="home-info-field">
-          <span class="field-label">Tamanho</span>
-          <span class="field-value"></span>
-        </div>
-        <div class="home-info-field">
-          <span class="field-label">Email do usuário</span>
-          <span class="field-value"></span>
-        </div>
-        <div class="home-info-field">
-          <span class="field-label">Usuário associado</span>
-          <span class="field-value"></span>
-        </div>
-        <div class="home-info-field">
-          <span class="field-label">ID da empresa</span>
-          <span class="field-value"></span>
-        </div>
+      
+        <p class="pontuacao-total">Pontuação Total: <strong>4769</strong></p>
       </section>
-    </div>
-  </main>
-  <!-- seção de pontuação de sustentabilidade em T.I. da empresa do cliente -->
-  <section class="points-section">
-    <img src="src/views/assets/imgs/badge-icon.svg" alt="ícone de medalha de pontuação" class="points-icon">
-    <h2 class="points-title">Pontuações Verdes</h2>
-    <p class="points-text">Ganhe mais pontos  através da compra de serviços e melhoras sustentáveis na sua empresa</p>
-    <div class="points-container">
-
-      <!-- Efficient Infrastructure Area Card -->
-      <div class="points-card">
-        <div class="points-card-left">
-          <h3 class="points-card-level">Nível 1 <!-- para substituir baseado no nível do cliente --></h3>
-          <span class="points-card-points">Faltam <span class="points-card-points-number">500 <!-- para substituir baseado nos pontos dessa área específica do cliente --></span>pontos</span>
-          <div class="points-card-progress-bar">
-            <div class="points-card-progress"></div>
-          </div>
-        </div>
-          <div class="points-card-right">
-            <h3 class="points-card-title">Infraestrutura Eficiente</h3>
-          </div>
-      </div>
-
-      <!-- Renewable Energy Area Card -->
-      <div class="points-card">
-        <div class="points-card-left">
-          <h3 class="points-card-level">Nível 1 <!-- para substituir baseado no nível do cliente --></h3>
-          <span class="points-card-points">Faltam <span class="points-card-points-number">500 <!-- para substituir baseado nos pontos dessa área específica do cliente --></span>pontos</span>
-          <div class="points-card-progress-bar">
-            <div class="points-card-progress"></div>
-          </div>
-        </div>
-          <div class="points-card-right">
-            <h3 class="points-card-title">Energia Renovável</h3>
-          </div>
-      </div>
-
-      <!-- E-Waste Discard Area Card -->
-      <div class="points-card">
-        <div class="points-card-left">
-          <h3 class="points-card-level">Nível 1 <!-- para substituir baseado no nível do cliente --></h3>
-          <span class="points-card-points">Faltam <span class="points-card-points-number">500 <!-- para substituir baseado nos pontos dessa área específica do cliente --></span>pontos</span>
-          <div class="points-card-progress-bar">
-            <div class="points-card-progress"></div>
-          </div>
-        </div>
-          <div class="points-card-right">
-            <h3 class="points-card-title">Descarte de Lixo Eletrônico</h3>
-          </div>
-      </div>
-
-      <!-- Cloud Computing Area Card -->
-      <div class="points-card">
-        <div class="points-card-left">
-          <h3 class="points-card-level">Nível 1 <!-- para substituir baseado no nível do cliente --></h3>
-          <span class="points-card-points">Faltam <span class="points-card-points-number">500 <!-- para substituir baseado nos pontos dessa área específica do cliente --></span>pontos</span>
-          <div class="points-card-progress-bar">
-            <div class="points-card-progress"></div>
-          </div>
-        </div>
-          <div class="points-card-right">
-            <h3 class="points-card-title">Computação em Nuvem</h3>
-          </div>
-      </div>
-
-      <!-- Green IT Politics Area Card -->
-      <div class="points-card">
-        <div class="points-card-left">
-          <h3 class="points-card-level">Nível 1 <!-- para substituir baseado no nível do cliente --></h3>
-          <span class="points-card-points">Faltam <span class="points-card-points-number">500 <!-- para substituir baseado nos pontos dessa área específica do cliente --></span>pontos</span>
-          <div class="points-card-progress-bar">
-            <div class="points-card-progress"></div>
-          </div>
-        </div>
-          <div class="points-card-right">
-            <h3 class="points-card-title">Políticas de TI Verde</h3>
-          </div>
-      </div>
-
-      <div class="points-total-points"> <!-- div de pontos totais do cliente, depois dos cards, mas ainda dentro do bloco (div) de pontuações verdes -->
-        <span class="points-total-points-text"></span>
-        <span class="points-total-points-number">2500 <!-- para substituir baseado no total de pontos do cliente --></span>
-      </div>
-    </div>
 
   </section>
   <?php include __DIR__ . '../../../partials/footer/footer.php'; ?> <!-- 'include' footer php for code optimization -->

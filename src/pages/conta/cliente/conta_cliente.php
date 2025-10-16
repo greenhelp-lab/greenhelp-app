@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../assets/global.css">
+  <link rel="stylesheet" href="/greenhelp-app/src/pages/conta/cliente/conta_cliente.css">
   <title>Conta</title>
-  <link rel="stylesheet" href="/greenhelp-app/public/css/main.css">
-  <link rel="stylesheet" href="/greenhelp-app/public/css/client.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../partials/header.php'; ?> <!-- 'include' header php for code optimization -->
+  <?php include __DIR__ . '../../../partials/header/header.php'; ?> <!-- 'include' header php for code optimization -->
   <main class="account">
-    <div class="account-container">
+    <div class="conta-container">
       <h1 class="account-title">Minha Conta</h1>
 
       <div class="account-profile-image">
