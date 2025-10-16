@@ -19,7 +19,7 @@ header {
   align-items: center;
 }
 
-/* estilo e display dos elementos do footer que continuam nos menores tamanhos de tela. Estilização dos outros elementos está em @media */
+/* estilo e display dos elementos do header que continuam nos menores tamanhos de tela. Estilização dos outros elementos está em @media */
 .notification-icon,
 .account-icon,
 .config-icon {
@@ -27,17 +27,16 @@ header {
   align-items: center;
   text-decoration: none;
   color: var(--input);
-  transition: all 0.3s ease;
 }
 /* Animação para todas as âncoras */
 .nav-container a:hover {
+  transition: all 0.3s ease;
   transform: scale(1.1);
 }
 /* Definição de tamanho dos svgs */
 .nav-container svg {
   width: 40px;
   height: 40px;
-  transition: opacity 0.3s ease;
 }
 /* Âncora do meio, contendo o nome serviço e o ícone */
 .service-center {
@@ -45,19 +44,12 @@ header {
   align-items: center;
   gap: 16px;
   color: var(--input);
-  transition: all 0.3s ease;
 }
 
 .service-text {
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--input);
-}
-
-.service-center svg {
-  width: 36px;
-  height: 36px;
-  transition: opacity 0.3s ease;
 }
 
 .nav-right {
@@ -80,20 +72,14 @@ header {
   display: none;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s ease;
 }
 
 .service-icon {
   display: none;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s ease;
 }
 
-.service-icon svg {
-  width: 36px;
-  height: 36px;
-}
 /* Responsive */
 @media (max-width: 568px) {
   header {
@@ -104,7 +90,6 @@ header {
     align-items: center;
     text-decoration: none;
     color: var(--input);
-    transition: all 0.3s ease;
   }
   .service-center {
     display: none;
@@ -127,7 +112,6 @@ header {
     align-items: center;
     text-decoration: none;
     color: var(--input);
-    transition: all 0.3s ease;
   }
   .logo {
     display: none;
