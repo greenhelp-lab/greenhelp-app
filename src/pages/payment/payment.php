@@ -3,20 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Pagamento</title>
-  <link rel="stylesheet" href="../../../assets/global.css">
+  <link rel="stylesheet" href="../../assets/global.css">
+  <link rel="stylesheet" href="/greenhelp-app/src/pages/payment/payment.css">
 </head>
 <body>
-
-<!-- HEADER APAGAR ADICIONAR O PHP -->
-  <header class="top-bar">
-    <img src="../imgs/logo.png" alt="Minha Logo" class="logo">
-    <nav class="nav-icons">
-      <img src="../imgs/service.png" alt="Notificação">
-      <img src="../imgs/card.png" alt="Cartão">
-      <img src="../imgs/home.png" alt="Usuário">
-    </nav>
-  </header>
-
+    <?php include __DIR__ . '../../partials/header/header.php'; ?> <!-- 'include' header php for code optimization -->
   <main class="container">
 
     <h1 class="pagamento-title">

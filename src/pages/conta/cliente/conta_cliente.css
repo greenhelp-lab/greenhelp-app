@@ -1,0 +1,136 @@
+/* === CONTA.CSS === */
+/* Isolando o escopo para não conflitar com o CSS global */
+.conta-container {
+  font-family: 'Poppins', sans-serif;
+  background-color: #150f3a;
+  color: #e0e0ff;
+  min-height: 100vh;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* Título principal */
+.conta-container h1 {
+  color: #00ff99;
+  font-size: 2em;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px #00ff99;
+}
+
+/* Texto de boas-vindas */
+.conta-container h2 {
+  color: #00ff99;
+  font-size: 1.3em;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+/* Ícone de perfil */
+.conta-container .perfil-icon {
+  width: 140px;
+  height: 140px;
+  background-color: #2e1e66;
+  border-radius: 50%;
+  margin: 0 auto 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #00ff99;
+  position: relative;
+}
+
+.conta-container .perfil-icon::after {
+  content: '+';
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #00ff99;
+  color: #150f3a;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Campos de entrada */
+.conta-container input {
+  width: 90%;
+  max-width: 300px;
+  background-color: transparent;
+  border: 2px solid #4a3e8c;
+  border-radius: 8px;
+  color: #e0e0ff;
+  padding: 10px;
+  margin-bottom: 12px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.conta-container input:focus {
+  border-color: #00ff99;
+  box-shadow: 0 0 8px #00ff99;
+}
+
+/* Botões */
+.conta-container .btns {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.conta-container button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.conta-container .btn-salvar {
+  background-color: #00ff99;
+  color: #150f3a;
+}
+
+.conta-container .btn-salvar:hover {
+  background-color: #00cc77;
+}
+
+.conta-container .btn-editar {
+  background-color: #2e1e66;
+  color: #00ff99;
+  border: 2px solid #00ff99;
+}
+
+.conta-container .btn-editar:hover {
+  background-color: #00ff99;
+  color: #150f3a;
+}
+
+.conta-container .btn-sair {
+  background-color: #ff477e;
+  color: #fff;
+}
+
+.conta-container .btn-sair:hover {
+  background-color: #ff1a5d;
+}
+
+/* Ícones decorativos no rodapé */
+.conta-container .engrenagens {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.conta-container .engrenagens img {
+  width: 60px;
+  opacity: 0.4;
+}
