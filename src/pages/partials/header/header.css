@@ -1,0 +1,135 @@
+header {
+  width: 100vw;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 12px;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.nav-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* estilo e display dos elementos do footer que continuam nos menores tamanhos de tela. Estilização dos outros elementos está em @media */
+.notification-icon,
+.account-icon,
+.config-icon {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--input);
+  transition: all 0.3s ease;
+}
+/* Animação para todas as âncoras */
+.nav-container a:hover {
+  transform: scale(1.1);
+}
+/* Definição de tamanho dos svgs */
+.nav-container svg {
+  width: 40px;
+  height: 40px;
+  transition: opacity 0.3s ease;
+}
+/* Âncora do meio, contendo o nome serviço e o ícone */
+.service-center {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--input);
+  transition: all 0.3s ease;
+}
+
+.service-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--input);
+}
+
+.service-center svg {
+  width: 36px;
+  height: 36px;
+  transition: opacity 0.3s ease;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.nav-right-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.nav-right-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.home-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.service-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.service-icon svg {
+  width: 36px;
+  height: 36px;
+}
+/* Responsive */
+@media (max-width: 568px) {
+  header {
+    padding: 2px 10px;
+  }
+  .service-icon {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--input);
+    transition: all 0.3s ease;
+  }
+  .service-center {
+    display: none;
+  }
+}
+@media (max-width: 435px) {
+  .nav-container {
+    justify-content: center;
+  }
+  .nav-right {
+    width: 95%;
+    justify-content: space-between;
+  }
+  .nav-right-left {
+    gap: 28px;
+    margin-right: 6px;
+  }
+  .home-icon {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--input);
+    transition: all 0.3s ease;
+  }
+  .logo {
+    display: none;
+  }
+}
