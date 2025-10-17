@@ -16,10 +16,10 @@
     <h1>Home</h1>
 
     <div class="user-photo">
-      <img src="<?php echo BASE_URL; ?>/public/imgs/foto_user.png" alt="Alterar foto do usuário">
+      <img src="<?php echo BASE_URL; ?>/public/imgs/add-photo.svg" alt="Alterar foto do usuário">
     </div>
 
-    <h1>Nome da empresa</h1>
+    <h2>Nome da empresa</h2>
 
     <form>
       <input type="text" placeholder="Nome Completo">
