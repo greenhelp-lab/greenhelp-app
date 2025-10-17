@@ -1,16 +1,19 @@
+<?php include_once BASE_PATH . '/config.php'; ?> <!-- Inclui o arquivo de configuração para usar BASE_PATH corretamente-->
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GreenHelp Home</title>
-  <link rel="stylesheet" href="../../../assets/global.css">
-  <link rel="stylesheet" href="/greenhelp-app/src/pages/home/admin/home_admin.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/home/home_admin.css">
 </head>
+
 <body class="page-admin">
-    
+
   <!-- <?php phpinfo(); ?> -->
-  <?php include __DIR__ . '../../../partials/header/header.php'; ?> <!-- 'include' header php for code optimization -->
+  <?php include BASE_PATH . '/src/pages/partials/header.php'; ?> <!-- 'include' header php for code optimization -->
   <main class="container">
     <!-- TÍTULO E TOGGLER -->
     <div class="header-row">
@@ -110,6 +113,7 @@
         <div class="kpi-value positive">+85</div>
       </div>
     </section>
-     <?php include __DIR__ . '../../../partials/footer/footer.php'; ?> <!-- 'include' footer php for code optimization -->
+    <?php include BASE_PATH . '/src/pages/partials/footer.php'; ?> <!-- 'include' footer php for code optimization -->
 </body>
+
 </html>

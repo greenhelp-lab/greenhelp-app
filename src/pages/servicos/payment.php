@@ -1,18 +1,21 @@
+<?php include_once BASE_PATH . '/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <title>Pagamento</title>
-  <link rel="stylesheet" href="../../assets/global.css">
-  <link rel="stylesheet" href="/greenhelp-app/src/pages/payment/payment.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/servicos/payment.css">
 </head>
+
 <body>
-    <?php include __DIR__ . '../../partials/header/header.php'; ?> <!-- 'include' header php for code optimization -->
+  <?php include BASE_PATH . '/src/pages/partials/header.php'; ?> <!-- 'include' header php for code optimization -->
   <main class="container">
 
     <h1 class="pagamento-title">
-      Pagamento 
-      <img src="../imgs/cart.png" alt="Carrinho" class="icon-cart">
+      Pagamento
+      <img src="<?php echo BASE_URL; ?>/public/imgs/cart.png" alt="Carrinho" class="icon-cart">
     </h1>
 
     <form class="payment-form">
@@ -52,10 +55,11 @@
       <div class="buttons">
         <button type="button" class="btn voltar">Voltar</button>
         <button type="submit" class="btn comprar">
-          Comprar <img src="../imgs/cart_azul.png" alt="Carrinho">
+          Comprar <img src="<?php echo BASE_URL; ?>/public/imgs/cart_azul.png" alt="Carrinho">
         </button>
       </div>
     </form>
   </main>
 </body>
+
 </html>

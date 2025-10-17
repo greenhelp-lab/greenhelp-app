@@ -1,14 +1,17 @@
+<?php include_once BASE_PATH . '/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Conta</title>
-  <link rel="stylesheet" href="/greenhelp-app/public/css/main.css">
-  <link rel="stylesheet" href="/greenhelp-app/public/css/admin.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/conta/conta_admin.css ">
 </head>
+
 <body>
-   <?php include __DIR__ . '/../partials/header.php'; ?> <!-- 'include' header php for code optimization -->
+  <?php include BASE_PATH . '/src/pages/partials/header.php'; ?> <!-- 'include' header php for code optimization -->
   <main class="account">
     <div class="account-container">
       <h1 class="account-title">Minha Conta</h1>
@@ -66,7 +69,8 @@
       </button>
     </div>
   </main>
-  <img src="/greenhelp-app/public/imgs/engines-icons.svg" alt="Ícones de engrenagens decorativas" class="engines-icons">
-  
+  <img src="<?php echo BASE_URL; ?>/public/imgs/engines-icons.svg" alt="Ícones de engrenagens decorativas" class="engines-icons">
+
 </body>
+
 </html>

@@ -1,4 +1,4 @@
-<?php include_once '../../../config.php'; ?> <!-- Inclui o arquivo de configuração para usar BASE_PATH corretamente-->
+<?php include_once BASE_PATH . '/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 

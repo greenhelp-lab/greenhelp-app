@@ -1,11 +1,12 @@
+<?php include_once BASE_PATH . '/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Seu Carrinho</title>
-  <link rel="stylesheet" href="../../../../assets/global.css">
-  <link rel="stylesheet" href="carrinho.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/carrinho.css">
 </head>
 <body>
   <!-- Título e total da compra para embutir no header ao estar na página de carrinho
@@ -16,12 +17,14 @@
     </div>
   </header> -->
 
+  <?php include BASE_PATH . '/src/pages/partials/header.php'; ?>
+
   <main class="cart-main container">
     <!-- Mensagem quando o carrinho estiver vazio -->
     <div class="cart-empty" id="cartEmpty" hidden>
       <h2>Seu carrinho está vazio</h2>
       <p>Explore os serviços e adicione soluções sustentáveis ao seu carrinho.</p>
-      <a href="../servicos_cliente.html" class="btn-primary">Ver serviços</a>
+      <a href="<?php echo BASE_URL; ?>/src/pages/servicos/servicos_cliente.html" class="btn-primary">Ver serviços</a>
     </div>
 
     <!-- Conteúdo do carrinho -->

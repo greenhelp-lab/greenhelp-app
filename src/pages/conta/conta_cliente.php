@@ -1,20 +1,23 @@
+<?php include_once BASE_PATH . '/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../../../assets/global.css">
-  <link rel="stylesheet" href="/greenhelp-app/src/pages/conta/cliente/conta_cliente.css">
+  <link rel="stylesheet" href="<?php echo $BASE_URL; ?>/public/css/global.css">
+  <link rel="stylesheet" href="<?php echo $BASE_URL; ?>/public/css/conta/conta_cliente.css">
   <title>Conta</title>
 </head>
+
 <body>
-  <?php include __DIR__ . '../../../partials/header/header.php'; ?> <!-- 'include' header php for code optimization -->
+  <?php include BASE_PATH . '/src/pages/partials/header.php'; ?> <!-- 'include' header php for code optimization -->
   <main class="account">
     <div class="conta-container">
       <h1 class="account-title">Minha Conta</h1>
 
       <div class="account-profile-image">
-        <img src="/greenhelp-app/public/imgs/add-photo.png" alt="Placeholder de um ícone de imagem com um sinal de mais no canto para adicionar foto de perfil" class="profile-image"> <!-- imagem placeholder, substituir pela imagem do cliente -->
+        <img src="<?php echo BASE_URL; ?>/public/imgs/add-photo.svg" alt="Placeholder de um ícone de imagem com um sinal de mais no canto para adicionar foto de perfil" class="profile-image"> <!-- imagem placeholder, substituir pela imagem do cliente -->
       </div>
       <!-- realizar requisição no código para mostrar foto, caso não tenha foto, permitir adicionar através de um botão específico próximo a foto -->
 
@@ -36,10 +39,10 @@
         <div class="account-info-field">
           <span class="field-label">Senha</span>
           <span class="field-value"></span>
-        <div class="account-info-field">
-          <span class="field-label">Empresa(s)</span>
-          <span class="field-value"></span>
-        </div>
+          <div class="account-info-field">
+            <span class="field-label">Empresa(s)</span>
+            <span class="field-value"></span>
+          </div>
       </section>
     </div>
 
@@ -61,7 +64,8 @@
       </button>
     </div>
   </main>
-  <img src="/greenhelp-app/public/imgs/engines-icons.svg" alt="Ícones de engrenagens decorativas" class="engines-icons">
-   
+  <img src="<?php echo BASE_URL; ?>/public/imgs/engines-icons.svg" alt="Ícones de engrenagens decorativas" class="engines-icons">
+
 </body>
+
 </html>

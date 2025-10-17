@@ -1,14 +1,16 @@
+<?php include_once BASE_PATH . '/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Serviços</title>
-  <link rel="stylesheet" href="../../../assets/global.css">
-  <link rel="stylesheet" href="../cliente/servicos_cliente.css">
-  <link rel="stylesheet" href="./servicos_admin.css">
+  <link rel="stylesheet" href="<?php echo $BASE_URL; ?>/public/css/global.css">
+  <link rel="stylesheet" href="<?php echo $BASE_URL; ?>/public/css/servicos/servicos_admin.css">
+  <link rel="stylesheet" href="<?php echo $BASE_URL; ?>/public/css/servicos/servicos_cliente.css">
 </head>
 <body>
+  <?php include BASE_PATH . '/src/pages/partials/header.php'; ?>
     <h1 class="service-title">Serviços</h1>
     <div class="shortcuts">
       <button>Registros</button>
@@ -316,6 +318,6 @@
     </div>
   </section>
 
-  
+  <?php include '../partials/footer.php'; ?>
 </body>
 </html>
