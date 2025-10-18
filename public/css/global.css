@@ -45,7 +45,7 @@ body {
   min-height: 100vh;
   color: var(--txt);
   display: grid;
-  place-items: start center;
+  place-items: center center; /* A tela será centralizada verticalmente */
   padding: 20px 0;
   background-repeat: no-repeat;
   background-attachment: fixed;

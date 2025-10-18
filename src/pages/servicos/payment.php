@@ -1,4 +1,4 @@
-<?php include_once BASE_PATH . '/config.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <title>Pagamento</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/servicos/payment.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/payment.css"> 
 </head>
 
 <body>

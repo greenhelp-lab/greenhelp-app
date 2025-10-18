@@ -1,147 +1,193 @@
-body {
-  margin: 0;
-  font-family: 'Montserrat', sans-serif;
-  color: white;
-  background-image: linear-gradient(180deg, #24103a 0%, #1B1244 60%, #0b0821 100%);
-}
+/* Removido o 'body' pois o CSS Global já o configura,
+   e a redefinição de 'font-family' e 'background-image' no local
+   causa inconsistência. */
 
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #60E395;
-  padding: 10px 40px;
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
-}
-
-.select{
-  background-color: #1B1244
-}
-.logo {
-  height: 70px;
-}
-
-.nav-icons img {
-  height: 28px;
-  margin-left: 25px;
-  cursor: pointer;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 25px;
-}
-
-.pagamento-title {
-  color: #ffffff;
-  font-size: 28px;
-  margin: 20px 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.icon-cart {
-  width: 22px;
-  height: 22px;
-}
-
-.payment-form {
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  max-width: 320px;
-}
-
-.payment-form input,
-.payment-form select {
-  background-color: transparent;
-  border: 2px solid #60E395;
-  border-radius: 25px;
-  padding: 12px;
-  margin: 8px 0;
-  color: white;
-  outline: none;
-  font-size: 13px;
-}
-
-.payment-form input::placeholder {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.form-subtitle {
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  margin: 18px 0 10px;
-}
-
-.payment-method {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.payment-method select {
-  flex: 1;
-}
-
-.cards-img {
-  height: 28px;
-  object-fit: contain;
-}
-
-.input-icon {
-  position: relative;
-}
-
-.input-icon input {
-  width: 295px;
-  padding-right: 10px;
-}
-
-.inline-icon {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-51%);
-  width: 45px;
-  height: 150px;
-  object-fit: contain;
-}
-
-.buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.btn {
-  border: none;
-  border-radius: 25px;
-  padding: 12px 20px;
-  font-size: 14px;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.voltar {
-  background-color: #1DB4FF;
-  color: white;
-}
-
-.comprar {
-  background-color: #60E395;
-  color: black;
-}
-.comprar img {
-  width: 18px;
-  height: 18px;
-}
+   .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Utilizando a cor de destaque (accent) do global, que é #35f28f */
+    background-color: var(--accent);
+    padding: 10px 40px;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+  }
+  
+  .select {
+    /* Aplicando a cor de fundo 'input' do global para o fundo das opções */
+    background-color: var(--input);
+    color: var(--txt); /* Cor do texto padrão para as opções */
+  }
+  
+  .logo {
+    height: 70px;
+  }
+  
+  .nav-icons img {
+    height: 28px;
+    margin-left: 25px;
+    cursor: pointer;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px;
+  }
+  
+  .pagamento-title {
+    /* Removida a cor branca fixa. O h1 global já aplica um gradiente com transparência
+       e 'text-shadow', que é mais interessante. */
+    /* Reajustado para usar a fonte global, se necessário, ou confia no h1 do global */
+    font-size: 2.125rem; /* 34px - Usando o tamanho do h1 global */
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .icon-cart {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 320px;
+    /* Adiciona um preenchimento interno e fundo sutil, similar ao 'card-bg' */
+    padding: 20px;
+    border-radius: 15px;
+    background: var(--card-bg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+  
+  .payment-form input,
+  .payment-form select {
+    background-color: var(--input); /* Usando a cor de input do global */
+    border: 2px solid var(--stroke); /* Usando a cor de borda (stroke) do global */
+    border-radius: 25px;
+    padding: 12px;
+    margin: 8px 0;
+    color: var(--txt); /* Cor do texto */
+    outline: none;
+    font-size: 1rem; /* 16px - Tamanho padrão */
+    font-family: var(--font-family); /* Garantindo a fonte global */
+  }
+  
+  .payment-form input::placeholder {
+    color: var(--muted); /* Usando uma cor mais suave para o placeholder */
+  }
+  
+  .form-subtitle {
+    /* Usando o estilo do h2 global, se necessário, ou ajustando localmente */
+    /* Aplicando o estilo de título com gradiente do global para consistência,
+       mas mantendo o tamanho menor de h2, o que pode ser uma boa prática */
+    font-size: 1.25rem; /* Um tamanho intermediário */
+    font-weight: 700;
+    margin: 18px 0 10px;
+    text-align: center;
+    /* Aplicando o estilo de cor de texto do global para h */
+    background: linear-gradient(
+      90deg,
+      #b9ffd9,
+      #35f28f,
+      #39ffa6,
+      #0fffa6,
+      #39ffa6,
+      #35f28f,
+      #b9ffd9
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 8px #2effa6aa; /* Sombra mais sutil */
+  }
+  
+  .payment-method {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .payment-method select {
+    flex: 1;
+  }
+  
+  .cards-img {
+    height: 28px;
+    object-fit: contain;
+  }
+  
+  .input-icon {
+    position: relative;
+  }
+  
+  /* Ajuste o input dentro de input-icon para não ter largura fixa,
+     permitindo que o max-width do .payment-form o controle */
+  .input-icon input {
+    width: 100%;
+    padding-right: 70px; /* Espaço para o ícone */
+  }
+  
+  .inline-icon {
+    position: absolute;
+    right: 15px; /* Ajustado para ficar mais dentro do padding */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 25px; /* Altura menor para se alinhar melhor */
+    object-fit: contain;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 25px;
+  }
+  
+  .btn {
+    /* O CSS Global já faz o 'all: unset', 'cursor: pointer', etc. */
+    border: none;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 1rem; /* 16px */
+    font-weight: 600; /* Uso do peso de fonte do global para buttons */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+  
+  .btn:hover {
+      transform: translateY(-1px);
+  }
+  
+  .voltar {
+    background-color: var(--purple); /* Usando a cor purple do global */
+    color: var(--txt);
+    box-shadow: 0 3px 6px rgba(58, 58, 155, 0.4);
+  }
+  
+  .voltar:hover {
+      background-color: #4a4ad9; /* Um tom ligeiramente mais claro */
+  }
+  
+  .comprar {
+    background-color: var(--accent); /* Usando a cor accent do global */
+    color: var(--bg); /* Cor de fundo para o texto contrastar */
+    box-shadow: 0 3px 6px rgba(53, 242, 143, 0.4);
+  }
+  
+  .comprar:hover {
+      background-color: #47ff9f; /* Um tom ligeiramente mais claro */
+  }
+  
+  .comprar img {
+    width: 18px;
+    height: 18px;
+    filter: brightness(0.2); /* Escurece o ícone para contrastar com o fundo accent */
+  }
