@@ -1,6 +1,7 @@
-<?php include_once BASE_PATH . '/config.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +9,9 @@
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/carrinho.css">
 </head>
+
 <body>
+  <?php include BASE_PATH . '/src/pages/partials/header.php'; ?>
   <!-- Título e total da compra para embutir no header ao estar na página de carrinho
   <header class="cart-header">
     <div class="container">
@@ -16,10 +19,7 @@
       <div class="cart-total-bubble" id="cartTotalBubble">R$ 0,00</div>
     </div>
   </header> -->
-
-  <?php include BASE_PATH . '/src/pages/partials/header.php'; ?>
-
-  <main class="cart-main container">
+  <div class="cart-main">
     <!-- Mensagem quando o carrinho estiver vazio -->
     <div class="cart-empty" id="cartEmpty" hidden>
       <h2>Seu carrinho está vazio</h2>
@@ -35,8 +35,8 @@
           <div class="item-left">
             <div class="item-thumb" aria-hidden="true">
               <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="thumb-icon">
-                <rect width="64" height="64" rx="10" fill="currentColor" opacity="0.06"/>
-                <path d="M12 44h40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <rect width="64" height="64" rx="10" fill="currentColor" opacity="0.06" />
+                <path d="M12 44h40" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
               </svg>
             </div>
             <div class="item-info">
@@ -88,10 +88,12 @@
         </div>
       </aside>
     </section>
+  </div>
 
-    <!-- Modal de confirmação de remoção (simulado, não funcional sem JS) -->
 
-    <!-- <div class="modal" id="removeModal" hidden>
+  <!-- Modal de confirmação de remoção (simulado, não funcional sem JS) -->
+
+  <!-- <div class="modal" id="removeModal" hidden>
       <div class="modal-card">
         <h3>Remover item</h3>
         <p>Tem certeza que deseja remover este serviço do carrinho?</p>
@@ -101,7 +103,7 @@
         </div>
       </div>
     </div> -->
-
-  </main>
+  <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?> <!-- 'include' no footer para otimizar código -->
 </body>
+
 </html>

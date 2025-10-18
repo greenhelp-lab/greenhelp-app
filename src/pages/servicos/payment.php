@@ -1,4 +1,4 @@
-<?php include_once BASE_PATH . '/config.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
