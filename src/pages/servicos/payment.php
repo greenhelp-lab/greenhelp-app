@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <title>Pagamento</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/servicos/payment.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/payment.css"> 
 </head>
 
 <body>
