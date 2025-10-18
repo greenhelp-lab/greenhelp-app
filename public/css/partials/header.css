@@ -1,5 +1,6 @@
 header {
-  width: 100vw;
+  /* Use 100% so it respects parent/layout and doesn't create viewport overflow */
+  width: 100%;
   height: 70px;
   display: flex;
   justify-content: space-between;
@@ -7,9 +8,9 @@ header {
   align-items: center;
   position: fixed;
   top: 0;
-  left: 0;
   background-color: var(--accent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
 }
 
 .nav-container {
@@ -28,7 +29,15 @@ header {
   text-decoration: none;
   color: var(--input);
 }
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
 /* Animação para todas as âncoras */
+.nav-container a {
+  transition: all 0.3s ease;
+}
 .nav-container a:hover {
   transition: all 0.3s ease;
   transform: scale(1.1);
@@ -38,17 +47,17 @@ header {
   width: 40px;
   height: 40px;
 }
-/* Âncora do meio, contendo o nome serviço e o ícone */
-.service-center {
+/* Âncora do meio, contendo o nome "Loja" e o ícone */
+.shop-center {
   display: flex;
   align-items: center;
   gap: 16px;
   color: var(--input);
 }
 
-.service-text {
+.shop-text {
   font-size: 1.8rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--input);
 }
 
@@ -74,7 +83,7 @@ header {
   justify-content: center;
 }
 
-.service-icon {
+.shop-icon {
   display: none;
   align-items: center;
   justify-content: center;
@@ -85,13 +94,13 @@ header {
   header {
     padding: 2px 10px;
   }
-  .service-icon {
+  .shop-icon {
     display: flex;
     align-items: center;
     text-decoration: none;
     color: var(--input);
   }
-  .service-center {
+  .shop-center {
     display: none;
   }
 }

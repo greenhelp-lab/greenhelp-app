@@ -31,11 +31,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
-}
-.shop-section h2 {
-  font-size: 28px;
-  margin-bottom: 16px;
+  margin: 20px 0 20px 0;
 }
 .shop-intro {
   color: var(--muted);
@@ -186,7 +182,6 @@
   border: 1px solid var(--stroke);
   border-radius: 22px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* width: clamp(280px, 100%, 350px); */
   padding: 1rem;
   gap: 12px;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -212,6 +207,8 @@
 .service-card h4 {
   font-size: 22px;
   color: var(--txt);
+  max-width: 70%;
+  margin-bottom: 0;
 }
 .service-footer p {
   font-size: 18px;
@@ -240,197 +237,6 @@
   width: 28px;
   height: 25px;
 }
-/* SEÇÃO DE REGISTROS */
-.records {
-  width: 100%;
-  max-width: 800px;
-  margin: 2rem auto auto auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.records h2 {
-  text-align: center;
-}
-.records-intro {
-  color: var(--muted);
-  margin-bottom: 20px;
-  text-align: center;
-  max-width: 600px;
-}
-.records-intro span {
-  font-weight: 600;
-  color: var(--accent);
-}
-.records-search {
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  align-items: center;
-  background: linear-gradient(180deg, var(--input), #13135a);
-  border: 1px solid var(--stroke);
-  border-radius: 22px;
-  padding: 8px 12px;
-  margin-bottom: 1rem;
-  box-shadow: inset 0 0 0 1.5px #6a58f633;
-}
-.records-search svg {
-  width: 23px;
-  height: 23px;
-  margin-right: 10px;
-  flex-shrink: 0;
-  display: block;
-}
-.search-input {
-  width: 100%;
-  border: none;
-  background: transparent;
-  color: var(--txt);
-  margin-left: 10px;
-  outline: none;
-}
-.search-input::placeholder {
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-.records-actions {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin: 0.5rem 0 1rem 0;
-}
-.records-actions button {
-  text-shadow: 0 0 16px rgba(93, 7, 178, 0.533);
-  border-radius: 999px;
-  padding: 0.5rem 1.25rem;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-.btn-lista {
-  background: var(--accent);
-  color: var(--input);
-  border: 2px solid var(--input);
-}
-.btn-criar {
-  background: var(--accent);
-  color: var(--input);
-  border: 2px solid var(--input);
-}
-.btn-filtros {
-  background: var(--accent);
-  color: var(--input);
-  border: 2px solid var(--input);
-}
-.records-actions button:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 14px var(--accent(0.8));
-}
-.records-box {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  width: 100%;
-
-  background: linear-gradient(180deg, var(--input), #13135a);
-  border: 2px solid var(--stroke);
-  border-radius: 22px;
-}
-.record {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.25rem 0;
-  width: 100%;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px dashed var(--accent);
-}
-.record-title {
-  font-weight: 600;
-  color: var(--txt);
-}
-.record-date {
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-/* --- CASES SECTION --- */
-.cases {
-  width: 100%;
-  max-width: 800px;
-  margin: 2rem auto auto auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.cases-intro {
-  color: var(--muted);
-  margin-bottom: 20px;
-  text-align: center;
-  max-width: 600px;
-}
-.cases-intro span {
-  font-weight: 600;
-  color: var(--accent);
-}
-.cases-search {
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  align-items: center;
-  background: linear-gradient(180deg, var(--input), #13135a);
-  border: 1px solid var(--stroke);
-  border-radius: 22px;
-  padding: 8px 12px;
-  margin-bottom: 1rem;
-  box-shadow: inset 0 0 0 1.5px #6a58f633;
-}
-.cases-search svg {
-  width: 23px;
-  height: 23px;
-  margin-right: 10px;
-  flex-shrink: 0;
-  display: block;
-}
-.cases-input {
-  width: 100%;
-  border: none;
-  background: transparent;
-  color: var(--txt);
-  margin-left: 10px;
-  outline: none;
-}
-.cases-input::placeholder {
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-.cases-box {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  width: 100%;
-  background: linear-gradient(180deg, var(--input), #13135a);
-  border: 2px solid var(--stroke);
-  border-radius: 22px;
-}
-.case {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.25rem 0;
-  width: 100%;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px dashed var(--accent);
-}
-.case-title {
-  font-weight: 600;
-  color: var(--txt);
-}
-.case-date {
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
 /* ------------------- RESPONSIVE RULES ------------------- */
 @media (max-width: 900px) {
   .service-title {
@@ -497,15 +303,8 @@
   .area-icon svg {
     width: 22px;
   }
-  .search-bar,
-  .records-search,
-  .cases-search {
-    max-width: 100%;
-    padding: 6px 10px;
-  }
   #shop-search,
-  .search-input,
-  .cases-input {
+  .search-input {
     font-size: 0.95rem;
   }
   .service-cards {
@@ -534,15 +333,6 @@
   .add-cart-icon {
     width: 20px;
     height: 20px;
-  }
-  .records-actions,
-  .cases-actions {
-    flex-direction: column;
-    gap: 8px;
-  }
-  .records-actions button:hover,
-  .cases-actions button:hover {
-    transform: scale(1.03);
   }
 }
 
