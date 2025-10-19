@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="popup-container discard-draft-popup">
+    <img src="imgs/Vector (3).png" alt="Ícone de Alerta" class="popup-icon alert-icon">
+    
+    <p class="popup-message warning-message">
+        Você quer <span class="highlight-discard">descartar</span><br>
+        esse rascunho?
+    </p>
+    
+    <div class="button-group">
+        <button class="btn btn-discard">Descartar</button>
+        <button class="btn btn-save-draft">Salvar</button>
+ </div>
+</div>
+    <Style>
+    .discard-draft-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #1a1a1a; 
+    font-family: sans-serif;
+}
+
+
+.discard-draft-popup {
+    background-color: #1A1A5A; 
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 320px;
+    width: 90%;
+}
+
+
+.popup-icon.alert-icon {
+    width: 60px; 
+    height: auto;
+    margin: 10px auto 15px;
+    filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.7));
+
+
+.popup-message {
+    font-size: 1.4em;
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 15px 0 25px;
+}
+
+
+.highlight-discard {
+    color: #FF6699; 
+}
+
+
+.button-group {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.btn {
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    flex-grow: 1;
+    transition: background-color 0.2s;
+}
+
+
+.btn-discard {
+    background-color: #FF3366;
+    color: white;
+    border: none;
+}
+
+
+.btn-save-draft {
+    background-color: transparent;
+    color: white;
+    border: 2px solid #9999FF; 
+}
+ </style>
+ </body>
+ </html>
