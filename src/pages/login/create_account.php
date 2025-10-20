@@ -27,7 +27,7 @@
           <input type="text" id="business_industry" name="business_industry" placeholder="Enter your business industry">
           <label for="business_size">Business Size</label>
           <input type="text" id="business_size" name="business_size" placeholder="Enter your business size">
-          <button type="submit"><a href="Create_account2.html">Next</a></button>
+          <button type="submit"><a href="Create_account2.php" >Next</a></button>
         </form>
         <p style="font-size: 13px; margin-top: 16px;">Already have an Account? <a href="login.html"><br>Login</a></p>
         <div style="text-align: left; margin-top: 10px;">
