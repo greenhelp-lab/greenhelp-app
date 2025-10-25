@@ -1,11 +1,15 @@
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/config.php'; ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Criar Serviço</title>
-  <link rel="stylesheet" href="criar_servico.css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/db_views/db_criar_servico.css" />
 </head>
+
 <body>
   <div class="card">
     <div class="header">
@@ -15,7 +19,7 @@
 
     <form>
       <div class="field">
-        <label for="nome">Name</label>
+        <label for="nome">Nome</label>
         <input id="nome" class="input pill" type="text" />
       </div>
 
@@ -61,5 +65,7 @@
       </div>
     </form>
   </div>
+  <?php include BASE_PATH . "/src/pages/partials/pop-ups/pop_salvo.html"; ?>
 </body>
+
 </html>

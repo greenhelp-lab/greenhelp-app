@@ -1,11 +1,15 @@
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/config.php'; ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Serviço</title>
-  <link rel="stylesheet" href="solicitar_servico.css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/db_views/db_servico.css" />
 </head>
+
 <body>
   <div class="card">
     <div class="header">
@@ -55,11 +59,13 @@
       </div>
 
       <div class="footer">
-        <button type="button" class="btn btn-del">Deletar</button>
+        <button type="button" class="btn btn-del" onclick="showDeletePopup()">Deletar</button>
         <button type="button" class="btn btn-edit">Editar</button>
         <button type="submit" class="btn btn-save">Salvar</button>
       </div>
     </form>
   </div>
+  <?php include BASE_PATH . "/src/pages/partials/pop-ups/pop_deletar.html"; ?>
 </body>
+
 </html>
