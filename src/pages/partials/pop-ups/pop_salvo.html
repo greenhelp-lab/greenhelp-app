@@ -1,0 +1,99 @@
+<!-- Pop-up para avisar que as mudanças no registro foram salvas -->
+<style>
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 19, 25, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    backdrop-filter: blur(2px);
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .popup-overlay.active { 
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .popup-box {
+    background: var(--panel);
+    border: 1px solid var(--success);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+  }
+  .popup-overlay.active .popup-box { 
+    transform: scale(1); 
+  }
+
+  .icon-container { 
+    margin-bottom: 1rem; 
+  }
+  .popup-message { 
+    font-size: 1.25rem; 
+    font-weight: 600; 
+    color: var(--txt); 
+    margin-bottom: 1.5rem; 
+  }
+
+  .popup-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 32px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    background: var(--success);
+    color: white;
+    border: none;
+  }
+  .popup-btn:hover { filter: brightness(1.1); }
+
+  :root {
+    --success: #4CAF50;
+    --txt: #eaeaea;
+    --panel: #1e1f29;
+  }
+</style>
+
+<div id="popupSalvo" class="popup-overlay  <?php if($showPopup) echo 'active'; ?>">
+  <div class="popup-box">
+    <div class="icon-container">
+      <svg width="48" height="48" fill="none" stroke="#4CAF50" stroke-width="4" viewBox="0 0 24 24">
+        <path d="M5 13l4 4L19 7"/>
+      </svg>
+    </div>
+    <p class="popup-message">Mudanças salvas com sucesso!</p>
+    <button class="popup-btn" onclick="closePopupSalvo()">OK</button>
+  </div>
+</div>
+
+<script>
+  function showPopupSalvo() {
+    const popup = document.getElementById('popupSalvo');
+    popup.classList.add('active');
+  }
+  function closePopupSalvo() {
+    const popup = document.getElementById('popupSalvo');
+    popup.classList.remove('active');
+  }
+  popup.addEventListener('click', function(event) {
+    if (event.target === this) {
+        closePopupSalvo();
+    }
+  });
+</script>
+
+<!-- <?php if($showPopup) echo 'active'; ?>
+     const popup = document.getElementById('popupSalvo');
+     popup.classList.add('active');
+-->

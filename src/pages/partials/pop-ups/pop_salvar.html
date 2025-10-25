@@ -1,0 +1,71 @@
+<!-- Pop-up para considerar salvar alterações ao sair (confirmar salvar) -->
+<style>
+.popup-overlay {
+  position: fixed; inset: 0; background: rgba(17,19,25,0.6);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 9999; opacity: 0; visibility: hidden;
+  backdrop-filter: blur(2px);
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.popup-overlay.active { opacity: 1; visibility: visible; }
+.popup-box {
+  background: var(--panel, #1e1f29);
+  border: 1px solid var(--warning, #FFC107);
+  border-radius: 16px;
+  padding: 2rem; width: 90%; max-width: 400px;
+  text-align: center; box-shadow: 0 8px 32px rgba(255, 193, 7, 0.15);
+  transform: scale(0.95); transition: transform 0.3s ease;
+}
+.popup-overlay.active .popup-box { transform: scale(1); }
+.icon-container { margin-bottom: 1rem; }
+.popup-message {
+  font-size: 1.25rem; font-weight: 600; color: var(--txt, #eaeaea);
+  margin-bottom: 1.5rem;
+}
+.button-group { display: flex; justify-content: center; gap: 1rem; }
+.btn {
+  padding: 0.75rem 1.5rem; border-radius: 32px; font-weight: 500;
+  font-size: 1rem; cursor: pointer; transition: all 0.2s ease;
+  min-width: 120px;
+}
+.btn-cancel {
+  background: transparent; border: 1px solid var(--muted, #aaa);
+  color: var(--txt, #eaeaea);
+}
+.btn-cancel:hover { background: rgba(255,255,255,0.05); }
+.btn-confirm {
+  background: var(--warning, #FFC107); color: #000;
+}
+.btn-confirm:hover { filter: brightness(1.1); }
+</style>
+
+<div id="popupSair" class="popup-overlay">
+  <div class="popup-box">
+    <div class="icon-container">
+      <svg width="48" height="48" fill="none" stroke="#FFC107" stroke-width="4" viewBox="0 0 24 24">
+        <path d="M12 9v4m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"/>
+      </svg>
+    </div>
+    <p class="popup-message">Você vai sair sem salvar?</p>
+    <div class="button-group">
+      <button class="btn btn-cancel" onclick="closePopupSair()">Cancelar</button>
+      <button class="btn btn-confirm" onclick="confirmExit()">Sair</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPopupSair() {
+  document.getElementById('popupSair').classList.add('active');
+}
+function closePopupSair() {
+  document.getElementById('popupSair').classList.remove('active');
+}
+function confirmExit() {
+  console.log('Usuário saiu sem salvar');
+  closePopupSair();
+}
+document.getElementById('popupSair').addEventListener('click', e => {
+  if (e.target.id === 'popupSair') closePopupSair();
+});
+</script>
