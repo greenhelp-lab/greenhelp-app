@@ -1,41 +1,104 @@
-footer {
-  background-color: transparent;
+/* Footer */
+.site-footer {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 0;
-  border-top: 3px solid var(--accent);
-  bottom: 0;
-}
-footer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 10px 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  list-style: none;
-}
-footer ul li {
-  display: inline-block;
-  text-decoration: none;
-}
-footer ul li a {
-  color: #60e395;
-  font-size: 14px;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-footer ul li a:hover {
-  color: #45c17a;
+  background: linear-gradient(
+    180deg,
+    var(--panel) 0%,
+    rgba(15, 16, 53, 0.9) 100%
+  );
+  padding: 4rem 1.5rem 2rem 1.5rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.03);
 }
 
-/* Footer row */
-.footer-row {
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 4rem;
+}
+
+.footer-brand {
+  text-align: left;
+}
+
+.footer-brand img {
+  height: 100px;
+  margin-bottom: 1rem;
+}
+
+.footer-brand p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.footer-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.footer-links h4 {
+  color: var(--txt);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.footer-links ul {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-links a {
+  color: var(--muted);
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 3rem auto 0 auto;
+  padding-top: 1.5rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.03);
+  text-align: center;
+}
+
+.footer-bottom p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .footer-brand {
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-nav {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-links {
+    text-align: center;
+  }
 }
