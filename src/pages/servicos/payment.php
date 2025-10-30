@@ -15,7 +15,7 @@
 
     <h1 class="pagamento-title">
       Pagamento
-      <img src="<?php echo BASE_URL; ?>/public/imgs/cart.png" alt="Carrinho" class="icon-cart">
+      <img src="<?php echo BASE_URL; ?>/public/icons/Union.svg" alt="Carrinho" class="icon-cart">
     </h1>
 
     <form class="payment-form">
@@ -41,12 +41,7 @@
           <option class="select">Débito</option>
           <option class="select">Pix</option>
         </select>
-        <img src="../imgs/flags.png" alt="Bandeiras dos cartões" class="cards-img">
-      </div>
-
-      <div class="input-icon">
-        <input type="text" placeholder="Número do cartão">
-        <img src="../imgs/visa.png" alt="Visa" class="inline-icon">
+        <img src="/greenhelp-app/public/imgs/flags.png" alt="Bandeiras dos cartões" class="cards-img">
       </div>
 
       <input type="text" placeholder="Data de vencimento">
@@ -55,7 +50,7 @@
       <div class="buttons">
         <button type="button" class="btn voltar">Voltar</button>
         <button type="submit" class="btn comprar">
-          Comprar <img src="<?php echo BASE_URL; ?>/public/imgs/cart_azul.png" alt="Carrinho">
+          Comprar <img src="<?php echo BASE_URL; ?>/public/imgs/card-icon.svg" alt="Carrinho">
         </button>
       </div>
     </form>

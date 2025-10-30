@@ -16,7 +16,9 @@
     <h1>Home</h1>
 
     <div class="user-photo">
+      <button>
       <img src="<?php echo BASE_URL; ?>/public/imgs/add-photo.svg" alt="Alterar foto do usuário">
+</button>
     </div>
 
     <h2>Nome da empresa</h2>
@@ -29,8 +31,9 @@
       <input type="email" placeholder="Email">
       <input type="password" placeholder="Senha">
       <input type="text" placeholder="ID da Empresa">
+</form>
 
-      <section class="pontuacoes">
+<section class="pontuacoes">
         <div class="pontuacoes-header">
           <img src="../imgs/pontuação_verde.png" alt="Pontuações Verdes" class="pontuacoes-img">
           <h2 class="pontuacoes-title">Pontuações Verdes</h2>
@@ -100,8 +103,7 @@
 
         <p class="pontuacao-total">Pontuação Total: <strong>4769</strong></p>
       </section>
-
-      </section>
+</main>
       <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?> <!-- 'include' no footer para otimizar código -->
 </body>
 

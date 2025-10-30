@@ -18,6 +18,8 @@
   padding: 20px 0;
 }
 
+
+
 /* TÍTULO H1 */
 .account-title {
   /* O H1 global já aplica o gradiente. Apenas garantimos a margem e alinhamento */
@@ -26,18 +28,12 @@
   font-size: 2.125rem; /* Padrão do H1 global */
 }
 
-/* IMAGEM DE PERFIL */
-.account-profile-image {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  /* Utilizando a cor 'purple' do global para o fundo */
-  background-color: var(--purple);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 30px;
-  box-shadow: 0 0 20px var(--glow); /* Sombra suave para destacar */
+.user-photo {
+  margin: 20px 0;
+}
+.user-photo img {
+  width: 200px;
+  height: 200px;
 }
 
 .profile-image {

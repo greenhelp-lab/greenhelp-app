@@ -17,9 +17,11 @@
         <div class="conta-container">
             <h1 class="account-title">Meu Usuário</h1>
 
-            <div class="account-profile-image">
-                <img src="<?php echo BASE_URL; ?>/public/imgs/add-photo.svg" alt="Placeholder..." class="profile-image">
-            </div>
+            <div class="user-photo">
+      <button>
+      <img src="<?php echo BASE_URL; ?>/public/imgs/add-photo.svg" alt="Alterar foto do usuário">
+</button>
+    </div>
 
             <form class="account-form">
                 <input type="text" placeholder="Nome Completo">
