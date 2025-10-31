@@ -16,32 +16,32 @@
       <div class="auth-container">
         <div class="auth-header">
           <h1>Criar Conta</h1>
-          <p class="lead">Use um email confiável (entraremos em contato por ele)</p>
+          <p class="lead">Olá! Preencha algumas informações sobre a sua empresa</p>
         </div>
 
-        <form class="auth-form" action="<?php echo BASE_PATH; ?>/src/controllers/criar_conta_controller.php" method="post">
+        <form class="auth-form" action="<?php echo BASE_PATH; ?>/src/controllers/criar_empresa_controller.php" method="post">
+
           <div class="form-group">
-            <label for="client_name">Nome Completo</label>
-            <input type="text" id="client_name" name="client_name" placeholder="Digite seu nome completo">
+            <label for="business_name">Nome da Empresa</label>
+            <input type="text" id="business_name" name="business_name" placeholder="Digite o nome da sua empresa">
           </div>
 
           <div class="form-group">
-            <label for="email">Seu Email</label>
-            <input type="email" id="email" name="email" placeholder="Digite seu email">
+            <label for="business_cnpj">CNPJ da Empresa</label>
+            <input type="text" id="business_cnpj" name="business_cnpj" placeholder="Digite o CNPJ da sua empresa" pattern="[0-9]*">
           </div>
 
           <div class="form-group">
-            <label for="password">Senha</label>
-            <input type="password" id="password" name="password" placeholder="Digite sua senha">
+            <label for="business_industry">Setor da Empresa</label>
+            <input type="text" id="business_industry" name="business_industry" placeholder="Digite o setor da sua empresa">
           </div>
 
           <div class="form-group">
-            <label for="password_confirm">Confirmar Senha</label>
-            <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirme sua senha">
-            <p class="help-text">Crie uma senha forte com pelo menos 8 caracteres</p>
+            <label for="business_size">Tamanho da Empresa</label>
+            <input type="text" id="business_size" name="business_size" placeholder="Digite o tamanho da sua empresa">
           </div>
 
-          <button type="submit">Criar Conta</button>
+          <button type="submit">Próximo</button>
         </form>
 
         <div class="auth-links">
