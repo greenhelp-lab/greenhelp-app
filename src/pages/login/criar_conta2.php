@@ -26,13 +26,13 @@
           </div>
 
           <div class="form-group">
-            <label for="business_email">Seu Email</label>
-            <input type="email" id="business_email" name="business_email" placeholder="Digite seu email">
+            <label for="email">Seu Email</label>
+            <input type="email" id="email" name="email" placeholder="Digite seu email">
           </div>
 
           <div class="form-group">
-            <label for="business_password">Senha</label>
-            <input type="password" id="business_password" name="business_password" placeholder="Digite sua senha">
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" placeholder="Digite sua senha">
           </div>
 
           <div class="form-group">
@@ -59,3 +59,23 @@
 </body>
 
 </html>
+
+<?php
+// Database connection
+include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/config/conexao.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  $email = $_POST['email'];
+  $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Hash password
+
+  $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+  $stmt->bind_param("ss", $username, $password);
+
+  if ($stmt->execute()) {
+    echo "Conta criada com sucesso!";
+  } else {
+    echo "Erro: " . $stmt->error;
+  }
+  $stmt->close();
+}
+?>
