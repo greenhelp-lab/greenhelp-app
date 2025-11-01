@@ -1,2 +1,2 @@
 <?php
-require_once __DIR__ . '/../src/pages/login/login.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/pages/login/login.php';

@@ -1,4 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/config.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php'; ?>
 <html lang="pt-BR">
 
 <head>
@@ -13,8 +13,8 @@
   <?php include BASE_PATH . '/src/pages/partials/header.php'; ?>
   <h1 class="service-title">Marketplace</h1>
   <div class="shortcuts">
-    <button>Seu Carrinho</button>
-    <button>Dados de Pagamento</button>
+    <button onclick="window.location.href='carrinho.php'">Seu Carrinho</button>
+    <button onclick="window.location.href='pagamentos.php'">Dados de Pagamento</button>
   </div>
 
   <!-- Seção Loja de Serviços -->
@@ -75,7 +75,7 @@
 
       <!-- Cards de Serviços -->
       <div class="service-cards">
-        <div class="service-card">
+        <div class="service-card" onclick="window.location.href='sobre_servico.php'">
           <div class="service-header">
             <h4>Projeto de Refrigeração</h4>
             <svg class="service-card-icon" viewBox="0 0 64 60" fill="none" xmlns="http://www.w3.org/2000/svg">

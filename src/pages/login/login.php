@@ -1,4 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/config.php'; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -26,8 +26,8 @@
           </div>
 
           <div class="form-group">
-            <label for="password">Senha</label>
-            <input type="password" id="password" name="password" placeholder="Digite sua senha">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" placeholder="Digite sua senha">
           </div>
 
           <div class="form-group-remember">
@@ -35,6 +35,13 @@
               <input type="checkbox" id="remember-me" name="remember-me"> Lembrar-me
             </label>
           </div>
+          <?php
+          session_start();
+          if (isset($_SESSION['mensagem_erro'])) {
+            echo '<p style="color: var(--danger);">' . $_SESSION['mensagem_erro'] . '</p>';
+            unset($_SESSION['mensagem_erro']);
+          }
+          ?>
 
           <button type="submit">Login</button>
         </form>
