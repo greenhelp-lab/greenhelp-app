@@ -45,7 +45,7 @@
         </form>
 
         <div class="auth-links">
-          <p class="help-text">Já tem uma conta? <a href="<?php echo BASE_URL; ?>/login">Login</a></p>
+          <p class="help-text">Já tem uma conta? <a href="<?php echo BASE_URL; ?>//src/pages/login/login.php">Login</a></p>
         </div>
 
         <a href="javascript:history.back()" class="back-button">

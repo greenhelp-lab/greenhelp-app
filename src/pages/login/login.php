@@ -22,12 +22,18 @@
         <form class="auth-form" action="<?= BASE_URL ?>/src/controllers/login_controller.php" method="post">
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email">
+            <input type="email" id="email" name="email" placeholder="Digite seu email">
           </div>
 
           <div class="form-group">
             <label for="password">Senha</label>
             <input type="password" id="password" name="password" placeholder="Digite sua senha">
+          </div>
+
+          <div class="form-group-remember">
+            <label for="remember-me">
+              <input type="checkbox" id="remember-me" name="remember-me"> Lembrar-me
+            </label>
           </div>
 
           <button type="submit">Login</button>

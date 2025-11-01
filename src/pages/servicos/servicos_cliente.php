@@ -11,7 +11,7 @@
 
 <body>
   <?php include BASE_PATH . '/src/pages/partials/header.php'; ?>
-  <h1 class="service-title">Serviços</h1>
+  <h1 class="service-title">Marketplace</h1>
   <div class="shortcuts">
     <button>Seu Carrinho</button>
     <button>Dados de Pagamento</button>

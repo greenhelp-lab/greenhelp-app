@@ -113,6 +113,14 @@ a {
   cursor: pointer;
 }
 
+/* input:-autofill-selected {
+  background-color: var(--txt);
+  background-image: none !important;
+  color: var(--txt);
+  box-shadow: 0 0 0px 1000px var(--input) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+} */
+
 /* Quando a tela for maior que 1200px, aplica zoom de 150%  */
 /* @media (min-width: 1200px) {
   body {

@@ -5,7 +5,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $_SESSION['empresa'] = [
     'nome_empresa' => $_POST['nome_empresa'],
     'cnpj' => $_POST['cnpj'],
-    'endereco' => $_POST['endereco']
+    'setor' => $_POST['setor'],
+    'tamanho_empresa' => $_POST['tamanho_empresa']
     // outros campos da empresa
   ];
 
