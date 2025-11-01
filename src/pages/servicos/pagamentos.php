@@ -1,4 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/config.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <title>Pagamento</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/payment.css"> 
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/pagamentos.css">
 </head>
 
 <body>
@@ -48,7 +48,7 @@
       <input type="text" placeholder="Código de segurança">
 
       <div class="buttons">
-        <button type="button" class="btn voltar">Voltar</button>
+        <button type="button" class="btn voltar" onclick="javascript:history.back()">Voltar</button>
         <button type="submit" class="btn comprar">
           Comprar <img src="<?php echo BASE_URL; ?>/public/imgs/card-icon.svg" alt="Carrinho">
         </button>
