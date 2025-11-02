@@ -13,8 +13,10 @@ $stmt->execute();
 
 $user = $stmt->fetch();
 
+
 if ($user && password_verify($senha, $user['senha'])) {
   $_SESSION['user_id'] = $user['id'];
+  print("user id: " . $user['id']);
   $_SESSION['papel'] = $user['papel'];
 
   if ($user['papel'] === 'admin') {
