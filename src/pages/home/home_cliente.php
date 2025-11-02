@@ -1,18 +1,36 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+<?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 session_start();
 
-// pega empresa da sessão (ajuste se sua chave for outra)
-$empresaId = $_SESSION['empresa_id'] ?? null;
+// (opcional) desabilita cache desta página
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
 
-// busca logo no BD (fallback pro ícone padrão)
-$logoUrl = BASE_URL . '/public/imgs/add-photo.svg';
-if ($empresaId) {
-  $st = $pdo->prepare("SELECT logo_path FROM empresas WHERE id = :id");
-  $st->execute([':id'=>$empresaId]);
-  $x = $st->fetchColumn();
-  if (!empty($x)) $logoUrl = $x;
+$logoUrl = BASE_URL . '/public/imgs/add-photo.svg'; // padrão
+
+if (!empty($_SESSION['user_id'])) {
+  // tenta pegar empresa da sessão; se não tiver, busca a empresa do próprio usuário
+  $empresaId = $_SESSION['empresa_id'] ?? null;
+  if (!$empresaId) {
+    $st = $pdo->prepare("SELECT id FROM empresas WHERE usuario_id = :uid ORDER BY id DESC LIMIT 1");
+    $st->execute([':uid' => $_SESSION['user_id']]);
+    $empresaId = $st->fetchColumn() ?: null;
+    if ($empresaId) $_SESSION['empresa_id'] = (int)$empresaId;
+  }
+
+  // se tiver empresa, carrega o logo salvo; senão fica no ícone padrão
+  if ($empresaId) {
+    $st = $pdo->prepare("SELECT logo_path FROM empresas WHERE id = :id");
+    $st->execute([':id' => $empresaId]);
+    $row = $st->fetchColumn();
+    if (!empty($row)) $logoUrl = $row;
+  }
+} else {
+  // sem login: use somente a imagem padrão (ou redirecione)
+  // header('Location: ' . BASE_URL . '/login.php'); exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -50,40 +68,43 @@ if ($empresaId) {
   </main>
   <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
 
-  <script>
-  const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/actions/upload_logo.php';
+<script>
+const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/actions/upload_logo.php';
+// console.log('UPLOAD_LOGO_URL =', UPLOAD_LOGO_URL); // debug opcional
 
-  (function () {
-    const btn  = document.getElementById('btnLogo');
-    const img  = document.getElementById('imgLogo');
-    const inp  = document.getElementById('inpLogo');
-    const MAX  = 3 * 1024 * 1024;
-    const ok   = ['image/jpeg','image/png','image/webp'];
+(function () {
+  const btn  = document.getElementById('btnLogo');
+  const img  = document.getElementById('imgLogo');
+  const inp  = document.getElementById('inpLogo');
+  const MAX  = 3 * 1024 * 1024;
+  const ok   = ['image/jpeg','image/png','image/webp'];
 
-    btn.addEventListener('click', () => inp.click());
+  btn.addEventListener('click', () => inp.click());
 
-    inp.addEventListener('change', async () => {
-      const file = inp.files?.[0]; if (!file) return;
-      if (!ok.includes(file.type)) { alert('JPG/PNG/WEBP'); inp.value=''; return; }
-      if (file.size > MAX) { alert('Até 3MB'); inp.value=''; return; }
+  inp.addEventListener('change', async () => {
+    const file = inp.files?.[0]; if (!file) return;
+    if (!ok.includes(file.type)) { alert('JPG/PNG/WEBP'); inp.value=''; return; }
+    if (file.size > MAX) { alert('Até 3MB'); inp.value=''; return; }
 
-      // preview imediato
-      const t = URL.createObjectURL(file);
-      img.src = t; img.onload = () => URL.revokeObjectURL(t);
+    // preview imediato
+    const t = URL.createObjectURL(file);
+    img.src = t; img.onload = () => URL.revokeObjectURL(t);
 
-      // upload automático
-      const fd = new FormData(); fd.append('logo', file);
-      try {
-        const r = await fetch(UPLOAD_LOGO_URL, { method: 'POST', body: fd, credentials: 'include' });
-        if (!r.ok) throw new Error(await r.text());
-        const data = await r.json();
-        if (data.url) img.src = data.url + '?t=' + Date.now(); // fura cache
-      } catch (e) {
-        alert('Falha no upload: ' + e.message);
-        inp.value = '';
-      }
-    });
-  })();
-  </script>
+    // upload
+    const fd = new FormData(); fd.append('logo', file);
+    try {
+      const r = await fetch(UPLOAD_LOGO_URL, { method:'POST', body: fd, credentials:'include' });
+      const text = await r.text();
+      if (!r.ok) throw new Error(text || ('HTTP ' + r.status));
+      const data = JSON.parse(text);
+      if (data.url) img.src = data.url + '?t=' + Date.now();
+    } catch (e) {
+      alert('Falha no upload: ' + e.message);
+      inp.value = '';
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
