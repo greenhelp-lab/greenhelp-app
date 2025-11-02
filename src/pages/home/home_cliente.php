@@ -25,12 +25,8 @@ if (!empty($_SESSION['user_id'])) {
     $row = $st->fetchColumn();
     if (!empty($row)) $logoUrl = $row;
   }
-} else {
-  // sem login: use somente a imagem padrão (ou redirecione)
-  // header('Location: ' . BASE_URL . '/login.php'); exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -55,22 +51,71 @@ if (!empty($_SESSION['user_id'])) {
     <h2>Nome da empresa</h2>
 
     <form>
-      <input type="text" placeholder="Nome Completo">
-      <input type="text" placeholder="Cargo">
+      <input type="text" placeholder="Nome da Empresa">
+      <input type="text" placeholder="CNPJ">
       <input type="text" placeholder="Perfil">
-      <input type="tel" placeholder="Telefone">
-      <input type="email" placeholder="Email">
-      <input type="password" placeholder="Senha">
-      <input type="text" placeholder="ID da Empresa">
+      <input type="tel" placeholder="Indústria">
     </form>
 
-    <!-- ... resto da página ... -->
+    <!-- ====== SEÇÃO RESTAURADA: Pontuações Verdes ====== -->
+    <section class="pontuacoes">
+      <div class="pontuacoes-header">
+        <!-- ajuste o nome do arquivo se no seu /public/imgs for sem acento -->
+        <img src="<?= BASE_URL; ?>/public/imgs/pontuação_verde.png" alt="Pontuações Verdes" class="pontuacoes-img">
+        <h2 class="pontuacoes-title">Pontuações Verdes</h2>
+      </div>
+
+      <p class="pontuacoes-desc">
+        Ganhe mais pontos através da <span class="cor_verde">compra de serviços</span> e
+        <span class="cor_verde">melhoras sustentáveis</span> na sua empresa
+      </p>
+
+      <div class="niveis">
+        <div class="nivel-card">
+          <div class="nivel-left">
+            <span class="nivel">Nível 7</span>
+            <span class="faltam">Faltam 1435 pontos</span>
+          </div>
+          <div class="nivel-desc">Infraestrutura Eficiente</div>
+          <div class="progress-bar"><div class="progress" style="width:60%;"></div></div>
+        </div>
+
+        <div class="nivel-card">
+          <div class="nivel-left">
+            <span class="nivel">Nível 7</span>
+            <span class="faltam">Faltam 1435 pontos</span>
+          </div>
+          <div class="nivel-desc">Energia Renovável</div>
+          <div class="progress-bar"><div class="progress" style="width:60%;"></div></div>
+        </div>
+
+        <div class="nivel-card">
+          <div class="nivel-left">
+            <span class="nivel">Nível 7</span>
+            <span class="faltam">Faltam 1435 pontos</span>
+          </div>
+          <div class="nivel-desc">Computação em Nuvem</div>
+          <div class="progress-bar"><div class="progress" style="width:60%;"></div></div>
+        </div>
+
+        <div class="nivel-card">
+          <div class="nivel-left">
+            <span class="nivel">Nível 7</span>
+            <span class="faltam">Faltam 1435 pontos</span>
+          </div>
+          <div class="nivel-desc">Políticas Sustentáveis</div>
+          <div class="progress-bar"><div class="progress" style="width:60%;"></div></div>
+        </div>
+      </div>
+
+      <p class="pontuacao-total">Pontuação Total: <strong>4769</strong></p>
+    </section>
+    <!-- ====== /SEÇÃO RESTAURADA ====== -->
   </main>
   <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
 
 <script>
 const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/actions/upload_logo.php';
-// console.log('UPLOAD_LOGO_URL =', UPLOAD_LOGO_URL); // debug opcional
 
 (function () {
   const btn  = document.getElementById('btnLogo');
@@ -105,6 +150,5 @@ const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/actions/upload_logo.php
   });
 })();
 </script>
-
 </body>
 </html>

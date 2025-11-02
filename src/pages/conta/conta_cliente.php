@@ -40,10 +40,9 @@ if ($userId) {
       </div>
 
       <form class="account-form" method="post" enctype="multipart/form-data">
-        <input type="text" placeholder="Nome Completo">
+        <input type="text" placeholder="Nome">
         <input type="tel" placeholder="Telefone">
         <input type="email" placeholder="Email">
-        <input type="password" placeholder="Senha">
         <input type="text" placeholder="Empresa">
 
         <div class="action-buttons-top">
