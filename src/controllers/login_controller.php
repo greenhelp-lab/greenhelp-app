@@ -13,11 +13,18 @@ $stmt->execute();
 
 $user = $stmt->fetch();
 
-
 if ($user && password_verify($senha, $user['senha'])) {
   $_SESSION['user_id'] = $user['id'];
   print("user id: " . $user['id']);
   $_SESSION['papel'] = $user['papel'];
+
+  $sql = "SELECT id FROM empresas WHERE usuario_id = :user_id";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':user_id', $user['id']);
+  $stmt->execute();
+
+  $empresa = $stmt->fetch();
+  $_SESSION['empresa_id'] = $empresa['id'];
 
   if ($user['papel'] === 'admin') {
     header('Location: ' . BASE_URL . '/src/pages/painel_admin/painel_admin.php');
@@ -26,7 +33,7 @@ if ($user && password_verify($senha, $user['senha'])) {
   }
   exit;
 } else {
-  $_SESSION['mensagem_erro'] = "Credenciais inválidas.";
+  $_SESSION['mensagem_erro'] = "Credenciais invÃ¡lidas.";
   // mensagem de erro visivel no arquivo de login
   header('Location: ' . BASE_URL . '/src/pages/login/login.php');
   exit;

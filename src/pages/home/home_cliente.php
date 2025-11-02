@@ -51,10 +51,10 @@ if (!empty($_SESSION['user_id'])) {
     <h2>Nome da empresa</h2>
 
     <form>
-      <input type="text" placeholder="Nome da Empresa">
-      <input type="text" placeholder="CNPJ">
-      <input type="text" placeholder="Perfil">
-      <input type="tel" placeholder="Indústria">
+      <input disabled id="empresa" type="text" placeholder="Nome da Empresa">
+      <input disabled id="cnpj" type="text" placeholder="CNPJ">
+      <input disabled id="perfil" type="text" placeholder="Perfil">
+      <input disabled id="industria" type="tel" placeholder="Indústria">
     </form>
 
     <!-- ====== SEÇÃO RESTAURADA: Pontuações Verdes ====== -->
@@ -117,12 +117,20 @@ if (!empty($_SESSION['user_id'])) {
 <script>
 const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/actions/upload_logo.php';
 
-(function () {
+(async function () {
   const btn  = document.getElementById('btnLogo');
   const img  = document.getElementById('imgLogo');
   const inp  = document.getElementById('inpLogo');
   const MAX  = 3 * 1024 * 1024;
   const ok   = ['image/jpeg','image/png','image/webp'];
+
+  await fetch('/greenhelp-app/src/controllers/get_empresa_controller.php')
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data)
+      document.getElementById("empresa").value = data.nome;
+      document.getElementById("cnpj").value = data.cnpj;
+    })
 
   btn.addEventListener('click', () => inp.click());
 
