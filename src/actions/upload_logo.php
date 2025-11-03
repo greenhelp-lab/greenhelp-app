@@ -44,9 +44,8 @@ try {
   if (!getimagesize($f['tmp_name'])) { http_response_code(415); echo json_encode(['ok'=>false,'error'=>'nao_e_imagem']); exit; }
 
   // checa suporte a WEBP no GD (muitos ambientes não têm)
-  if ($mime === 'image/webp' && !function_exists('imagecreatefromwebp')) {
-    http_response_code(415); echo json_encode(['ok'=>false,'error'=>'webp_nao_suportado']); exit;
-  }
+$webpSemSuporte = ($mime==='image/webp' && !function_exists('imagecreatefromwebp'));
+
 
   // --- Pasta destino ---
   $dir = $_SERVER['DOCUMENT_ROOT'].'/greenhelp-app/public/uploads/logos';

@@ -50,12 +50,19 @@ if (!empty($_SESSION['user_id'])) {
 
     <h2>Nome da empresa</h2>
 
-    <form>
-      <input disabled id="empresa" type="text" placeholder="Nome da Empresa">
-      <input disabled id="cnpj" type="text" placeholder="CNPJ">
-      <input disabled id="perfil" type="text" placeholder="Perfil">
-      <input disabled id="industria" type="tel" placeholder="Indústria">
-    </form>
+   <form>
+  <input disabled id="empresa" type="text" placeholder="Nome da Empresa">
+  <input disabled id="cnpj" type="text" placeholder="CNPJ">
+  <input disabled id="perfil" type="text" placeholder="Tamanho da Empresa">
+  <input disabled id="industria" type="tel" placeholder="Indústria">
+
+  <!-- BOTÕES -->
+ <div class="form-actions">
+  <button type="button" class="btn edit-button">Editar</button>
+  <button type="submit" class="btn save-button">Salvar</button>
+</div>
+</form>
+
 
     <!-- ====== SEÇÃO RESTAURADA: Pontuações Verdes ====== -->
     <section class="pontuacoes">
@@ -124,14 +131,34 @@ const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/actions/upload_logo.php
   const MAX  = 3 * 1024 * 1024;
   const ok   = ['image/jpeg','image/png','image/webp'];
 
-  await fetch('/greenhelp-app/src/controllers/get_empresa_controller.php')
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data)
-      document.getElementById("empresa").value = data.nome;
-      document.getElementById("cnpj").value = data.cnpj;
-    })
+  // guarda o src inicial (não vamos trocar no READ)
+  const initialSrc = img.getAttribute('src') || '';
 
+  // === READ: busca dados da empresa do usuário logado (apenas inputs) ===
+  try {
+    const res = await fetch('<?= rtrim(BASE_URL, '/') ?>/src/controllers/get_empresa_controller.php', {
+      credentials: 'include'
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+
+    if (json.ok && json.empresa) {
+      const e = json.empresa;
+      document.getElementById("empresa").value   = e.nome || '';
+      document.getElementById("cnpj").value      = e.cnpj || '';
+      document.getElementById("perfil").value    = e.porte || '';
+      document.getElementById("industria").value = e.setor_atuacao || '';
+
+      // NÃO altere a imagem aqui.
+      // Se quiser, apenas defina caso esteja no placeholder:
+      // const isPlaceholder = /add-photo\.svg$/i.test(initialSrc);
+      // if (isPlaceholder && e.logo_path) { img.src = (e.logo_path.startsWith('http') ? e.logo_path : '<?= rtrim(BASE_URL, '/') ?>' + (e.logo_path.startsWith('/') ? e.logo_path : '/' + e.logo_path)) + '?t=' + Date.now(); }
+    }
+  } catch (err) {
+    console.error('get_empresa_controller:', err);
+  }
+
+  // === Upload de logo (único lugar que troca a imagem) ===
   btn.addEventListener('click', () => inp.click());
 
   inp.addEventListener('change', async () => {
@@ -150,13 +177,19 @@ const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/actions/upload_logo.php
       const text = await r.text();
       if (!r.ok) throw new Error(text || ('HTTP ' + r.status));
       const data = JSON.parse(text);
+
+      // ao concluir, usa a URL final (furando cache)
       if (data.url) img.src = data.url + '?t=' + Date.now();
     } catch (e) {
       alert('Falha no upload: ' + e.message);
       inp.value = '';
+      // se quiser, restaura a imagem inicial:
+      // img.src = initialSrc;
     }
   });
 })();
 </script>
+
+
 </body>
 </html>
