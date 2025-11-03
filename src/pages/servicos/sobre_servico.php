@@ -1,4 +1,25 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+  die("Serviço inválido.");
+}
+
+$servico_id = (int)$_GET['id'];
+
+$sql = "SELECT nome, descricao, preco, pontos, categoria, imagem_url, detalhes, garantia, prazo_dias, contato, area_id  FROM servicos WHERE id = :id AND disponivel = 1";
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':id', $servico_id, PDO::PARAM_INT);
+$stmt->execute();
+
+$servico = $stmt->fetch();
+
+if (!$servico) {
+  die("Serviço não encontrado.");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -11,35 +32,32 @@
 </head>
 
 <body>
-  <?php include BASE_PATH . "/src/pages/partials/header.php"; ?>
+  <?php include_once BASE_PATH . "/src/pages/partials/header.php"; ?>
 
   <main class="service-detail-page">
     <div class="detail-block">
       <div class="detail-header">
         <div class="detail-title-area">
-          <h1 class="service-name">Projeto de Refrigeração Inteligente</h1>
+          <h1 class="service-name"><? htmlspecialchars($servico['nome']) ?></h1>
           <div class="service-meta">
             <div class="service-area">
               <span class="area-badge" aria-hidden="true">
-                <svg viewBox="0 0 64 60" class="area-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <rect width="64" height="60" rx="8" fill="currentColor" opacity="0.08"></rect>
-                  <path d="M8 48h48" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
-                </svg>
+                <? echo '<img class="service-card-icon" src="' . htmlspecialchars($servico['imagem_url']) . '" alt="' . htmlspecialchars($servico['nome']) . '" style="width:40px; height:40px;">' ?>
               </span>
               <div class="service-area-text">
                 <strong>Área:</strong>
-                <span>Infraestrutura Eficiente</span>
+                <span><? htmlspecialchars($servico['area']) ?></span>
               </div>
             </div>
 
             <div class="service-score">
-              <span class="score-value">+120</span>
+              <span class="score-value"><? number_format($s['pontos'], 0, ',', '.') ?></span>
               <span class="score-label">pontos de impacto sustentável</span>
             </div>
 
             <div class="service-price">
               <span class="price-label">Preço a partir de</span>
-              <span class="price-value">R$ 999,90</span>
+              <span class="price-value">R$ <? number_format($s['preco'], 2, ',', '.') ?></span>
             </div>
           </div>
         </div>
@@ -47,7 +65,9 @@
 
       <section class="detail-main">
         <article class="detail-description">
-          <h2>Descrição do Serviço</h2>
+          <? htmlspecialchars($servico['detalhes']) ?>
+
+          <h2>Detalhes do Serviço</h2>
           <p>Este projeto de refrigeração inteligente integra sensores IoT, análise preditiva e sistemas de controle para reduzir consumo energético e otimizar a eficiência operacional de sistemas de refrigeração industriais e comerciais.</p>
 
           <p>O serviço inclui levantamento técnico, dimensionamento, projeto executivo, integração de sensores, entrega de painel de controle via plataforma GreenHelp e acompanhamento inicial de 30 dias com ajustes remotos.</p>
@@ -68,11 +88,11 @@
             <dl class="meta-list">
               <div class="meta-row">
                 <dt>Garantia</dt>
-                <dd>Validação por engenheiro especialista</dd>
+                <dd><? htmlspecialchars($servico['garantia']) ?> dias</dd>
               </div>
               <div class="meta-row">
                 <dt>Prazo estimado</dt>
-                <dd>4–6 semanas</dd>
+                <dd><? htmlspecialchars($servico['prazo_dias']) ?> dias</dd>
               </div>
               <div class="meta-row">
                 <dt>Acompanhamento</dt>
