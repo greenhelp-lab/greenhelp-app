@@ -8,11 +8,11 @@
   <title>Serviços</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/servicos_admin.css">
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/servicos_cliente.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/marketplace.css">
 </head>
 
 <body>
-  <?php include BASE_PATH . '/src/pages/partials/header.php'; ?>
+  <?php include_once BASE_PATH . '/src/pages/partials/header.php'; ?>
   <h1 class="service-title">Loja de Serviços</h1>
 
   <!-- Seção Loja de Serviços -->

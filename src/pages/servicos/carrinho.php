@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <?php include BASE_PATH . '/src/pages/partials/header.php'; ?>
+  <?php include_once BASE_PATH . '/src/pages/partials/header.php'; ?>
   <!-- Título e total da compra para embutir no header ao estar na página de carrinho
   <header class="cart-header">
     <div class="container">
@@ -24,7 +24,7 @@
     <div class="cart-empty" id="cartEmpty" hidden>
       <h2>Seu carrinho está vazio</h2>
       <p>Explore os serviços e adicione soluções sustentáveis ao seu carrinho.</p>
-      <a href="<?php echo BASE_URL; ?>/src/pages/servicos/servicos_cliente.html" class="btn-primary">Ver serviços</a>
+      <a href="<?php echo BASE_URL; ?>/src/pages/servicos/marketplace.php" class="btn-primary">Ver serviços</a>
     </div>
 
     <!-- Conteúdo do carrinho -->
