@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     unset($_SESSION['empresa']);
 
     // redireciona para página home
-    header('Location: ' . BASE_URL . '/src/pages/home/home_cliente.php');
+    header('Location: ' . BASE_URL . '/src/pages/home/home.php');
     exit;
   } else {
     // se não houver dados da empresa na sessão, volta para a página de criar empresa para que o usuário forneça os dados

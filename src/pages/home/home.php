@@ -35,7 +35,7 @@ if (!empty($_SESSION['user_id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GreenHelp Home</title>
   <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/global.css">
-  <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/home/home_cliente.css">
+  <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/home/home.css">
 </head>
 
 <body>
@@ -52,16 +52,15 @@ if (!empty($_SESSION['user_id'])) {
 
     <h2>Nome da empresa</h2>
 
-    <form>
+    <form id="formEmpresa" class="form-empresa" style="margin:24px 0;">
       <input disabled id="empresa" type="text" placeholder="Nome da Empresa">
       <input disabled id="cnpj" type="text" placeholder="CNPJ">
       <input disabled id="perfil" type="text" placeholder="Tamanho da Empresa">
-      <input disabled id="industria" type="tel" placeholder="Indústria">
+      <input disabled id="industria" type="text" placeholder="Indústria">
 
-      <!-- BOTÕES -->
-      <div class="form-actions">
-        <button type="button" class="btn edit-button">Editar</button>
-        <button type="submit" class="btn save-button">Salvar</button>
+      <div class="form-actions" style="display:flex; gap:12px; margin-top:12px;">
+        <button type="button" class="btn edit-button" id="btnEditar">Editar</button>
+        <button type="button" class="btn save-button" id="btnSalvar" disabled>Salvar</button>
       </div>
     </form>
 
@@ -207,7 +206,7 @@ if (!empty($_SESSION['user_id'])) {
 
       // === READ: busca dados da empresa do usuário logado (apenas inputs) ===
       try {
-        const res = await fetch('<?= rtrim(BASE_URL, '/') ?>/src/controllers/get_empresa_controller.php', {
+        const res = await fetch('<?= rtrim(BASE_URL, '/') ?>/src/controllers/read_empresa_controller.php', {
           credentials: 'include'
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -226,7 +225,7 @@ if (!empty($_SESSION['user_id'])) {
           // if (isPlaceholder && e.logo_path) { img.src = (e.logo_path.startsWith('http') ? e.logo_path : '<?= rtrim(BASE_URL, '/') ?>' + (e.logo_path.startsWith('/') ? e.logo_path : '/' + e.logo_path)) + '?t=' + Date.now(); }
         }
       } catch (err) {
-        console.error('get_empresa_controller:', err);
+        console.error('read_empresa_controller:', err);
       }
 
       // === Upload de logo (único lugar que troca a imagem) ===
@@ -272,9 +271,102 @@ if (!empty($_SESSION['user_id'])) {
           // se quiser, restaura a imagem inicial:
           // img.src = initialSrc;
         }
+
       });
     })();
   </script>
+
+  <script>
+    (async function() {
+      const API = '<?= rtrim(BASE_URL, '/') ?>';
+
+      const form = document.getElementById('formEmpresa');
+      const btnEdit = document.getElementById('btnEditar');
+      const btnSave = document.getElementById('btnSalvar');
+
+      const f = {
+        empresa: document.getElementById('empresa'),
+        cnpj: document.getElementById('cnpj'),
+        perfil: document.getElementById('perfil'), // -> porte
+        industria: document.getElementById('industria'), // -> setor_atuacao
+        endereco: document.getElementById('endereco')
+      };
+
+      form.addEventListener('submit', e => e.preventDefault());
+
+      function setEditing(on) {
+        for (const k in f) f[k].disabled = !on;
+        btnSave.disabled = !on;
+        btnEdit.disabled = on;
+        if (on) f.empresa.focus();
+      }
+
+      // READ
+      try {
+        const res = await fetch(`${API}/src/controllers/read_empresa_controller.php`, {
+          credentials: 'include'
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const j = await res.json();
+        if (j.ok && j.empresa) {
+          const e = j.empresa;
+          f.empresa.value = e.nome || '';
+          f.cnpj.value = e.cnpj || '';
+          f.perfil.value = e.porte || '';
+          f.industria.value = e.setor_atuacao || '';
+          f.endereco.value = e.endereco || '';
+        }
+      } catch (err) {
+        console.error(err);
+      }
+
+      // EDITAR
+      btnEdit.addEventListener('click', () => setEditing(true));
+
+      // SALVAR
+      btnSave.addEventListener('click', async () => {
+        const payload = {
+          nome: f.empresa.value.trim(),
+          cnpj: f.cnpj.value.trim(),
+          porte: f.perfil.value.trim(),
+          setor_atuacao: f.industria.value.trim(),
+          endereco: f.endereco.value.trim()
+        };
+        if (!payload.nome) {
+          alert('Informe o nome da empresa.');
+          f.empresa.focus();
+          return;
+        }
+
+        try {
+          btnSave.disabled = true; // evita clique duplo
+          const r = await fetch(`${API}/src/controllers/update_empresa_controller.php`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload),
+            credentials: 'include'
+          });
+          const j = await r.json().catch(() => ({}));
+          if (!r.ok || !j.ok) {
+            alert('Erro ao salvar: ' + (j.error || r.status));
+            btnSave.disabled = false;
+            return;
+          }
+          alert('Salvo!');
+          setEditing(false); // <<< bloqueia inputs novamente
+        } catch (e) {
+          alert('Falha ao salvar: ' + e.message);
+          btnSave.disabled = false;
+        }
+      });
+
+      // começa bloqueado
+      setEditing(false);
+    })();
+  </script>
+
 
 
 </body>
