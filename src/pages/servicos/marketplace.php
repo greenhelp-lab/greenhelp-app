@@ -7,7 +7,9 @@
   <title>Serviços</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/marketplace.css">
-  <link rel="script" href="<?php echo BASE_URL; ?>/src/helpers/filtrar.js">
+  <script src="/greenhelp-app/src/helpers/filtrar.js"></script>
+  <script src="/greenhelp-app/src/helpers/add_to_cart.js"></script>
+  <script src="/greenhelp-app/src/helpers/card_click.js"></script>
 </head>
 
 <body>
@@ -67,7 +69,7 @@
           </div>
         </div>
         <div class="filtros">
-          <button id="btn-filtros">Filtros</button>
+          <button id="btn-limpar">Limpar</button>
         </div>
         <div class="selected-area">
           <p>Área selecionada: <span id="selected-area">Todos</span></p>
