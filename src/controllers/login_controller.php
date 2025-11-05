@@ -33,7 +33,7 @@ if ($user && password_verify($senha, $user['senha'])) {
   }
   exit;
 } else {
-  $_SESSION['mensagem_erro'] = "Credenciais invÃ¡lidas.";
+  $_SESSION['mensagem_erro'] = "Credenciais inválidas.";
   // mensagem de erro visivel no arquivo de login
   header('Location: ' . BASE_URL . '/src/pages/login/login.php');
   exit;
