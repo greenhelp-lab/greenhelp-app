@@ -20,6 +20,20 @@ header {
   align-items: center;
 }
 
+/* Animação para todas as âncoras */
+.nav-container a {
+  transition: all 0.3s ease;
+}
+.nav-container a:hover {
+  transition: all 0.3s ease;
+  transform: scale(1.1);
+}
+/* Definição de tamanho dos svgs */
+.nav-container svg {
+  width: 40px;
+  height: 40px;
+}
+
 /* estilo e display dos elementos do header que continuam nos menores tamanhos de tela. Estilização dos outros elementos está em @media */
 .notification-icon,
 .account-icon,
@@ -39,20 +53,6 @@ header {
   height: auto;
 }
 
-/* Animação para todas as âncoras */
-.nav-container a {
-  transition: all 0.3s ease;
-}
-.nav-container a:hover {
-  transition: all 0.3s ease;
-  transform: scale(1.1);
-}
-/* Definição de tamanho dos svgs */
-.nav-container svg {
-  width: 40px;
-  height: 40px;
-}
-
 /* Âncora do meio, contendo o nome "Loja" e o ícone */
 .shop-center {
   display: flex;
@@ -70,16 +70,6 @@ header {
 .nav-right {
   display: flex;
   align-items: center;
-}
-.nav-right-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.nav-right-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
 }
 
 .home-icon {
@@ -119,10 +109,6 @@ header {
   .nav-right {
     width: 95%;
     justify-content: space-between;
-  }
-  .nav-right-left {
-    gap: 28px;
-    margin-right: 6px;
   }
   .home-icon {
     display: flex;
