@@ -34,7 +34,7 @@ if (!empty($_SESSION['user_id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GreenHelp Home</title>
   <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/global.css">
-  <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/home/home_cliente.css">
+  <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/home/home.css">
 </head>
 <body>
   <?php include BASE_PATH . "/src/pages/partials/header.php"; ?>

@@ -29,7 +29,7 @@ if ($user && password_verify($senha, $user['senha'])) {
   if ($user['papel'] === 'admin') {
     header('Location: ' . BASE_URL . '/src/pages/painel_admin/painel_admin.php');
   } else {
-    header('Location: ' . BASE_URL . '/src/pages/home/home_cliente.php');
+    header('Location: ' . BASE_URL . '/src/pages/home/home.php');
   }
   exit;
 } else {
