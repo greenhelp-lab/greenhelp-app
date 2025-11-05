@@ -29,6 +29,7 @@ if (!empty($_SESSION['user_id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,6 +37,7 @@ if (!empty($_SESSION['user_id'])) {
   <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/global.css">
   <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/home/home_cliente.css">
 </head>
+
 <body>
   <?php include BASE_PATH . "/src/pages/partials/header.php"; ?>
   <main class="container">
@@ -50,21 +52,82 @@ if (!empty($_SESSION['user_id'])) {
 
     <h2>Nome da empresa</h2>
 
-   <form>
-  <input disabled id="empresa" type="text" placeholder="Nome da Empresa">
-  <input disabled id="cnpj" type="text" placeholder="CNPJ">
-  <input disabled id="perfil" type="text" placeholder="Tamanho da Empresa">
-  <input disabled id="industria" type="tel" placeholder="Indústria">
+    <form>
+      <input disabled id="empresa" type="text" placeholder="Nome da Empresa">
+      <input disabled id="cnpj" type="text" placeholder="CNPJ">
+      <input disabled id="perfil" type="text" placeholder="Tamanho da Empresa">
+      <input disabled id="industria" type="tel" placeholder="Indústria">
 
-  <!-- BOTÕES -->
- <div class="form-actions">
-  <button type="button" class="btn edit-button">Editar</button>
-  <button type="submit" class="btn save-button">Salvar</button>
-</div>
-</form>
+      <!-- BOTÕES -->
+      <div class="form-actions">
+        <button type="button" class="btn edit-button">Editar</button>
+        <button type="submit" class="btn save-button">Salvar</button>
+      </div>
+    </form>
 
 
-    <!-- ====== SEÇÃO RESTAURADA: Pontuações Verdes ====== -->
+    <!-- Seção: Serviços em Andamento -->
+    <section class="servicos-andamento">
+      <div class="section-header">
+        <h2>Serviços em Andamento</h2>
+      </div>
+
+      <div class="servicos-grid">
+        <?php
+        // Busca serviços em andamento do usuário
+        $sql = "SELECT sa.id, sa.status, sa.data_inicio, 
+                       s.nome, s.descricao, s.preco,
+                       a.nome as area_nome, a.imagem_url as area_img
+                FROM servicos_andamento sa
+                INNER JOIN servicos s ON sa.servico_id = s.id
+                LEFT JOIN areas_sustentaveis a ON s.area_id = a.id
+                WHERE sa.usuario_id = :usuario_id
+                ORDER BY sa.data_inicio DESC";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':usuario_id', $_SESSION['user_id']);
+        $stmt->execute();
+        $servicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!empty($servicos)):
+          foreach ($servicos as $servico):
+            $status_class = match ($servico['status']) {
+              'pendente' => 'status-pendente',
+              'em andamento' => 'status-andamento',
+              'concluido' => 'status-concluido',
+              'cancelado' => 'status-cancelado',
+              default => ''
+            };
+        ?>
+            <div class="servico-card">
+              <div class="servico-header">
+                <?php if ($servico['area_img']): ?>
+                  <img src="<?= htmlspecialchars($servico['area_img']) ?>" alt="<?= htmlspecialchars($servico['area_nome']) ?>" class="area-icon">
+                <?php endif; ?>
+                <span class="status-badge <?= $status_class ?>"><?= ucfirst($servico['status']) ?></span>
+              </div>
+
+              <div class="servico-body">
+                <h3><?= htmlspecialchars($servico['nome']) ?></h3>
+                <p class="area-nome"><?= htmlspecialchars($servico['area_nome']) ?></p>
+                <p class="descricao"><?= htmlspecialchars($servico['descricao']) ?></p>
+              </div>
+
+              <div class="servico-footer">
+                <span class="data">Adquirido: <?= date('d/m/Y', strtotime($servico['data_inicio'])) ?></span>
+                <span class="preco">R$ <?= number_format($servico['preco'], 2, ',', '.') ?></span>
+              </div>
+            </div>
+          <?php
+          endforeach;
+        else:
+          ?>
+          <p class="no-services">Você ainda não tem serviços em andamento. Visite nosso <a href="<?= BASE_URL ?>/src/pages/servicos/marketplace.php">marketplace</a> para começar!</p>
+        <?php endif; ?>
+      </div>
+    </section>
+
+    <!-- ====== SEÇÃO: Pontuações Verdes ====== -->
     <section class="pontuacoes">
       <div class="pontuacoes-header">
         <!-- ajuste o nome do arquivo se no seu /public/imgs for sem acento -->
@@ -84,7 +147,9 @@ if (!empty($_SESSION['user_id'])) {
             <span class="faltam">Faltam 1435 pontos</span>
           </div>
           <div class="nivel-desc">Infraestrutura Eficiente</div>
-          <div class="progress-bar"><div class="progress" style="width:60%;"></div></div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
         </div>
 
         <div class="nivel-card">
@@ -93,7 +158,9 @@ if (!empty($_SESSION['user_id'])) {
             <span class="faltam">Faltam 1435 pontos</span>
           </div>
           <div class="nivel-desc">Energia Renovável</div>
-          <div class="progress-bar"><div class="progress" style="width:60%;"></div></div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
         </div>
 
         <div class="nivel-card">
@@ -102,7 +169,9 @@ if (!empty($_SESSION['user_id'])) {
             <span class="faltam">Faltam 1435 pontos</span>
           </div>
           <div class="nivel-desc">Computação em Nuvem</div>
-          <div class="progress-bar"><div class="progress" style="width:60%;"></div></div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
         </div>
 
         <div class="nivel-card">
@@ -111,7 +180,9 @@ if (!empty($_SESSION['user_id'])) {
             <span class="faltam">Faltam 1435 pontos</span>
           </div>
           <div class="nivel-desc">Políticas Sustentáveis</div>
-          <div class="progress-bar"><div class="progress" style="width:60%;"></div></div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
         </div>
       </div>
 
@@ -121,75 +192,91 @@ if (!empty($_SESSION['user_id'])) {
   </main>
   <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
 
-<script>
-const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/actions/upload_logo.php';
+  <script>
+    const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/actions/upload_logo.php';
 
-(async function () {
-  const btn  = document.getElementById('btnLogo');
-  const img  = document.getElementById('imgLogo');
-  const inp  = document.getElementById('inpLogo');
-  const MAX  = 3 * 1024 * 1024;
-  const ok   = ['image/jpeg','image/png','image/webp'];
+    (async function() {
+      const btn = document.getElementById('btnLogo');
+      const img = document.getElementById('imgLogo');
+      const inp = document.getElementById('inpLogo');
+      const MAX = 3 * 1024 * 1024;
+      const ok = ['image/jpeg', 'image/png', 'image/webp'];
 
-  // guarda o src inicial (não vamos trocar no READ)
-  const initialSrc = img.getAttribute('src') || '';
+      // guarda o src inicial (não vamos trocar no READ)
+      const initialSrc = img.getAttribute('src') || '';
 
-  // === READ: busca dados da empresa do usuário logado (apenas inputs) ===
-  try {
-    const res = await fetch('<?= rtrim(BASE_URL, '/') ?>/src/controllers/get_empresa_controller.php', {
-      credentials: 'include'
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const json = await res.json();
+      // === READ: busca dados da empresa do usuário logado (apenas inputs) ===
+      try {
+        const res = await fetch('<?= rtrim(BASE_URL, '/') ?>/src/controllers/get_empresa_controller.php', {
+          credentials: 'include'
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const json = await res.json();
 
-    if (json.ok && json.empresa) {
-      const e = json.empresa;
-      document.getElementById("empresa").value   = e.nome || '';
-      document.getElementById("cnpj").value      = e.cnpj || '';
-      document.getElementById("perfil").value    = e.porte || '';
-      document.getElementById("industria").value = e.setor_atuacao || '';
+        if (json.ok && json.empresa) {
+          const e = json.empresa;
+          document.getElementById("empresa").value = e.nome || '';
+          document.getElementById("cnpj").value = e.cnpj || '';
+          document.getElementById("perfil").value = e.porte || '';
+          document.getElementById("industria").value = e.setor_atuacao || '';
 
-      // NÃO altere a imagem aqui.
-      // Se quiser, apenas defina caso esteja no placeholder:
-      // const isPlaceholder = /add-photo\.svg$/i.test(initialSrc);
-      // if (isPlaceholder && e.logo_path) { img.src = (e.logo_path.startsWith('http') ? e.logo_path : '<?= rtrim(BASE_URL, '/') ?>' + (e.logo_path.startsWith('/') ? e.logo_path : '/' + e.logo_path)) + '?t=' + Date.now(); }
-    }
-  } catch (err) {
-    console.error('get_empresa_controller:', err);
-  }
+          // NÃO altere a imagem aqui.
+          // Se quiser, apenas defina caso esteja no placeholder:
+          // const isPlaceholder = /add-photo\.svg$/i.test(initialSrc);
+          // if (isPlaceholder && e.logo_path) { img.src = (e.logo_path.startsWith('http') ? e.logo_path : '<?= rtrim(BASE_URL, '/') ?>' + (e.logo_path.startsWith('/') ? e.logo_path : '/' + e.logo_path)) + '?t=' + Date.now(); }
+        }
+      } catch (err) {
+        console.error('get_empresa_controller:', err);
+      }
 
-  // === Upload de logo (único lugar que troca a imagem) ===
-  btn.addEventListener('click', () => inp.click());
+      // === Upload de logo (único lugar que troca a imagem) ===
+      btn.addEventListener('click', () => inp.click());
 
-  inp.addEventListener('change', async () => {
-    const file = inp.files?.[0]; if (!file) return;
-    if (!ok.includes(file.type)) { alert('JPG/PNG/WEBP'); inp.value=''; return; }
-    if (file.size > MAX) { alert('Até 3MB'); inp.value=''; return; }
+      inp.addEventListener('change', async () => {
+        const file = inp.files?.[0];
+        if (!file) return;
+        if (!ok.includes(file.type)) {
+          alert('JPG/PNG/WEBP');
+          inp.value = '';
+          return;
+        }
+        if (file.size > MAX) {
+          alert('Até 3MB');
+          inp.value = '';
+          return;
+        }
 
-    // preview imediato
-    const t = URL.createObjectURL(file);
-    img.src = t; img.onload = () => URL.revokeObjectURL(t);
+        // preview imediato
+        const t = URL.createObjectURL(file);
+        img.src = t;
+        img.onload = () => URL.revokeObjectURL(t);
 
-    // upload
-    const fd = new FormData(); fd.append('logo', file);
-    try {
-      const r = await fetch(UPLOAD_LOGO_URL, { method:'POST', body: fd, credentials:'include' });
-      const text = await r.text();
-      if (!r.ok) throw new Error(text || ('HTTP ' + r.status));
-      const data = JSON.parse(text);
+        // upload
+        const fd = new FormData();
+        fd.append('logo', file);
+        try {
+          const r = await fetch(UPLOAD_LOGO_URL, {
+            method: 'POST',
+            body: fd,
+            credentials: 'include'
+          });
+          const text = await r.text();
+          if (!r.ok) throw new Error(text || ('HTTP ' + r.status));
+          const data = JSON.parse(text);
 
-      // ao concluir, usa a URL final (furando cache)
-      if (data.url) img.src = data.url + '?t=' + Date.now();
-    } catch (e) {
-      alert('Falha no upload: ' + e.message);
-      inp.value = '';
-      // se quiser, restaura a imagem inicial:
-      // img.src = initialSrc;
-    }
-  });
-})();
-</script>
+          // ao concluir, usa a URL final (furando cache)
+          if (data.url) img.src = data.url + '?t=' + Date.now();
+        } catch (e) {
+          alert('Falha no upload: ' + e.message);
+          inp.value = '';
+          // se quiser, restaura a imagem inicial:
+          // img.src = initialSrc;
+        }
+      });
+    })();
+  </script>
 
 
 </body>
+
 </html>
