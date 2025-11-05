@@ -8,9 +8,15 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 $servico_id = (int)$_GET['id'];
 
-$sql = "SELECT nome, descricao, preco, pontos, categoria, imagem_url, detalhes, garantia, prazo_dias, contato, area_id  FROM servicos WHERE id = :id AND disponivel = 1";
+$sql = "SELECT  s.nome, s.descricao, s.preco, s.pontos, s.categoria, s.descricao_longa, s.itens_incluidos, s.garantia, 
+                s.prazo, s.contato, s.area_id, a.nome AS area_nome, a.imagem_url AS area_img
+        FROM servicos s
+        LEFT JOIN areas_sustentaveis a ON s.area_id = a.id
+        WHERE s.id = :id AND s.disponivel = 1
+        ORDER BY s.id DESC";
+
 $stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id', $servico_id, PDO::PARAM_INT);
+$stmt->bindParam(':id', $servico_id);
 $stmt->execute();
 
 $servico = $stmt->fetch();
@@ -29,6 +35,7 @@ if (!$servico) {
   <title>Sobre o Serviço</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/servicos/sobre_servico.css">
+
 </head>
 
 <body>
@@ -38,26 +45,26 @@ if (!$servico) {
     <div class="detail-block">
       <div class="detail-header">
         <div class="detail-title-area">
-          <h1 class="service-name"><? htmlspecialchars($servico['nome']) ?></h1>
+          <h1 class="service-name"><?= htmlspecialchars($servico['nome']) ?></h1>
           <div class="service-meta">
             <div class="service-area">
-              <span class="area-badge" aria-hidden="true">
-                <? echo '<img class="service-card-icon" src="' . htmlspecialchars($servico['imagem_url']) . '" alt="' . htmlspecialchars($servico['nome']) . '" style="width:40px; height:40px;">' ?>
-              </span>
+              <?php if (!empty($servico['area_img'])): ?>
+                <img class="service-card-icon" src="<?= htmlspecialchars($servico['area_img']) ?>" alt="<?= htmlspecialchars($servico['area_nome'] ?? '') ?>" style="width:40px; height:40px;">
+              <?php endif; ?>
               <div class="service-area-text">
                 <strong>Área:</strong>
-                <span><? htmlspecialchars($servico['area']) ?></span>
+                <span><?= htmlspecialchars($servico['area_nome'] ?? 'Não definida') ?></span>
               </div>
             </div>
 
             <div class="service-score">
-              <span class="score-value"><? number_format($s['pontos'], 0, ',', '.') ?></span>
+              <span class="score-value"><?= number_format($servico['pontos'] ?? 0, 0, ',', '.') ?></span>
               <span class="score-label">pontos de impacto sustentável</span>
             </div>
 
             <div class="service-price">
               <span class="price-label">Preço a partir de</span>
-              <span class="price-value">R$ <? number_format($s['preco'], 2, ',', '.') ?></span>
+              <span class="price-value">R$ <?= number_format($servico['preco'] ?? 0, 2, ',', '.') ?></span>
             </div>
           </div>
         </div>
@@ -65,20 +72,15 @@ if (!$servico) {
 
       <section class="detail-main">
         <article class="detail-description">
-          <? htmlspecialchars($servico['detalhes']) ?>
-
           <h2>Detalhes do Serviço</h2>
-          <p>Este projeto de refrigeração inteligente integra sensores IoT, análise preditiva e sistemas de controle para reduzir consumo energético e otimizar a eficiência operacional de sistemas de refrigeração industriais e comerciais.</p>
-
-          <p>O serviço inclui levantamento técnico, dimensionamento, projeto executivo, integração de sensores, entrega de painel de controle via plataforma GreenHelp e acompanhamento inicial de 30 dias com ajustes remotos.</p>
+          <p><?= nl2br(htmlspecialchars($servico['descricao_longa'] ?? $servico['descricao'] ?? '')) ?></p>
 
           <h3>O que está incluído</h3>
           <ul class="included-list">
-            <li>Levantamento e diagnóstico técnico</li>
-            <li>Projeto executivo com especificações detalhadas</li>
-            <li>Instalação e integração de sensores</li>
-            <li>Dashboard para monitoramento em tempo real</li>
-            <li>Relatório de redução estimada de consumo</li>
+            <!-- Lista o conteúddo do campo itens_incluidos do serviço no banco de dados - cada quebra de linha ("\n") cria um novo <li> -->
+            <?php foreach (explode("\n", $servico['itens_incluidos']) as $item): ?>
+              <li><?= trim($item) ?></li>
+            <?php endforeach; ?>
           </ul>
         </article>
 
@@ -88,15 +90,15 @@ if (!$servico) {
             <dl class="meta-list">
               <div class="meta-row">
                 <dt>Garantia</dt>
-                <dd><? htmlspecialchars($servico['garantia']) ?> dias</dd>
+                <dd><?= htmlspecialchars($servico['garantia'] ?? '-') ?></dd>
               </div>
               <div class="meta-row">
                 <dt>Prazo estimado</dt>
-                <dd><? htmlspecialchars($servico['prazo_dias']) ?> dias</dd>
+                <dd><?= htmlspecialchars($servico['prazo'] ?? '-') ?> dias</dd>
               </div>
               <div class="meta-row">
                 <dt>Acompanhamento</dt>
-                <dd>Atualizações de status via Registros na plataforma</dd>
+                <dd>Atualizações de status via Registros na plataforma e emails sobre o andamento do serviço</dd>
               </div>
               <div class="meta-row">
                 <dt>Contato Técnico</dt>
@@ -111,9 +113,9 @@ if (!$servico) {
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M7.16233 7.36962C6.8847 5.62044 5.40643 4.33522 3.67211 4.33522H2.12146C0.949817 4.33522 0 3.36474 0 2.16761C0 0.970474 0.949817 0 2.12146 0H3.67211C7.18499 0 10.2204 2.39683 11.1564 5.7803H35.2849C36.8471 5.7803 38.1254 7.07769 37.9902 8.66784C37.6473 12.695 36.6477 16.1226 35.7143 18.4632C35.0309 20.1765 33.5883 21.4005 31.8139 21.7702C29.9622 22.1562 27.1377 22.5471 23.2933 22.5471C20.5408 22.5471 18.2219 22.3467 16.3839 22.0913C15.3514 21.9478 14.4221 21.5632 13.6236 20.9974L14.0524 23.6995C14.33 25.4486 15.8083 26.7339 17.5426 26.7339H33.2364C34.408 26.7339 35.3578 27.7044 35.3578 28.9015C35.3578 30.0986 34.408 31.0691 33.2364 31.0691H17.5426C13.7272 31.0691 10.4749 28.2417 9.86418 24.3934L7.16233 7.36962ZM14.4359 39C16.1843 39 17.6016 37.552 17.6016 35.7656C17.6016 33.9792 16.1843 32.531 14.4359 32.531C12.6876 32.531 11.2703 33.9792 11.2703 35.7656C11.2703 37.552 12.6876 39 14.4359 39ZM36.4022 35.7656C36.4022 37.552 34.9848 39 33.2364 39C31.488 39 30.0709 37.552 30.0709 35.7656C30.0709 33.9792 31.488 32.531 33.2364 32.531C34.9848 32.531 36.4022 33.9792 36.4022 35.7656Z" fill="currentColor" />
                 </svg>
               </button>
-
-              <button class="btn-ghost">
-                <span>Salvar para depois</span>
+              <!-- Botão reutilizável para adicionar ao carrinho -->
+              <button class="btn-add-cart btn-ghost" data-id="<?= htmlspecialchars($servico_id) ?>">
+                <span>Adicionar ao carrinho</span>
               </button>
             </div>
 
@@ -135,6 +137,7 @@ if (!$servico) {
     </div>
   </main>
   <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
+  <script src="/greenhelp-app/src/helpers/add_to_cart.js"></script>
 </body>
 
 </html>
