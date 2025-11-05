@@ -1,34 +1,57 @@
-const areaButtons = document.querySelectorAll('.area-icon');
-const servicos = document.querySelectorAll('.service-cards .service-card');
-const selectedAreaSpan = document.getElementById('selected-area');
+// filtrar.js — script simples para filtrar cards por área
+document.addEventListener('DOMContentLoaded', function () {
+  var areaButtons = document.querySelectorAll('.area-icon');
+  var servicos = document.querySelectorAll('.service-card');
+  var selectedAreaSpan = document.getElementById('selected-area');
+  var btnLimpar = document.getElementById('btn-limpar');
+  var areasAtivas = new Set();
 
-areaButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const isActive = btn.classList.contains('active');
-    const areaSelecionada = btn.getAttribute('data-area');
-    const nomeArea = btn.textContent.trim();
+  // mostra todos os cards e atualiza o texto
+  function showAllServices() {
+    servicos.forEach(function (card) { card.style.display = 'flex'; });
+    if (selectedAreaSpan) selectedAreaSpan.textContent = 'Todos';
+  }
 
-    // Remove 'active' de todos
-    areaButtons.forEach(b => b.classList.remove('active'));
-
-    if (!isActive) {
-      // Ativa o botão clicado
-      btn.classList.add('active');
-
-      // Mostra apenas os serviços da área selecionada
-      servicos.forEach(card => {
-        card.style.display =
-          card.getAttribute('data-area') === areaSelecionada ? 'flex' : 'none';
-      });
-
-      // Atualiza o nome exibido
-      selectedAreaSpan.textContent = nomeArea;
-    } else {
-      // Nenhum botão ativo → mostra todos os serviços
-      servicos.forEach(card => (card.style.display = 'flex'));
-
-      // Mostra "Todos" como área atual
-      selectedAreaSpan.textContent = 'Todos';
+  // aplica o filtro atual baseado no conjunto areasAtivas
+  function filterServices() {
+    if (areasAtivas.size === 0) {
+      showAllServices();
+      return;
     }
+
+    servicos.forEach(function (card) {
+      var cardArea = card.getAttribute('data-area');
+      card.style.display = areasAtivas.has(cardArea) ? 'flex' : 'none';
+    });
+    if (selectedAreaSpan) selectedAreaSpan.textContent = Array.from(areasAtivas).join(', ');
+  }
+
+  // limpa filtros
+  function resetFilters() {
+    areasAtivas.clear();
+    areaButtons.forEach(function (b) { b.classList.remove('active'); });
+    showAllServices();
+  }
+
+  // guarda estado inicial e adiciona listeners
+  showAllServices();
+  if (btnLimpar) btnLimpar.addEventListener('click', resetFilters);
+
+  areaButtons.forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var areaSelecionada = btn.getAttribute('data-area');
+      if (!areaSelecionada) return;
+
+      if (btn.classList.contains('active')) {
+        btn.classList.remove('active');
+        areasAtivas.delete(areaSelecionada);
+      } else {
+        btn.classList.add('active');
+        areasAtivas.add(areaSelecionada);
+      }
+
+      filterServices();
+    });
   });
 });
