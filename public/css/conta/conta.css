@@ -1,7 +1,5 @@
 /* CONTAINER PRINCIPAL E ALINHAMENTO */
-/* ESTA CLASSE AGORA CORRESPONDE AO <main class="account-main"> */
 .account-main { 
-  /* Centraliza o conteúdo no viewport quando usado com 'body { display: grid; place-items: center; }' */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -11,58 +9,51 @@
 
 .conta-container {
   width: 90%;
-  max-width: 380px; /* Largura máxima para a área do formulário */
+  max-width: 380px;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px 0;
 }
 
-
-
-/* TÍTULO H1 */
+/* TÍTULO */
 .account-title {
-  /* O H1 global já aplica o gradiente. Apenas garantimos a margem e alinhamento */
   text-align: center;
-  margin-bottom: 25px; /* Mais espaço para separar do perfil */
-  font-size: 2.125rem; /* Padrão do H1 global */
+  margin-bottom: 25px;
+  font-size: 2.125rem;
 }
 
+/* FOTO DO USUÁRIO */
 .user-photo {
   margin: 20px 0;
 }
 .user-photo img {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.user-photo button { 
+  border: 0; 
+  background: none; 
+  padding: 0; 
+  cursor: pointer; 
 }
 
-.profile-image {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
-  /* Filtrar a imagem para a cor 'txt' (branco/claro) */
-  filter: brightness(0) invert(1);
-  opacity: 0.9;
-}
-
-/* FORMULÁRIO E INPUTS */
-/* ESTA CLASSE AGORA CORRESPONDE AO <form class="account-form"> */
+/* FORMULÁRIO */
 .account-form { 
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Espaço entre os inputs */
+  gap: 15px;
   margin-top: 20px;
 }
 
 .account-form input {
   width: 100%;
   padding: 15px 20px;
-  /* Cor de fundo do input */
   background-color: var(--input); 
-  /* Borda usando a cor 'stroke' (roxa) */
   border: 2px solid var(--stroke); 
-  /* Arredondamento */
   border-radius: 30px; 
   color: var(--txt);
   font-size: 1rem;
@@ -71,7 +62,7 @@
 }
 
 .account-form input:focus {
-  border-color: var(--accent); /* Borda verde ao focar */
+  border-color: var(--accent);
   box-shadow: 0 0 10px var(--glow);
 }
 
@@ -81,18 +72,25 @@
 }
 
 /* AGRUPAMENTO DE BOTÕES */
-/* ESTAS SÃO AS NOVAS CLASSES DE BOTÃO NO HTML */
 .action-buttons-top,
 .action-buttons-bottom {
   display: flex;
-  justify-content: space-between;
   gap: 15px;
-  margin-top: 10px; /* Espaço entre as linhas de botões */
+  margin-top: 10px;
 }
 
-/* Estilos para todos os botões no layout do formulário */
+/* Topo: dois botões lado a lado */
+.action-buttons-top {
+  justify-content: space-between;
+}
+
+/* Rodapé: botão centralizado */
+.action-buttons-bottom {
+  justify-content: center;
+}
+
+/* Botões gerais */
 .account-form .btn {
-  flex: 1; /* Distribui o espaço igualmente entre os botões */
   padding: 12px 10px;
   font-size: 1rem;
   font-weight: 600;
@@ -105,51 +103,49 @@
   transform: scale(1.02);
 }
 
-/* Botão Trocar Conta */
-.swap-account-button {
-  background-color: var(--purple); /* Roxo */
-  color: var(--txt);
-  border: none;
+/* No topo, expandem igualmente */
+.action-buttons-top .btn {
+  flex: 1 1 0;
 }
 
-/* Botão Editar */
+/* No rodapé, largura fixa e central */
+.action-buttons-bottom .btn {
+  flex: 0 0 auto;
+  min-width: 60%;
+}
+
+/* EDITAR */
 .edit-button {
   background-color: transparent;
-  color: var(--accent); /* Cor verde do destaque */
+  color: var(--accent);
   border: 2px solid var(--accent);
 }
 
-/* Botão Deletar Conta */
+/* SALVAR */
+.save-button {
+  background-color: var(--accent);
+  color: var(--bg);
+  border: none;
+}
+
+/* DELETAR */
 .delete-account-button {
-  background-color: var(--danger); /* Rosa/Vermelho */
+  background-color: var(--danger);
   color: var(--txt);
   border: none;
 }
 
-/* Botão Salvar */
-.save-button {
-  background-color: var(--accent); /* Verde */
-  color: var(--bg); /* Texto escuro para contraste */
-  border: none;
-}
-
-/* Ícones decorativos */
+/* ÍCONES DECORATIVOS */
 .engines-icons {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   height: auto;
-  opacity: 0.1; /* Transparência para ser sutil */
+  opacity: 0.1;
   z-index: -1;
-  pointer-events: none; /* Garante que não interfira no clique */
+  pointer-events: none;
 }
 
-/* Ocultar botões do layout original que não estão mais na nova estrutura */
-/* Eles foram removidos do HTML, mas deixo as regras aqui por segurança */
-.add-company-button, .logout-button {
-  display: none;
-}
-
-.user-photo button { border: 0; background: none; padding: 0; cursor: pointer; }
-.user-photo img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; }
+/* REMOVIDO: botão de trocar conta não existe mais */
+.swap-account-button { display: none; }
