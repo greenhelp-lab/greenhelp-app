@@ -85,6 +85,22 @@
   </section>
   <?php include BASE_PATH . '/src/pages/partials/footer.php'; ?>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchInput = document.getElementById("shop-search");
+      const cardsContainer = document.getElementById("service-cards");
+
+      searchInput.addEventListener("input", () => {
+        const termo = searchInput.value.trim();
+
+        fetch("servicos.php?q=" + encodeURIComponent(termo))
+          .then(res => res.text())
+          .then(html => cardsContainer.innerHTML = html)
+          .catch(err => console.error("Erro ao buscar serviços:", err));
+      });
+    });
+  </script>
+
 </body>
 
 </html>

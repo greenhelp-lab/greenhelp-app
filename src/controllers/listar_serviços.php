@@ -1,6 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 
+$termo = isset($_GET['q']) ? trim($_GET['q']) : '';
+
 $sql = "SELECT s.id, s.nome, s.descricao, s.preco, 
                a.nome AS area_nome, a.imagem_url AS area_img
         FROM servicos s
@@ -8,7 +10,16 @@ $sql = "SELECT s.id, s.nome, s.descricao, s.preco,
         WHERE s.disponivel = 1
         ORDER BY s.id DESC";
 
+if ($termo !== '') {
+    $sql .= " WHERE nome LIKE :termo OR categoria LIKE :termo";
+}
+
 $stmt = $pdo->prepare($sql);
+
+if ($termo !== '') {
+    $stmt->bindValue(':termo', "%$termo%", PDO::PARAM_STR);
+}
+
 $stmt->execute();
 $servicos = $stmt->fetchAll();
 
@@ -36,6 +47,8 @@ if ($servicos) {
             </div>
         </div>';
     }
+} elseif ($termo !== '') {
+    echo '<p style="text-align:center;color:var(--accent);">Nenhum serviço encontrado :(</p>';
 } else {
-    echo '<p style="text-align:center;color:var(--accent);">Nenhum serviço disponível no momento :(</p>';
+    echo '<p style="text-align:center;color:var(--accent);">Nenhum serviço disponível no momento.</p>';
 }
