@@ -27,15 +27,15 @@ header('Content-Type: application/json; charset=utf-8');
 
 // Prepara resposta padrão
 $resposta = [
-  'sucesso' => false,
-  'mensagem' => 'Erro desconhecido'
+  'success' => false,
+  'message' => 'Erro desconhecido'
 ];
 
 // 1: Verifica login
 $id_usuario = $_SESSION['user_id'] ?? null;
 if (!$id_usuario) {
   http_response_code(401); // Não autorizado
-  $resposta['mensagem'] = 'Você precisa estar logado!';
+  $resposta['message'] = 'Você precisa estar logado!';
   echo json_encode($resposta);
   exit;
 }
@@ -46,7 +46,7 @@ $dados = json_decode($json, true);
 
 // Verifica se recebeu um array de itens
 if (!isset($dados['items']) || !is_array($dados['items'])) {
-  $resposta['mensagem'] = 'Dados inválidos! Envie um array de IDs.';
+  $resposta['message'] = 'Dados inválidos! Envie um array de IDs.';
   echo json_encode($resposta);
   exit;
 }
@@ -54,7 +54,7 @@ if (!isset($dados['items']) || !is_array($dados['items'])) {
 // Filtra apenas números do array
 $ids_carrinho = array_filter($dados['items'], 'is_numeric');
 if (empty($ids_carrinho)) {
-  $resposta['mensagem'] = 'Selecione pelo menos um item!';
+  $resposta['message'] = 'Selecione pelo menos um item!';
   echo json_encode($resposta);
   exit;
 }
@@ -75,12 +75,12 @@ try {
   $stmt = $pdo->prepare($sql);
   $params = array_merge($ids_carrinho, [$id_usuario]);
   $stmt->execute($params);
-  $itens_validos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $itens_validos = $stmt->fetchAll();
 
   // Se nenhum item válido, cancela
   if (empty($itens_validos)) {
     $pdo->rollBack();
-    $resposta['mensagem'] = 'Nenhum item válido encontrado!';
+    $resposta['message'] = 'Nenhum item válido encontrado!';
     echo json_encode($resposta);
     exit;
   }
@@ -118,8 +118,8 @@ try {
   $pdo->commit();
 
   // Retorna sucesso
-  $resposta['sucesso'] = true;
-  $resposta['mensagem'] = 'Compra finalizada com sucesso!';
+  $resposta['success'] = true;
+  $resposta['message'] = 'Compra finalizada com sucesso!';
   $resposta['ids_processados'] = $ids_processados;
 } catch (Exception $erro) {
   // Se der erro, cancela tudo
@@ -128,7 +128,7 @@ try {
   // Loga o erro real mas retorna mensagem amigável
   error_log('Erro ao finalizar compra: ' . $erro->getMessage());
   http_response_code(500);
-  $resposta['mensagem'] = 'Ops! Algo deu errado ao finalizar a compra. Tente novamente.';
+  $resposta['message'] = 'Ops! Algo deu errado ao finalizar a compra. Tente novamente.';
 }
 
 // Retorna resultado

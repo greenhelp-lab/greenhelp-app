@@ -25,14 +25,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php'
 
 // Prepara array de resposta padrão
 $resposta = [
-  'sucesso' => false,
-  'mensagem' => 'Erro desconhecido'
+  'success' => false,
+  'message' => 'Erro desconhecido'
 ];
 
 // 1: Confirma que usuário está logado
 $id_usuario = $_SESSION['user_id'] ?? null;
 if (!$id_usuario) {
-  $resposta['mensagem'] = 'Você precisa fazer login primeiro!';
+  $resposta['message'] = 'Você precisa fazer login primeiro!';
   echo json_encode($resposta);
   exit;
 }
@@ -40,7 +40,7 @@ if (!$id_usuario) {
 // 2: Pega e valida ID do serviço
 $id_servico = filter_input(INPUT_POST, 'servico_id', FILTER_VALIDATE_INT);
 if (!$id_servico) {
-  $resposta['mensagem'] = 'ID do serviço inválido!';
+  $resposta['message'] = 'ID do serviço inválido!';
   echo json_encode($resposta);
   exit;
 }
@@ -52,7 +52,7 @@ try {
   $stmt->execute([$id_servico]);
 
   if (!$stmt->fetch()) {
-    $resposta['mensagem'] = 'Este serviço não está disponível.';
+    $resposta['message'] = 'Este serviço não está disponível.';
     echo json_encode($resposta);
     exit;
   }
@@ -67,8 +67,8 @@ try {
   $stmt->execute([$id_usuario, $id_servico]);
 
   if ($stmt->fetch()) {
-    $resposta['mensagem'] = 'Serviço já está no seu carrinho!';
-    $resposta['sucesso'] = true;
+    $resposta['message'] = 'Serviço já está no seu carrinho!';
+    $resposta['success'] = true;
     echo json_encode($resposta);
     exit;
   }
@@ -82,16 +82,16 @@ try {
 
   // Se deu certo, retorna sucesso
   if ($ok) {
-    $resposta['sucesso'] = true;
-    $resposta['mensagem'] = 'Serviço adicionado ao carrinho!';
+    $resposta['success'] = true;
+    $resposta['message'] = 'Serviço adicionado ao carrinho!';
     $resposta['id_inserido'] = $pdo->lastInsertId();
   } else {
-    $resposta['mensagem'] = 'Não foi possível adicionar ao carrinho.';
+    $resposta['message'] = 'Não foi possível adicionar ao carrinho.';
   }
 } catch (Exception $erro) {
   // Se der algum erro, loga e retorna mensagem
   error_log('Erro ao adicionar ao carrinho: ' . $erro->getMessage());
-  $resposta['mensagem'] = 'Opa! Algo deu errado. Tente novamente.';
+  $resposta['message'] = 'Opa! Algo deu errado. Tente novamente.';
 }
 
 // Retorna resultado final

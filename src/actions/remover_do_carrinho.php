@@ -23,14 +23,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php'
 
 // Prepara resposta padrão
 $resposta = [
-  'sucesso' => false,
-  'mensagem' => 'Erro desconhecido'
+  'success' => false,
+  'message' => 'Erro desconhecido'
 ];
 
 // Passo 1: Verifica login do usuário (aceita user_id ou usuario_id da sessão)
 $id_usuario = $_SESSION['user_id'] ?? $_SESSION['usuario_id'] ?? null;
 if (!$id_usuario) {
-  $resposta['mensagem'] = 'Você precisa estar logado!';
+  $resposta['message'] = 'Você precisa estar logado!';
   echo json_encode($resposta);
   exit;
 }
@@ -38,7 +38,7 @@ if (!$id_usuario) {
 // Passo 2: Pega e valida ID do item
 $id_item = filter_input(INPUT_POST, 'cart_id', FILTER_VALIDATE_INT);
 if (!$id_item) {
-  $resposta['mensagem'] = 'ID do item inválido!';
+  $resposta['message'] = 'ID do item inválido!';
   echo json_encode($resposta);
   exit;
 }
@@ -55,15 +55,15 @@ try {
 
   // Verifica se algo foi removido
   if ($ok && $stmt->rowCount() > 0) {
-    $resposta['sucesso'] = true;
-    $resposta['mensagem'] = 'Item removido do carrinho!';
+    $resposta['success'] = true;
+    $resposta['message'] = 'Item removido do carrinho!';
   } else {
-    $resposta['mensagem'] = 'Item não encontrado ou já processado.';
+    $resposta['message'] = 'Item não encontrado ou já processado.';
   }
 } catch (Exception $erro) {
   // Se der erro, loga e retorna mensagem amigável
   error_log('Erro ao remover do carrinho: ' . $erro->getMessage());
-  $resposta['mensagem'] = 'Ops! Algo deu errado. Tente novamente.';
+  $resposta['message'] = 'Ops! Algo deu errado. Tente novamente.';
 }
 
 // Retorna resultado

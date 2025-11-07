@@ -78,7 +78,7 @@
 
       <!-- Cards de Serviços -->
       <div class="service-cards">
-        <?php require_once BASE_PATH . '/src/controllers/listar_serviços.php'; ?>
+        <?php require BASE_PATH . '/src/controllers/listar_servicos.php'; ?>
 
       </div>
     </div>
@@ -88,14 +88,17 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const searchInput = document.getElementById("shop-search");
-      const cardsContainer = document.getElementById("service-cards");
+      const cardsContainer = document.querySelector(".service-cards");
 
       searchInput.addEventListener("input", () => {
         const termo = searchInput.value.trim();
 
-        fetch("servicos.php?q=" + encodeURIComponent(termo))
+        fetch(window.location.origin + "/greenhelp-app/src/controllers/listar_servicos.php?q=" + encodeURIComponent(termo))
           .then(res => res.text())
-          .then(html => cardsContainer.innerHTML = html)
+          .then(html => {
+            cardsContainer.innerHTML = html;
+            if (typeof inicializarFiltros === "function") inicializarFiltros();
+          })
           .catch(err => console.error("Erro ao buscar serviços:", err));
       });
     });

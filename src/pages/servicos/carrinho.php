@@ -30,7 +30,7 @@ if (!empty($usuario_id)) {
   $stmt = $pdo->prepare($sql);
   $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
   $stmt->execute();
-  $itens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $itens = $stmt->fetchAll();
 }
 ?>
 <!DOCTYPE html>

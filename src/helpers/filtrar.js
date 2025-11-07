@@ -1,46 +1,41 @@
-// filtrar.js — script simples para filtrar cards por área
-document.addEventListener('DOMContentLoaded', function () {
-  var areaButtons = document.querySelectorAll('.area-icon');
-  var servicos = document.querySelectorAll('.service-card');
-  var selectedAreaSpan = document.getElementById('selected-area');
-  var btnLimpar = document.getElementById('btn-limpar');
-  var areasAtivas = new Set();
+function inicializarFiltros() {
+  const areaButtons = document.querySelectorAll('.area-icon');
+  const servicos = document.querySelectorAll('.service-card');
+  const selectedAreaSpan = document.getElementById('selected-area');
+  const btnLimpar = document.getElementById('btn-limpar');
+  const areasAtivas = new Set();
 
-  // mostra todos os cards e atualiza o texto
   function showAllServices() {
-    servicos.forEach(function (card) { card.style.display = 'flex'; });
+    servicos.forEach(card => card.style.display = 'flex');
     if (selectedAreaSpan) selectedAreaSpan.textContent = 'Todos';
   }
 
-  // aplica o filtro atual baseado no conjunto areasAtivas
   function filterServices() {
     if (areasAtivas.size === 0) {
       showAllServices();
       return;
     }
-
-    servicos.forEach(function (card) {
-      var cardArea = card.getAttribute('data-area');
+    servicos.forEach(card => {
+      const cardArea = card.getAttribute('data-area');
       card.style.display = areasAtivas.has(cardArea) ? 'flex' : 'none';
     });
-    if (selectedAreaSpan) selectedAreaSpan.textContent = Array.from(areasAtivas).join(', ');
+    if (selectedAreaSpan)
+      selectedAreaSpan.textContent = Array.from(areasAtivas).join(', ');
   }
 
-  // limpa filtros
   function resetFilters() {
     areasAtivas.clear();
-    areaButtons.forEach(function (b) { b.classList.remove('active'); });
+    areaButtons.forEach(b => b.classList.remove('active'));
     showAllServices();
   }
 
-  // guarda estado inicial e adiciona listeners
   showAllServices();
   if (btnLimpar) btnLimpar.addEventListener('click', resetFilters);
 
-  areaButtons.forEach(function (btn) {
-    btn.addEventListener('click', function (e) {
+  areaButtons.forEach(btn => {
+    btn.addEventListener('click', e => {
       e.preventDefault();
-      var areaSelecionada = btn.getAttribute('data-area');
+      const areaSelecionada = btn.getAttribute('data-area');
       if (!areaSelecionada) return;
 
       if (btn.classList.contains('active')) {
@@ -54,4 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
       filterServices();
     });
   });
-});
+}
+
+document.addEventListener('DOMContentLoaded', inicializarFiltros);
