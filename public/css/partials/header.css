@@ -37,7 +37,8 @@ header {
 /* estilo e display dos elementos do header que continuam nos menores tamanhos de tela. Estilização dos outros elementos está em @media */
 .notification-icon,
 .account-icon,
-.config-icon {
+.config-icon,
+.logout-icon {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -53,15 +54,17 @@ header {
   height: auto;
 }
 
-/* Âncora do meio, contendo o nome "Loja" e o ícone */
-.shop-center {
+/* Âncora do meio */
+.shop-center,
+.config-center {
   display: flex;
   align-items: center;
   gap: 16px;
   color: var(--input);
 }
 
-.shop-text {
+.shop-text,
+.config-text {
   font-size: 1.8rem;
   font-weight: 600;
   color: var(--input);
@@ -70,15 +73,12 @@ header {
 .nav-right {
   display: flex;
   align-items: center;
+  gap: 20px;
 }
 
-.home-icon {
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-
-.shop-icon {
+.home-icon,
+.shop-icon,
+.config-icon {
   display: none;
   align-items: center;
   justify-content: center;
@@ -92,13 +92,15 @@ header {
   .nav-right {
     gap: 20px;
   }
-  .shop-icon {
+  .shop-icon,
+  .config-icon {
     display: flex;
     align-items: center;
     text-decoration: none;
     color: var(--input);
   }
-  .shop-center {
+  .shop-center,
+  .config-center {
     display: none;
   }
 }
