@@ -1,5 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 session_start();
 
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -26,6 +27,7 @@ if (!empty($_SESSION['user_id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,8 +35,9 @@ if (!empty($_SESSION['user_id'])) {
   <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/global.css">
   <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/home/home.css">
 </head>
+
 <body>
-  <?php include BASE_PATH . "/src/pages/partials/header.php"; ?>
+  <?php include_once BASE_PATH . "/src/pages/partials/header_cliente.php"; ?>
 
   <main class="container">
     <h1>Home</h1>
@@ -46,12 +49,12 @@ if (!empty($_SESSION['user_id'])) {
       <input type="file" id="inpLogo" name="logo" accept="image/*" hidden>
     </div>
 
-    <h2>Nome da empresa</h2>
+    <h2>Sobre Sua Empresa</h2>
 
     <form id="formEmpresa" class="form-empresa" style="margin:24px 0;">
-      <input readonly id="empresa"   type="text" placeholder="Nome da Empresa">
-      <input readonly id="cnpj"      type="text" placeholder="CNPJ">
-      <input readonly id="perfil"    type="text" placeholder="Tamanho da Empresa">
+      <input readonly id="empresa" type="text" placeholder="Nome da Empresa">
+      <input readonly id="cnpj" type="text" placeholder="CNPJ">
+      <input readonly id="perfil" type="text" placeholder="Tamanho da Empresa">
       <input readonly id="industria" type="text" placeholder="Indústria">
 
       <div class="form-actions" style="display:flex; gap:12px; margin-top:12px;">
@@ -62,7 +65,9 @@ if (!empty($_SESSION['user_id'])) {
 
     <!-- ===== Serviços em Andamento ===== -->
     <section class="servicos-andamento">
-      <div class="section-header"><h2>Serviços em Andamento</h2></div>
+      <div class="section-header">
+        <h2>Serviços em Andamento</h2>
+      </div>
       <div class="servicos-grid">
         <?php
         $sql = "SELECT sa.id, sa.status, sa.data_inicio, 
@@ -88,24 +93,25 @@ if (!empty($_SESSION['user_id'])) {
               default => ''
             };
         ?>
-          <div class="servico-card">
-            <div class="servico-header">
-              <?php if ($servico['area_img']): ?>
-                <img src="<?= htmlspecialchars($servico['area_img']) ?>" alt="<?= htmlspecialchars($servico['area_nome']) ?>" class="area-icon">
-              <?php endif; ?>
-              <span class="status-badge <?= $status_class ?>"><?= ucfirst($servico['status']) ?></span>
+            <div class="servico-card">
+              <div class="servico-header">
+                <?php if ($servico['area_img']): ?>
+                  <img src="<?= htmlspecialchars($servico['area_img']) ?>" alt="<?= htmlspecialchars($servico['area_nome']) ?>" class="area-icon">
+                <?php endif; ?>
+                <span class="status-badge <?= $status_class ?>"><?= ucfirst($servico['status']) ?></span>
+              </div>
+              <div class="servico-body">
+                <h3><?= htmlspecialchars($servico['nome']) ?></h3>
+                <p class="area-nome"><?= htmlspecialchars($servico['area_nome']) ?></p>
+                <p class="descricao"><?= htmlspecialchars($servico['descricao']) ?></p>
+              </div>
+              <div class="servico-footer">
+                <span class="data">Adquirido: <?= date('d/m/Y', strtotime($servico['data_inicio'])) ?></span>
+                <span class="preco">R$ <?= number_format($servico['preco'], 2, ',', '.') ?></span>
+              </div>
             </div>
-            <div class="servico-body">
-              <h3><?= htmlspecialchars($servico['nome']) ?></h3>
-              <p class="area-nome"><?= htmlspecialchars($servico['area_nome']) ?></p>
-              <p class="descricao"><?= htmlspecialchars($servico['descricao']) ?></p>
-            </div>
-            <div class="servico-footer">
-              <span class="data">Adquirido: <?= date('d/m/Y', strtotime($servico['data_inicio'])) ?></span>
-              <span class="preco">R$ <?= number_format($servico['preco'], 2, ',', '.') ?></span>
-            </div>
-          </div>
-        <?php endforeach; else: ?>
+          <?php endforeach;
+        else: ?>
           <p class="no-services">Você ainda não tem serviços em andamento. Visite nosso <a href="<?= BASE_URL ?>/src/pages/servicos/marketplace.php">marketplace</a> para começar!</p>
         <?php endif; ?>
       </div>
@@ -122,10 +128,34 @@ if (!empty($_SESSION['user_id'])) {
         <span class="cor_verde">melhoras sustentáveis</span> na sua empresa
       </p>
       <div class="niveis">
-        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Infraestrutura Eficiente</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
-        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Energia Renovável</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
-        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Computação em Nuvem</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
-        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Políticas Sustentáveis</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
+        <div class="nivel-card">
+          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
+          <div class="nivel-desc">Infraestrutura Eficiente</div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
+        </div>
+        <div class="nivel-card">
+          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
+          <div class="nivel-desc">Energia Renovável</div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
+        </div>
+        <div class="nivel-card">
+          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
+          <div class="nivel-desc">Computação em Nuvem</div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
+        </div>
+        <div class="nivel-card">
+          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
+          <div class="nivel-desc">Políticas Sustentáveis</div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
+        </div>
       </div>
       <p class="pontuacao-total">Pontuação Total: <strong>4769</strong></p>
     </section>
@@ -146,24 +176,36 @@ if (!empty($_SESSION['user_id'])) {
 
       // Carrega dados da empresa
       try {
-        const res = await fetch('<?= rtrim(BASE_URL, '/') ?>/src/controllers/read_empresa_controller.php', { credentials: 'include' });
+        const res = await fetch('<?= rtrim(BASE_URL, '/') ?>/src/controllers/read_empresa_controller.php', {
+          credentials: 'include'
+        });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const json = await res.json();
         if (json.ok && json.empresa) {
           const e = json.empresa;
-          document.getElementById("empresa").value   = e.nome || '';
-          document.getElementById("cnpj").value      = e.cnpj || '';
-          document.getElementById("perfil").value    = e.porte || '';
+          document.getElementById("empresa").value = e.nome || '';
+          document.getElementById("cnpj").value = e.cnpj || '';
+          document.getElementById("perfil").value = e.porte || '';
           document.getElementById("industria").value = e.setor_atuacao || '';
         }
-      } catch (err) { console.error('read_empresa_controller:', err); }
+      } catch (err) {
+        console.error('read_empresa_controller:', err);
+      }
 
       btn.addEventListener('click', () => inp.click());
       inp.addEventListener('change', async () => {
         const file = inp.files?.[0];
         if (!file) return;
-        if (!ok.includes(file.type)) { alert('JPG/PNG/WEBP'); inp.value=''; return; }
-        if (file.size > MAX) { alert('Até 3MB'); inp.value=''; return; }
+        if (!ok.includes(file.type)) {
+          alert('JPG/PNG/WEBP');
+          inp.value = '';
+          return;
+        }
+        if (file.size > MAX) {
+          alert('Até 3MB');
+          inp.value = '';
+          return;
+        }
 
         const t = URL.createObjectURL(file);
         img.src = t;
@@ -172,7 +214,11 @@ if (!empty($_SESSION['user_id'])) {
         const fd = new FormData();
         fd.append('logo', file);
         try {
-          const r = await fetch(UPLOAD_LOGO_URL, { method: 'POST', body: fd, credentials: 'include' });
+          const r = await fetch(UPLOAD_LOGO_URL, {
+            method: 'POST',
+            body: fd,
+            credentials: 'include'
+          });
           const data = await r.json();
           if (!r.ok || !data?.url) throw new Error(data?.error || ('HTTP ' + r.status));
           img.src = data.url + '?t=' + Date.now();
@@ -188,39 +234,43 @@ if (!empty($_SESSION['user_id'])) {
   <script>
     (async function() {
       const API = '<?= rtrim(BASE_URL, '/') ?>';
-      const form    = document.getElementById('formEmpresa');
+      const form = document.getElementById('formEmpresa');
       const btnEdit = document.getElementById('btnEditar');
       const btnSave = document.getElementById('btnSalvar');
       const btnLogo = document.getElementById('btnLogo');
 
       const f = {
-        empresa:   document.getElementById('empresa'),
-        cnpj:      document.getElementById('cnpj'),
-        perfil:    document.getElementById('perfil'),
+        empresa: document.getElementById('empresa'),
+        cnpj: document.getElementById('cnpj'),
+        perfil: document.getElementById('perfil'),
         industria: document.getElementById('industria')
       };
 
       function setEditing(on) {
         Object.values(f).forEach(i => i.readOnly = !on);
         if (btnLogo) btnLogo.disabled = !on;
-        btnSave.disabled = false;  // Sempre habilitado
+        btnSave.disabled = false; // Sempre habilitado
         btnEdit.disabled = on;
         if (on) f.empresa.focus();
       }
 
       // READ inicial
       try {
-        const res = await fetch(`${API}/src/controllers/read_empresa_controller.php`, { credentials: 'include' });
+        const res = await fetch(`${API}/src/controllers/read_empresa_controller.php`, {
+          credentials: 'include'
+        });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const j = await res.json();
         if (j.ok && j.empresa) {
           const e = j.empresa;
-          f.empresa.value   = e.nome || '';
-          f.cnpj.value      = e.cnpj || '';
-          f.perfil.value    = e.porte || '';
+          f.empresa.value = e.nome || '';
+          f.cnpj.value = e.cnpj || '';
+          f.perfil.value = e.porte || '';
           f.industria.value = e.setor_atuacao || '';
         }
-      } catch (err) { console.error(err); }
+      } catch (err) {
+        console.error(err);
+      }
 
       btnEdit.addEventListener('click', () => setEditing(true));
 
@@ -228,23 +278,32 @@ if (!empty($_SESSION['user_id'])) {
         e.preventDefault();
 
         const payload = {
-          nome:          f.empresa.value.trim(),
-          cnpj:          f.cnpj.value.trim(),
-          porte:         f.perfil.value.trim(),
+          nome: f.empresa.value.trim(),
+          cnpj: f.cnpj.value.trim(),
+          porte: f.perfil.value.trim(),
           setor_atuacao: f.industria.value.trim()
         };
-        if (!payload.nome) { alert('Informe o nome da empresa.'); f.empresa.focus(); return; }
+        if (!payload.nome) {
+          alert('Informe o nome da empresa.');
+          f.empresa.focus();
+          return;
+        }
 
         try {
           btnSave.disabled = true;
           const r = await fetch(`${API}/src/controllers/update_empresa_controller.php`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(payload),
             credentials: 'include'
           });
           const j = await r.json().catch(() => ({}));
-          if (!r.ok || !j.ok) { alert('Erro ao salvar: ' + (j.error || r.status)); return; }
+          if (!r.ok || !j.ok) {
+            alert('Erro ao salvar: ' + (j.error || r.status));
+            return;
+          }
           setEditing(false);
         } catch (e) {
           alert('Falha ao salvar: ' + e.message);
@@ -257,4 +316,5 @@ if (!empty($_SESSION['user_id'])) {
     })();
   </script>
 </body>
+
 </html>

@@ -9,6 +9,7 @@ $servicos = $model->listarTodos();
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,6 +17,7 @@ $servicos = $model->listarTodos();
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/db_views/db_criar_servico.css" />
 </head>
+
 <body>
   <div class="card">
     <div class="header">
@@ -78,4 +80,5 @@ $servicos = $model->listarTodos();
 
   <?php include BASE_PATH . "/src/pages/partials/pop-ups/pop_salvo.html"; ?>
 </body>
+
 </html>

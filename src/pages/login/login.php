@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | GreenHelp</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/login.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css//login/login.css">
 </head>
 
 <body>
@@ -30,11 +30,6 @@
             <input type="password" id="senha" name="senha" placeholder="Digite sua senha">
           </div>
 
-          <div class="form-group-remember">
-            <label for="remember-me">
-              <input type="checkbox" id="remember-me" name="remember-me"> Lembrar-me
-            </label>
-          </div>
           <?php
           session_start();
           if (isset($_SESSION['mensagem_erro'])) {

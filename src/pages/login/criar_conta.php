@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Criar Conta | GreenHelp</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/login.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/login/login.css">
 </head>
 
 <body>
