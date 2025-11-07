@@ -22,7 +22,7 @@ if ($termo !== '') {
 }
 
 $stmt->execute();
-$servicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$servicos = $stmt->fetchAll();
 
 if ($servicos) {
     foreach ($servicos as $servico) {
