@@ -1,7 +1,7 @@
 /* CARD */
 .card {
   width: 90%;
-  max-width: 400px;
+  max-width: 650px;
   background: var(--card-bg);
   border: 1px solid var(--stroke);
   border-radius: 18px;
@@ -80,7 +80,7 @@ textarea {
 
 /* 1º campo com borda verde */
 .field:first-of-type .input {
-  border-color: var(--accent);
+  border: 1px solid var(--accent);
   box-shadow: 0 0 0 3px rgba(53, 242, 143, 0.18);
 }
 
@@ -95,7 +95,6 @@ textarea:focus {
 .footer {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
   gap: 12px;
   margin-top: 8px;
 }
@@ -108,17 +107,17 @@ textarea:focus {
   box-shadow: 0 6px 16px #0008, inset 0 0 0 1px #ffffff14;
   font-size: 14px;
 }
-.btn-descartar {
+.btn-del {
   background: var(--red);
   color: #ffd3df;
   border: 1px solid var(--danger);
 }
-.btn-rascunho {
+.btn-edit {
   background: var(--purple);
   color: #dbe0ff;
   border: 1px solid rgba(130, 144, 255, 0.25);
 }
-.btn-criar {
+.btn-save {
   background: var(--green);
   color: #e5ffe3;
 }
