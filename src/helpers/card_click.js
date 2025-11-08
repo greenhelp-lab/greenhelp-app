@@ -19,15 +19,15 @@
       if (e.target.closest && e.target.closest('.btn-add-cart')) return;
 
       // procura o card pai mais próximo
-      var card = e.target.closest && e.target.closest('.service-card');
+      let card = e.target.closest && e.target.closest('.service-card');
       if (!card) return; // clique fora de um card
 
       // pega o id do serviço armazenado no atributo data-id
-      var id = card.getAttribute('data-id');
+      let id = card.getAttribute('data-id');
       if (!id) return;
 
       // navega para a página de detalhe (id na querystring)
-      window.location.href = '/greenhelp-app/src/pages/servicos/sobre_servico.php?id=' + encodeURIComponent(id);
+      window.location.href = '/greenhelp-app/src/pages/marketplace/sobre_servico.php?id=' + encodeURIComponent(id);
     });
   });
 })();

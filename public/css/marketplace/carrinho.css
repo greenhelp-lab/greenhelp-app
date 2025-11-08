@@ -25,6 +25,7 @@
 }
 
 .cart-item {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -34,11 +35,14 @@
   color: var(--txt);
   border-radius: 12px;
   padding: 12px;
+  opacity: 0.8;
   box-shadow: 0 6px 18px rgba(9, 10, 25, 0.06);
 }
 
-.cart-item {
-  position: relative;
+.cart-item.selected-service {
+  opacity: 1;
+  border: 1px solid var(--accent);
+  box-shadow: 0 6px 18px rgba(0, 184, 83, 0.37);
 }
 
 .select-box {
