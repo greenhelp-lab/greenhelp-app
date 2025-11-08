@@ -1,4 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/config.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -19,25 +19,25 @@
           <p class="lead">Use um email confiável (entraremos em contato por ele)</p>
         </div>
 
-        <form class="auth-form" action="<?php echo BASE_PATH; ?>/src/controllers/criar_conta_controller.php" method="post">
+        <form class="auth-form" action="<?php echo BASE_URL; ?>/src/actions/criar_conta_action.php" method="post">
           <div class="form-group">
             <label for="client_name">Nome Completo</label>
-            <input type="text" id="client_name" name="client_name" placeholder="Digite seu nome completo">
+            <input type="text" id="client_name" name="client_name" placeholder="Digite seu nome completo" required>
           </div>
 
           <div class="form-group">
             <label for="email">Seu Email</label>
-            <input type="email" id="email" name="email" placeholder="Digite seu email">
+            <input type="email" id="email" name="email" placeholder="Digite seu email" required>
           </div>
 
           <div class="form-group">
             <label for="password">Senha</label>
-            <input type="password" id="password" name="password" placeholder="Digite sua senha">
+            <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
           </div>
 
           <div class="form-group">
             <label for="password_confirm">Confirmar Senha</label>
-            <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirme sua senha">
+            <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirme sua senha" required>
             <p class="help-text">Crie uma senha forte com pelo menos 8 caracteres</p>
           </div>
 
@@ -45,7 +45,7 @@
         </form>
 
         <div class="auth-links">
-          <p class="help-text">Já tem uma conta? <a href="<?php echo BASE_URL; ?>/login">Login</a></p>
+          <p class="help-text">Já tem uma conta? <a href="<?php echo BASE_URL; ?>/src/pages/login/login.php">Login</a></p>
         </div>
 
         <a href="javascript:history.back()" class="back-button">

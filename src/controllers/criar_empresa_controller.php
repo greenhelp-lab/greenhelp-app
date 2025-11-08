@@ -1,16 +1,29 @@
 <?php
-session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . '/src/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $_SESSION['empresa'] = [
-    'nome_empresa' => $_POST['nome_empresa'],
-    'cnpj' => $_POST['cnpj'],
-    'setor' => $_POST['setor'],
-    'tamanho_empresa' => $_POST['tamanho_empresa']
-    // outros campos da empresa
-  ];
+class EmpresaController {
+    public static function criar($dados): void {
+        try {
+            $pdo = new PDO("mysql:host=localhost;dbname=greenhelp_db;charset=utf8mb4", "root", "");
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  header('Location: ' . BASE_URL . '/src/pages/login/criar_conta.php');
-  exit;
+            $sql = "INSERT INTO empresas (nome, cnpj, setor_atuacao, porte)
+                    VALUES (:nome, :cnpj, :setor, :porte)";
+                
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':nome'  => $dados['business_name'],
+                ':cnpj'  => $dados['business_cnpj'],
+                ':setor' => $dados['business_industry'],
+                ':porte' => $dados['business_size']
+            ]);
+
+        } catch (PDOException $e) {
+            die("Erro ao inserir empresa: " . $e->getMessage());
+        }
+    }
 }
+
+
+
