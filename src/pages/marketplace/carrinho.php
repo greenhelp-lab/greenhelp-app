@@ -52,9 +52,6 @@ if (!empty($usuario_id)) {
         <?php if (!empty($itens)): ?>
           <?php foreach ($itens as $item): ?>
             <article class="cart-item" data-id="<?= htmlspecialchars($item['cart_id']) ?>" data-price="<?= htmlspecialchars($item['preco']) ?>">
-              <div class="select-box">
-                <input type="checkbox" class="select-service" data-price="<?= htmlspecialchars($item['preco']) ?>" aria-label="Selecionar serviço para pagamento">
-              </div>
               <div class="item-left">
                 <div class="item-thumb" aria-hidden="true">
                   <?php if (!empty($item['area_img'])): ?>
@@ -113,7 +110,7 @@ if (!empty($usuario_id)) {
             Finalizar compra
           </button>
 
-          <button type="button" class="btn-ghost btn-continue" onclick="window.location.href='<?php echo BASE_URL; ?>/src/pages/servicos/marketplace.php'">
+          <button type="button" class="btn-ghost btn-continue" onclick="window.location.href='<?php echo BASE_URL; ?>/src/pages/marketplace/marketplace.php'">
             Continuar comprando
           </button>
         </div>
@@ -137,41 +134,35 @@ if (!empty($usuario_id)) {
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const modal = document.getElementById('confirmModal');
-      const checkboxes = document.querySelectorAll('.select-service');
+      const cartContainer = document.getElementById('cartItems');
       const totalElement = document.getElementById('total');
       const itemsCountElement = document.getElementById('items-count');
       const btnCheckout = document.getElementById('finalizar-compra');
 
-      // Atualiza o total e contagem sempre que uma checkbox muda
       function updateTotal() {
+        const selectedItems = document.querySelectorAll('.selected-service');
         let total = 0;
         let count = 0;
 
-        checkboxes.forEach(checkbox => {
-          if (checkbox.checked) {
-            total += parseFloat(checkbox.dataset.price);
-            count++;
-          }
-        });
+        for (let i = 0; i < selectedItems.length; i++) {
+          total += parseFloat(selectedItems[i].dataset.price);
+          count++;
+        }
 
-        totalElement.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        totalElement.textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
         itemsCountElement.textContent = count;
 
-        // Habilita/desabilita botão de checkout
         btnCheckout.disabled = count === 0;
-        if (count === 0) {
-          btnCheckout.style.opacity = '0.5';
-          btnCheckout.style.cursor = 'not-allowed';
-        } else {
-          btnCheckout.style.opacity = '1';
-          btnCheckout.style.cursor = 'pointer';
-        }
+        btnCheckout.style.opacity = count === 0 ? '0.5' : '1';
+        btnCheckout.style.cursor = count === 0 ? 'not-allowed' : 'pointer';
       }
 
-      // Adiciona listeners para checkboxes
-      checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', updateTotal);
-      });
+      cartContainer.onclick = function(e) {
+        const card = e.target.closest('.cart-item');
+        if (!card) return;
+        card.classList.toggle('selected-service');
+        updateTotal();
+      };
 
       // Remover item do carrinho
       document.querySelectorAll('.item-remove').forEach(btn => {
@@ -183,7 +174,7 @@ if (!empty($usuario_id)) {
             const response = await fetch(`${window.location.origin}/greenhelp-app/src/actions/remover_do_carrinho.php`, {
               method: 'POST',
               headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/x-www-form-urlencoded'
               },
               body: `cart_id=${cartId}`
             });
@@ -193,14 +184,8 @@ if (!empty($usuario_id)) {
             if (data.success) {
               cartItem.remove();
               updateTotal();
-
-              // Se não houver mais itens, recarrega a página
-              if (document.querySelectorAll('.cart-item').length === 0) {
-                window.location.reload();
-              }
-            } else {
-              alert(data.message || 'Erro ao remover item');
-            }
+              if (document.querySelectorAll('.cart-item').length === 0) window.location.reload();
+            } else alert(data.message || 'Erro ao remover item');
           } catch (error) {
             console.error('Erro:', error);
             alert('Erro ao remover item do carrinho');
@@ -208,11 +193,9 @@ if (!empty($usuario_id)) {
         });
       });
 
-      // Mostrar modal ao clicar em finalizar compra
+      // Mostrar modal
       btnCheckout.addEventListener('click', function() {
-        if (!this.disabled) {
-          modal.style.display = 'grid';
-        }
+        if (!this.disabled) modal.style.display = 'grid';
       });
 
       // Fechar modal
@@ -223,11 +206,8 @@ if (!empty($usuario_id)) {
       // Finalizar compra
       window.finalizarCompra = async function() {
         const selectedItems = [];
-        document.querySelectorAll('.cart-item').forEach(item => {
-          const checkbox = item.querySelector('.select-service');
-          if (checkbox && checkbox.checked) {
-            selectedItems.push(item.dataset.id);
-          }
+        document.querySelectorAll('.cart-item.selected-service').forEach(item => {
+          selectedItems.push(item.dataset.id);
         });
 
         if (selectedItems.length === 0) {
@@ -249,23 +229,8 @@ if (!empty($usuario_id)) {
           const data = await response.json();
 
           if (data.success) {
-            // Marca itens como processados e remove controles
-            data.purchased_ids.forEach(id => {
-              const item = document.querySelector(`.cart-item[data-id="${id}"]`);
-              if (item) {
-                item.classList.add('purchased');
-                const checkbox = item.querySelector('.select-service');
-                if (checkbox) checkbox.disabled = true;
-                const removeBtn = item.querySelector('.item-remove');
-                if (removeBtn) removeBtn.remove();
-              }
-            });
-
-            // Redireciona para home cliente
             window.location.href = `${window.location.origin}/greenhelp-app/src/pages/home/home_cliente.php`;
-          } else {
-            alert(data.message || 'Erro ao finalizar compra');
-          }
+          } else alert(data.message || 'Erro ao finalizar compra');
         } catch (error) {
           console.error('Erro:', error);
           alert('Erro ao processar a compra');
@@ -274,15 +239,14 @@ if (!empty($usuario_id)) {
 
       // Fechar modal se clicar fora
       modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-          closeModal();
-        }
+        if (e.target === modal) closeModal();
       });
 
-      // Inicializa total
+      // Inicializa total corretamente
       updateTotal();
     });
   </script>
+
 
   <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
 </body>
