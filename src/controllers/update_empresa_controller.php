@@ -1,54 +1,75 @@
 <?php
-// src/controllers/update_empresa_controller.php
 declare(strict_types=1);
 
 header('Content-Type: application/json; charset=utf-8');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'].'/greenhelp-app/src/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/greenhelp-app/src/config/conexao.php';
 
-$userId = $_SESSION['user_id'] ?? null;
-if (!$userId) { http_response_code(401); echo json_encode(['ok'=>false,'error'=>'unauthenticated']); exit; }
+try {
+  if (empty($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['ok'=>false,'error'=>'unauthenticated']); exit;
+  }
 
-// empresa “ativa” (a mesma que você define no get_empresa_controller)
-$empresaId = $_SESSION['empresa_id'] ?? null;
-if (!$empresaId) {
-  // fallback: pega a última do usuário
-  $st = $pdo->prepare("SELECT id FROM empresas WHERE usuario_id = :u ORDER BY id DESC LIMIT 1");
-  $st->execute([':u'=>(int)$userId]);
-  $empresaId = $st->fetchColumn() ?: null;
-  if ($empresaId) $_SESSION['empresa_id'] = (int)$empresaId;
+  $raw = file_get_contents('php://input');
+  $data = json_decode($raw, true);
+  if (!is_array($data)) {
+    http_response_code(400);
+    echo json_encode(['ok'=>false,'error'=>'invalid_json']); exit;
+  }
+
+  $nome     = trim($data['nome'] ?? '');
+  $cnpj     = trim($data['cnpj'] ?? '');
+  $porte    = trim($data['porte'] ?? '');
+  $setor    = trim($data['setor_atuacao'] ?? '');
+  $endereco = trim($data['endereco'] ?? ''); // NOVO
+
+  if ($nome === '') {
+    http_response_code(422);
+    echo json_encode(['ok'=>false,'error'=>'nome_required']); exit;
+  }
+  if (strlen($endereco) > 200) {
+    http_response_code(422);
+    echo json_encode(['ok'=>false,'error'=>'endereco_too_long']); exit;
+  }
+
+  $userId = (int)$_SESSION['user_id'];
+  $empresaId = $_SESSION['empresa_id'] ?? null;
+  if (!$empresaId) {
+    $st = $pdo->prepare("SELECT id FROM empresas WHERE usuario_id=:uid ORDER BY id DESC LIMIT 1");
+    $st->execute([':uid'=>$userId]);
+    $empresaId = (int)$st->fetchColumn();
+    if ($empresaId) $_SESSION['empresa_id'] = $empresaId;
+  }
+  if (!$empresaId) { echo json_encode(['ok'=>false,'error'=>'empresa_not_found']); exit; }
+
+  $st = $pdo->prepare("SELECT 1 FROM empresas WHERE id=:id AND usuario_id=:uid");
+  $st->execute([':id'=>$empresaId, ':uid'=>$userId]);
+  if (!$st->fetchColumn()) {
+    http_response_code(403);
+    echo json_encode(['ok'=>false,'error'=>'forbidden']); exit;
+  }
+
+  $sql = "UPDATE empresas
+          SET nome=:nome, cnpj=:cnpj, porte=:porte, setor_atuacao=:setor, endereco=:endereco
+          WHERE id=:id AND usuario_id=:uid";
+  $st = $pdo->prepare($sql);
+  $st->execute([
+    ':nome'=>$nome,
+    ':cnpj'=>$cnpj,
+    ':porte'=>$porte,
+    ':setor'=>$setor,
+    ':endereco'=>$endereco,
+    ':id'=>$empresaId,
+    ':uid'=>$userId
+  ]);
+
+  echo json_encode(['ok'=>true]);
+} catch (Throwable $e) {
+  http_response_code(500);
+  echo json_encode(['ok'=>false,'error'=>'server_error','msg'=>$e->getMessage()]);
 }
-if (!$empresaId) { http_response_code(404); echo json_encode(['ok'=>false,'error'=>'empresa_nao_encontrada']); exit; }
-
-// garante que a empresa pertence ao usuário logado
-$own = $pdo->prepare("SELECT 1 FROM empresas WHERE id = :id AND usuario_id = :u");
-$own->execute([':id'=>(int)$empresaId, ':u'=>(int)$userId]);
-if (!$own->fetchColumn()) { http_response_code(403); echo json_encode(['ok'=>false,'error'=>'forbidden']); exit; }
-
-// lê dados (aceita form-url-encoded, multipart ou JSON)
-$body = $_POST ?: json_decode(file_get_contents('php://input'), true) ?: [];
-$nome          = trim($body['nome']          ?? '');
-$cnpj          = trim($body['cnpj']          ?? '');
-$setor_atuacao = trim($body['setor_atuacao'] ?? '');
-$porte         = trim($body['porte']         ?? '');
-$endereco      = trim($body['endereco']      ?? '');
-
-// validações simples
-if ($nome === '') { http_response_code(422); echo json_encode(['ok'=>false,'error'=>'nome_obrigatorio']); exit; }
-// (opcional) validar formato de CNPJ aqui
-
-$st = $pdo->prepare("
-  UPDATE empresas
-     SET nome = :n,
-         cnpj = :c,
-         setor_atuacao = :s,
-         porte = :p,
-         endereco = :e
-   WHERE id = :id
-");
-$st->execute([
-  ':n'=>$nome, ':c'=>$cnpj, ':s'=>$setor_atuacao, ':p'=>$porte, ':e'=>$endereco,
-  ':id'=>(int)$empresaId
-]);
-
-echo json_encode(['ok'=>true, 'rows'=>$st->rowCount()]);
