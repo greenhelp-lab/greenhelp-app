@@ -197,6 +197,29 @@
   border-radius: 999px;
 }
 
+/* Estilos da Barra de scroll dos cards de serviços */
+
+/* Scrollbar do container */
+.records-box::-webkit-scrollbar {
+  width: 10px; /* largura da barra de scroll */
+  margin: 1rem 0 1rem 0;
+  border-radius: 10px;
+}
+
+/* Track (fundo da barra) */
+.records-box::-webkit-scrollbar-track {
+  background: none;
+  margin: 1rem 0 1rem 0;
+  border-radius: 10px;
+}
+
+/* Thumb (o “puxador”) */
+.records-box::-webkit-scrollbar-thumb {
+  margin: 1rem 0 1rem 0;
+  background-color: var(--stroke); /* cor do puxador */
+  border-radius: 10px;
+}
+
 /* Responsividade */
 @media (max-width: 1000px) {
   .dashboard {

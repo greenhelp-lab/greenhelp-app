@@ -38,8 +38,8 @@ $areas = $query->fetchAll();
           <?php foreach ($areas as $area): ?>
             <option value="<?php echo $area['id']; ?>"><?php echo htmlspecialchars($area['nome']); ?></option>
           <?php endforeach; ?>
+        </select>
       </div>
-
       <div class="field">
         <label for="preco">Preço Total (R$)</label>
         <input id="preco" name="preco" class="input pill" type="number" step="0.01" required />
