@@ -62,6 +62,8 @@ if (!empty($_SESSION['user_id'])) {
         <button type="button" class="btn edit-button" id="btnEditar">Editar</button>
         <button type="submit" class="btn save-button" id="btnSalvar">Salvar</button>
       </div>
+
+
     </form>
 
     <!-- ===== Serviços em Andamento ===== -->
@@ -114,6 +116,24 @@ if (!empty($_SESSION['user_id'])) {
           <p class="no-services">Você ainda não tem serviços em andamento. Visite nosso <a href="<?= BASE_URL ?>/src/pages/servicos/marketplace.php">marketplace</a> para começar!</p>
         <?php endif; ?>
       </div>
+    </section>
+
+      <section class="pontuacoes">
+      <div class="pontuacoes-header">
+        <img src="<?= BASE_URL; ?>/public/imgs/pontuação_verde.png" alt="Pontuações Verdes" class="pontuacoes-img">
+        <h2 class="pontuacoes-title">Pontuações Verdes</h2>
+      </div>
+      <p class="pontuacoes-desc">
+        Ganhe mais pontos através da <span class="cor_verde">compra de serviços</span> e
+        <span class="cor_verde">melhoras sustentáveis</span> na sua empresa
+      </p>
+      <div class="niveis">
+        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Infraestrutura Eficiente</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
+        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Energia Renovável</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
+        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Computação em Nuvem</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
+        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Políticas Sustentáveis</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
+      </div>
+      <p class="pontuacao-total">Pontuação Total: <strong>4769</strong></p>
     </section>
 
   </main>
