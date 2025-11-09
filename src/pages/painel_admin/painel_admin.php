@@ -1,4 +1,10 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+
+session_start();
+$is_admin = isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin';
+$is_admin = false ?? die;
+
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -24,6 +30,7 @@
     <div>
       <button class="action-btn" id="create-service-btn">Criar serviço</button>
       <button class="action-btn">Novo admin</button>
+      <button class="action-btn">Novo cliente</button>
     </div>
   </div>
 
@@ -51,7 +58,7 @@
       <div class="dash-card">
         <h4>Receita (Mês)</h4>
         <span class="value">R$ 12.430</span>
-        <span class="meta">Estimativa mensal</span>
+        <span class="meta">Serviços contratados e finalizados</span>
       </div>
     </div>
 

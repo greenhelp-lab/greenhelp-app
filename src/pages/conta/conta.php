@@ -32,7 +32,13 @@ if ($usuario && !empty($usuario['avatar_path'])) {
 
 <body>
 
-  <?php include_once BASE_PATH . "/src/pages/partials/header_cliente.php"; ?>
+  <?php if (isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin') : {
+      include_once BASE_PATH . "/src/pages/partials/header_admin.php";
+    }
+  else : {
+      include_once BASE_PATH . "/src/pages/partials/header_cliente.php";
+    }
+  endif; ?>
 
   <main class="account-main">
     <div class="conta-container">

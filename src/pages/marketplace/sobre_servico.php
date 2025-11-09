@@ -42,7 +42,7 @@ if (!$servico) {
 </head>
 
 <body>
-  <?php if (isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin') : {
+  <?php if ($is_admin = true) : {
       include_once BASE_PATH . "/src/pages/partials/header_admin.php";
     }
   else : {

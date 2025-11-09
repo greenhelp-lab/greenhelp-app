@@ -8,7 +8,7 @@ $servico = null;
 if ($id) {
   $stmt = $pdo->prepare("SELECT * FROM servicos WHERE id = ?");
   $stmt->execute([$id]);
-  $servico = $stmt->fetch(PDO::FETCH_ASSOC);
+  $servico = $stmt->fetch();
 }
 
 $query = $pdo->query("SELECT id, nome FROM areas_sustentaveis ORDER BY nome ASC");
