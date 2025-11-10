@@ -13,10 +13,7 @@
   <?php include_once BASE_PATH . "/src/pages/partials/header_cliente.php"; ?>
   <main class="container">
 
-    <h1 class="pagamento-title">
-      Pagamento
-      <img src="<?php echo BASE_URL; ?>/public/icons/Union.svg" alt="Carrinho" class="icon-cart">
-    </h1>
+    <h1 class="pagamento-title">Pagamento</h1>
 
     <form class="payment-form">
 
