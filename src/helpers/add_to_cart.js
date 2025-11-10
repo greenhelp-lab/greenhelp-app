@@ -1,6 +1,5 @@
 // add_to_cart.js
 // Escuta cliques em botões com a classe `.btn-add-cart` e envia POST para o endpoint
-// Comentários em português para clareza — versão simples e fácil de entender.
 (function () {
   'use strict';
 

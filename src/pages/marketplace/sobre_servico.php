@@ -42,7 +42,7 @@ if (!$servico) {
 </head>
 
 <body>
-  <?php if ($is_admin = true) : {
+  <?php if ($is_admin === true) : {
       include_once BASE_PATH . "/src/pages/partials/header_admin.php";
     }
   else : {
@@ -146,6 +146,7 @@ if (!$servico) {
     </div>
   </main>
   <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const isAdmin = <?= json_encode($is_admin) ?>;
@@ -156,6 +157,9 @@ if (!$servico) {
           btn.style.cursor = 'not-allowed';
         });
       }
+      document.querySelectorAll(".close").addEventListener("click", () => {
+        history.back();
+      });
     });
   </script>
 </body>
