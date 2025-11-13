@@ -19,7 +19,7 @@
           <p class="lead">Bem-vindo, GreenHelper!<br>Por favor, faça login para continuar.</p>
         </div>
 
-        <form class="auth-form" action="<?= BASE_URL ?>/src/controllers/login_controller.php" method="post">
+        <form class="auth-form" action="<?= BASE_URL ?>/src/controllers/auth/login_controller.php" method="post">
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="Digite seu email">

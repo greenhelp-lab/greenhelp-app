@@ -1,5 +1,5 @@
 /* CONTAINER PRINCIPAL E ALINHAMENTO */
-.account-main { 
+.account-main {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -33,15 +33,15 @@
   border-radius: 50%;
   object-fit: cover;
 }
-.user-photo button { 
-  border: 0; 
-  background: none; 
-  padding: 0; 
-  cursor: pointer; 
+.user-photo button {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 /* FORMULÁRIO */
-.account-form { 
+.account-form {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -52,9 +52,9 @@
 .account-form input {
   width: 100%;
   padding: 15px 20px;
-  background-color: var(--input); 
-  border: 2px solid var(--stroke); 
-  border-radius: 30px; 
+  background-color: var(--input);
+  border: 2px solid var(--stroke);
+  border-radius: 30px;
   color: var(--txt);
   font-size: 1rem;
   outline: none;
@@ -69,6 +69,125 @@
 .account-form input::placeholder {
   color: var(--muted);
   opacity: 0.8;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.account-form select,
+.account-form textarea {
+  width: 100%;
+  padding: 14px 18px;
+  background-color: var(--input);
+  border: 2px solid var(--stroke);
+  border-radius: 20px;
+  color: var(--txt);
+  font-size: 1rem;
+  outline: none;
+}
+
+.account-form select:focus,
+.account-form textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--glow);
+}
+
+.empresa-form .empresa-card {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--input);
+  border: 2px solid var(--stroke);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin-top: 12px;
+}
+
+.empresa-card div {
+  color: var(--txt);
+}
+.empresa-card .muted {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+#empresa-fields .field {
+  margin-bottom: 6px;
+}
+
+@media (min-width: 900px) {
+  .conta-container {
+    max-width: 720px;
+    align-items: center;
+  }
+  .account-main {
+    padding: 60px 40px;
+  }
+  .conta-container .user-photo {
+    margin-right: 0;
+  }
+  .account-form {
+    max-width: 700px;
+  }
+  #empresa-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #empresa-fields .field {
+    margin: 0;
+  }
+}
+
+/* Checkbox */
+input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 2px solid var(--stroke);
+  border-radius: 6px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  margin-right: 8px;
+  background: var(--bg);
+  transition: background 0.15s ease, border-color 0.15s ease,
+    transform 0.08s ease;
+}
+
+input[type='checkbox']:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+input[type='checkbox']:checked::after {
+  content: '\2713'; /* checkmark */
+  color: var(--bg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* make checkbox label clearer */
+label[for='empresa_update'],
+#empresa-fields .field > label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--txt);
+  font-weight: 600;
+}
+
+/* ensure inputs remain column and centered */
+.conta-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* AGRUPAMENTO DE BOTÕES */
@@ -148,4 +267,6 @@
 }
 
 /* REMOVIDO: botão de trocar conta não existe mais */
-.swap-account-button { display: none; }
+.swap-account-button {
+  display: none;
+}

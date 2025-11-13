@@ -29,8 +29,8 @@ $is_admin = false ?? die;
     <h3>Ações rápidas</h3>
     <div>
       <button class="action-btn" id="create-service-btn">Criar serviço</button>
-      <button class="action-btn">Novo admin</button>
-      <button class="action-btn">Novo cliente</button>
+      <button class="action-btn" id="create-admin-btn">Novo admin</button>
+      <button class="action-btn" id="create-client-btn">Novo cliente</button>
     </div>
   </div>
 
@@ -78,7 +78,7 @@ $is_admin = false ?? die;
 
     <div class="records-box" id="clients-list" aria-live="polite">
       <!-- Registros de exemplo, criando divs para cada usuário de forma dinâmica -->
-      <?php include_once BASE_PATH . "/src/controllers/listar_clientes.php"; ?>
+      <?php include_once BASE_PATH . "/src/controllers/painel_admin/listar_clientes.php"; ?>
     </div>
   </section>
 
@@ -95,7 +95,7 @@ $is_admin = false ?? die;
 
     <div class="records-box" id="admins-list" aria-live="polite">
       <!-- Registros de exemplo, criando divs para cada usuário de forma dinâmica -->
-      <?php include_once BASE_PATH . "/src/controllers/listar_admins.php"; ?>
+      <?php include_once BASE_PATH . "/src/controllers/painel_admin/listar_admins.php"; ?>
     </div>
   </section>
 
@@ -111,7 +111,7 @@ $is_admin = false ?? die;
     </div>
 
     <div class="records-box" id="services-list" aria-live="polite">
-      <?php include_once BASE_PATH . "/src/controllers/listar_servicos_admin.php"; ?>
+      <?php include_once BASE_PATH . "/src/controllers/painel_admin/listar_servicos_admin.php"; ?>
     </div>
   </section>
 
@@ -122,6 +122,12 @@ $is_admin = false ?? die;
   <script>
     document.getElementById("create-service-btn").addEventListener("click", function() {
       window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/criar_servico.php";
+    });
+    document.getElementById("create-admin-btn").addEventListener("click", function() {
+      window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/criar_admin.php";
+    });
+    document.getElementById("create-client-btn").addEventListener("click", function() {
+      window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/criar_cliente.php";
     });
 
     document.addEventListener("DOMContentLoaded", () => {

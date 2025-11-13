@@ -12,7 +12,7 @@ $userId = (int) $_SESSION['user_id'];
 /* -------- CARREGAR DADOS -------- */
 $st = $pdo->prepare("SELECT nome, email, telefone, avatar_path, papel FROM usuarios WHERE id = :id LIMIT 1");
 $st->execute([':id' => $userId]);
-$usuario = $st->fetch(PDO::FETCH_ASSOC);
+$usuario = $st->fetch();
 
 $avatarUrl = BASE_URL . '/public/imgs/add-photo.svg';
 if ($usuario && !empty($usuario['avatar_path'])) {
@@ -73,7 +73,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
 
   <script>
     const API = '<?= rtrim(BASE_URL, '/') ?>';
-    const UPLOAD_URL = API + '/src/actions/upload_avatar.php';
+    const UPLOAD_URL = API + '/src/actions/home/upload_avatar.php';
 
     (function() {
       const form = document.getElementById('formConta');
@@ -120,7 +120,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
 
         try {
           btnSalvar.disabled = true;
-          const res = await fetch(`${API}/src/controllers/update_usuario_controller.php`, {
+          const res = await fetch(`${API}/src/controllers/home/update_usuario_controller.php`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -144,7 +144,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
       btnDelete.addEventListener('click', async () => {
         if (!confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')) return;
         try {
-          const r = await fetch(`${API}/src/controllers/delete_usuario_controller.php`, {
+          const r = await fetch(`${API}/src/controllers/home/delete_usuario_controller.php`, {
             method: 'POST',
             credentials: 'include'
           });

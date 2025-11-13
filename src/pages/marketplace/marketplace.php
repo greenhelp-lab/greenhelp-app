@@ -21,7 +21,6 @@ $is_admin = isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin';
   <h1 class="service-title">Marketplace</h1>
   <div class="shortcuts">
     <button onclick="window.location.href='carrinho.php'">Seu Carrinho</button>
-    <button onclick="window.location.href='pagamentos.php'">Dados de Pagamento</button>
   </div>
 
   <!-- Seção Loja de Serviços -->
@@ -82,7 +81,7 @@ $is_admin = isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin';
 
       <!-- Cards de Serviços -->
       <div class="service-cards">
-        <?php require BASE_PATH . '/src/controllers/listar_servicos.php'; ?>
+        <?php require BASE_PATH . '/src/controllers/marketplace/listar_servicos.php'; ?>
 
       </div>
     </div>
@@ -97,7 +96,7 @@ $is_admin = isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin';
       searchInput.addEventListener("input", () => {
         const termo = searchInput.value.trim();
 
-        fetch(window.location.origin + "/greenhelp-app/src/controllers/listar_servicos.php?q=" + encodeURIComponent(termo))
+        fetch(window.location.origin + "/greenhelp-app/src/controllers/marketplace/listar_servicos.php?q=" + encodeURIComponent(termo))
           .then(res => res.text())
           .then(html => {
             cardsContainer.innerHTML = html;

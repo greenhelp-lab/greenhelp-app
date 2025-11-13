@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $userId = (int)$_GET['id'];
 
 /* -------- CARREGAR DADOS -------- */
-$st = $pdo->prepare("SELECT nome, email, telefone, avatar_path, papel FROM usuarios WHERE id = :id LIMIT 1");
+$st = $pdo->prepare("SELECT nome, email, telefone, avatar_path, papel, ativado FROM usuarios WHERE id = :id LIMIT 1");
 $st->execute([':id' => $userId]);
 $usuario = $st->fetch();
 
@@ -43,10 +43,13 @@ if ($usuario && !empty($usuario['avatar_path'])) {
       </div>
 
       <form id="formConta" class="account-form" autocomplete="off">
+        <input type="hidden" name="id" value="<?= (int)$userId ?>">
         <input id="inpNome" type="text" name="nome" placeholder="Nome" value="<?= htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES) ?>" readonly>
         <input id="inpTel" type="tel" name="telefone" placeholder="Telefone" value="<?= htmlspecialchars($usuario['telefone'] ?? '', ENT_QUOTES) ?>" readonly>
         <input id="inpEmail" type="email" name="email" placeholder="Email" value="<?= htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES) ?>" readonly>
-        <input id="inpPapel" type="text" name="papel" placeholder="Papel" value="<?= htmlspecialchars(ucfirst($usuario['papel'] ?? ''), ENT_QUOTES) ?>" readonly>
+        <input id="inpPapel" type="text" name="papel" placeholder="Papel" value="<?= htmlspecialchars(ucfirst($usuario['papel'] ?? ''), ENT_QUOTES) ?>" readonly disabled>
+        <label for="inpAtivado">Ativado? (0 para Não, 1 para Sim)</label>
+        <input id="inpAtivado" type="number" name="ativado" placeholder="Ativado?" value="<?= htmlspecialchars((string)$usuario['ativado'], ENT_QUOTES) ?>" readonly>
 
         <div class="action-buttons-top">
           <button type="button" id="btnEditar" class="btn edit-button">Editar</button>
@@ -67,7 +70,8 @@ if ($usuario && !empty($usuario['avatar_path'])) {
 
     (function() {
       const form = document.getElementById('formConta');
-      const inputFile = document.getElementById('inpFoto');
+      if (!form) return;
+
       const btnEditar = document.getElementById('btnEditar');
       const btnSalvar = document.getElementById('btnSalvar');
       const btnDelete = document.getElementById('btnDelete');
@@ -76,13 +80,15 @@ if ($usuario && !empty($usuario['avatar_path'])) {
         nome: document.getElementById('inpNome'),
         tel: document.getElementById('inpTel'),
         email: document.getElementById('inpEmail'),
-        papel: document.getElementById('inpPapel')
+        papel: document.getElementById('inpPapel'),
+        ativado: document.getElementById('inpAtivado')
       };
 
       function setEditing(on) {
         inputs.nome.readOnly = !on;
         inputs.tel.readOnly = !on;
         inputs.email.readOnly = !on;
+        inputs.ativado.readOnly = !on;
         btnEditar.disabled = on;
         if (on) inputs.nome.focus();
       }
@@ -90,14 +96,16 @@ if ($usuario && !empty($usuario['avatar_path'])) {
       setEditing(false);
       btnEditar.addEventListener('click', () => setEditing(true));
 
-      // salvar via AJAX (sem reload)
+      // SALVAR via AJAX
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const payload = {
+          id: form.querySelector('input[name="id"]').value,
           nome: inputs.nome.value.trim(),
           telefone: inputs.tel.value.trim(),
-          email: inputs.email.value.trim()
+          email: inputs.email.value.trim(),
+          ativado: inputs.ativado.value.trim()
         };
 
         if (!payload.nome || !payload.email) {
@@ -107,7 +115,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
 
         try {
           btnSalvar.disabled = true;
-          const res = await fetch(`${API}/src/controllers/update_usuario_controller.php`, {
+          const res = await fetch(`${API}/src/controllers/painel_admin/atualizar_admin_controller.php`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -120,6 +128,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
           if (!res.ok || !j.ok) throw new Error(j.error || 'Erro ao salvar');
 
           setEditing(false);
+          alert('Admin atualizado com sucesso!');
         } catch (err) {
           alert('Falha ao salvar: ' + err.message);
         } finally {
@@ -127,21 +136,27 @@ if ($usuario && !empty($usuario['avatar_path'])) {
         }
       });
 
-      // DELETAR CONTA (AJAX) -> usa redirect do backend ou fallback para /src/pages/login/login.php
+      // DELETAR ADMIN via AJAX
       btnDelete.addEventListener('click', async () => {
-        if (!confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')) return;
+        if (!confirm('Tem certeza que deseja excluir este admin? Esta ação não pode ser desfeita.')) return;
         try {
-          const r = await fetch(`${API}/src/controllers/delete_usuario_controller.php`, {
+          const id = form.querySelector('input[name="id"]').value;
+          const r = await fetch(`${API}/src/controllers/painel_admin/deletar_admin_controller.php`, {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id
+            }),
             credentials: 'include'
           });
           const j = await r.json().catch(() => ({}));
           if (!r.ok || !j.ok) throw new Error(j.error || 'Erro ao deletar');
 
-          const to = j.redirect || ('<?= rtrim(BASE_URL, '/') ?>/src/pages/login/login.php');
-          window.location.href = to;
+          window.location.href = API + "/src/pages/painel_admin/painel_admin.php";
         } catch (err) {
-          alert('Falha ao deletar conta: ' + err.message);
+          alert('Falha ao deletar: ' + err.message);
         }
       });
 

@@ -83,7 +83,9 @@ if (!empty($_SESSION['user_id'])) {
     ?>
 
     <section class="servicos-andamento">
-      <div class="section-header"><h2>Serviços em Andamento</h2></div>
+      <div class="section-header">
+        <h2>Serviços em Andamento</h2>
+      </div>
       <div class="servicos-grid">
         <?php if (!empty($servicos)): ?>
           <?php foreach ($servicos as $servico):
@@ -118,7 +120,7 @@ if (!empty($_SESSION['user_id'])) {
       </div>
     </section>
 
-      <section class="pontuacoes">
+    <section class="pontuacoes">
       <div class="pontuacoes-header">
         <img src="<?= BASE_URL; ?>/public/imgs/pontuação_verde.png" alt="Pontuações Verdes" class="pontuacoes-img">
         <h2 class="pontuacoes-title">Pontuações Verdes</h2>
@@ -128,10 +130,34 @@ if (!empty($_SESSION['user_id'])) {
         <span class="cor_verde">melhoras sustentáveis</span> na sua empresa
       </p>
       <div class="niveis">
-        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Infraestrutura Eficiente</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
-        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Energia Renovável</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
-        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Computação em Nuvem</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
-        <div class="nivel-card"><div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div><div class="nivel-desc">Políticas Sustentáveis</div><div class="progress-bar"><div class="progress" style="width:60%;"></div></div></div>
+        <div class="nivel-card">
+          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
+          <div class="nivel-desc">Infraestrutura Eficiente</div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
+        </div>
+        <div class="nivel-card">
+          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
+          <div class="nivel-desc">Energia Renovável</div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
+        </div>
+        <div class="nivel-card">
+          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
+          <div class="nivel-desc">Computação em Nuvem</div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
+        </div>
+        <div class="nivel-card">
+          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
+          <div class="nivel-desc">Políticas Sustentáveis</div>
+          <div class="progress-bar">
+            <div class="progress" style="width:60%;"></div>
+          </div>
+        </div>
       </div>
       <p class="pontuacao-total">Pontuação Total: <strong>4769</strong></p>
     </section>
@@ -151,7 +177,9 @@ if (!empty($_SESSION['user_id'])) {
       const ok = ['image/jpeg', 'image/png', 'image/webp'];
 
       try {
-        const res = await fetch('<?= rtrim(BASE_URL, '/') ?>/src/controllers/read_empresa_controller.php', { credentials: 'include' });
+        const res = await fetch('<?= rtrim(BASE_URL, '/') ?>/src/controllers/home/read_empresa_controller.php', {
+          credentials: 'include'
+        });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const json = await res.json();
         if (json.ok && json.empresa) {
@@ -170,8 +198,16 @@ if (!empty($_SESSION['user_id'])) {
       inp.addEventListener('change', async () => {
         const file = inp.files?.[0];
         if (!file) return;
-        if (!ok.includes(file.type)) { alert('JPG/PNG/WEBP'); inp.value = ''; return; }
-        if (file.size > MAX) { alert('Até 3MB'); inp.value = ''; return; }
+        if (!ok.includes(file.type)) {
+          alert('JPG/PNG/WEBP');
+          inp.value = '';
+          return;
+        }
+        if (file.size > MAX) {
+          alert('Até 3MB');
+          inp.value = '';
+          return;
+        }
 
         const t = URL.createObjectURL(file);
         img.src = t;
@@ -180,7 +216,11 @@ if (!empty($_SESSION['user_id'])) {
         const fd = new FormData();
         fd.append('logo', file);
         try {
-          const r = await fetch(UPLOAD_LOGO_URL, { method: 'POST', body: fd, credentials: 'include' });
+          const r = await fetch(UPLOAD_LOGO_URL, {
+            method: 'POST',
+            body: fd,
+            credentials: 'include'
+          });
           const data = await r.json();
           if (!r.ok || !data?.url) throw new Error(data?.error || ('HTTP ' + r.status));
           img.src = data.url + '?t=' + Date.now();
@@ -215,7 +255,9 @@ if (!empty($_SESSION['user_id'])) {
       }
 
       try {
-        const res = await fetch(`${API}/src/controllers/read_empresa_controller.php`, { credentials: 'include' });
+        const res = await fetch(`${API}/src/controllers/home/read_empresa_controller.php`, {
+          credentials: 'include'
+        });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const j = await res.json();
         if (j.ok && j.empresa) {
@@ -226,7 +268,9 @@ if (!empty($_SESSION['user_id'])) {
           f.industria.value = e.setor_atuacao || '';
           f.endereco.value = e.endereco || ''; // NOVO
         }
-      } catch (err) { console.error(err); }
+      } catch (err) {
+        console.error(err);
+      }
 
       btnEdit.addEventListener('click', () => setEditing(true));
 
@@ -237,20 +281,29 @@ if (!empty($_SESSION['user_id'])) {
           cnpj: f.cnpj.value.trim(),
           porte: f.perfil.value.trim(),
           setor_atuacao: f.industria.value.trim(),
-          endereco: f.endereco.value.trim() // NOVO
+          endereco: f.endereco.value.trim()
         };
-        if (!payload.nome) { alert('Informe o nome da empresa.'); f.empresa.focus(); return; }
+        if (!payload.nome) {
+          alert('Informe o nome da empresa.');
+          f.empresa.focus();
+          return;
+        }
 
         try {
           btnSave.disabled = true;
-          const r = await fetch(`${API}/src/controllers/update_empresa_controller.php`, {
+          const r = await fetch(`${API}/src/controllers/home/update_empresa_controller.php`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(payload),
             credentials: 'include'
           });
           const j = await r.json().catch(() => ({}));
-          if (!r.ok || !j.ok) { alert('Erro ao salvar: ' + (j.error || r.status)); return; }
+          if (!r.ok || !j.ok) {
+            alert('Erro ao salvar: ' + (j.error || r.status));
+            return;
+          }
           setEditing(false);
         } catch (e) {
           alert('Falha ao salvar: ' + e.message);
@@ -263,4 +316,5 @@ if (!empty($_SESSION['user_id'])) {
     })();
   </script>
 </body>
+
 </html>

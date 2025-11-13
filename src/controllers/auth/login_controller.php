@@ -6,7 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 $email = $_POST['email'];
 $senha = $_POST['senha'];
 
-$sql = "SELECT id, nome, senha, papel FROM usuarios WHERE email = :email AND ativo = 1";
+$sql = "SELECT id, nome, senha, papel FROM usuarios WHERE email = :email AND ativado = 1";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':email', $email);
 $stmt->execute();

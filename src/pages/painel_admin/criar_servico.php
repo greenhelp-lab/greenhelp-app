@@ -14,7 +14,7 @@ $areas = $query->fetchAll();
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Criar Serviço</title>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/global.css">
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/painel_admin/criar_servico.css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/painel_admin/criar_registro.css" />
 </head>
 
 <body>
@@ -25,7 +25,7 @@ $areas = $query->fetchAll();
       <button class="close" id="close-btn" aria-label="Fechar">✕</button>
     </div>
 
-    <form method="POST" action="<?php echo BASE_URL; ?>/src/actions/criar_servico_action.php">
+    <form method="POST" action="<?php echo BASE_URL; ?>/src/actions/painel_admin/criar_servico_action.php">
       <div class="field">
         <label for="nome">Nome</label>
         <input id="nome" name="nome" class="input pill" type="text" required />

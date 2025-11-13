@@ -89,7 +89,7 @@ if (!empty($usuario_id)) {
           <div class="cart-empty" id="cartEmpty">
             <h2>Seu carrinho está vazio</h2>
             <p>Explore os serviços e adicione soluções sustentáveis ao seu carrinho.</p>
-            <a href="<?php echo BASE_URL; ?>/src/pages/servicos/marketplace.php" class="btn-primary">Ver serviços</a>
+            <a href="<?php echo BASE_URL; ?>/src/pages/marketplace/marketplace.php" class="btn-primary">Ver serviços</a>
           </div>
         <?php endif; ?>
       </div>
@@ -131,6 +131,8 @@ if (!empty($usuario_id)) {
     </div>
   </div>
 
+  <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const modal = document.getElementById('confirmModal');
@@ -171,7 +173,7 @@ if (!empty($usuario_id)) {
           const cartItem = this.closest('.cart-item');
 
           try {
-            const response = await fetch(`${window.location.origin}/greenhelp-app/src/actions/remover_do_carrinho.php`, {
+            const response = await fetch(`${window.location.origin}/greenhelp-app/src/actions/marketplace/remover_do_carrinho.php`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -216,7 +218,7 @@ if (!empty($usuario_id)) {
         }
 
         try {
-          const response = await fetch(`${window.location.origin}/greenhelp-app/src/actions/finalizar_compra.php`, {
+          const response = await fetch(`${window.location.origin}/greenhelp-app/src/actions/marketplace/finalizar_compra.php`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -246,9 +248,6 @@ if (!empty($usuario_id)) {
       updateTotal();
     });
   </script>
-
-
-  <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
 </body>
 
 </html>
