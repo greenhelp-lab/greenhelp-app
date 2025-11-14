@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: greenhelp-app
-    env: docker
-    plan: free
-    dockerfilePath: ./Dockerfile
-    autoDeploy: true
-    envVars:
-      PORT: 80
