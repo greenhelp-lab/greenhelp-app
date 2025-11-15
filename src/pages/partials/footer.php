@@ -10,7 +10,7 @@
       <div class="footer-links">
         <h4>Empresa</h4>
         <ul>
-          <li><a href="<?php echo BASE_URL ?>/public/sobre_nos.html" target="_blank">Sobre nós</a></li>
+          <li><a href="<?php echo BASE_URL ?>/public/index.html" target="_blank">Sobre nós</a></li>
           <!-- <li><a href="cases.html">Cases</a></li> -->
           <li><a href="">Blog</a></li>
           <li><a href="">Bastidores</a></li>
