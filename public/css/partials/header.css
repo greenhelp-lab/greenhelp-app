@@ -104,7 +104,7 @@ header {
     display: none;
   }
 }
-@media (max-width: 435px) {
+@media (max-width: 405px) {
   .nav-container {
     justify-content: center;
   }
