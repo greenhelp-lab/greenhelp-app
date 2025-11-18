@@ -26,6 +26,7 @@ try {
   $nome = trim($data['nome'] ?? '');
   $email = trim($data['email'] ?? '');
   $telefone = trim($data['telefone'] ?? '');
+  $ativo = (int)($data['ativo'] ?? 0);
   // empresa-related data (optional)
   $empresa_select = $data['empresa_select'] ?? null; // '', 'new' or id
   $empresa_obj = $data['empresa'] ?? null; // array with nome, cnpj, setor_atuacao, porte
@@ -93,7 +94,8 @@ try {
       nome = :nome,
       email = :email,
       telefone = :telefone,
-      empresa_id = :empresa_id
+      empresa_id = :empresa_id,
+      ativo = :ativo
       WHERE id = :id';
 
     $stmt = $pdo->prepare($sql);
@@ -102,6 +104,7 @@ try {
       ':email' => $email,
       ':telefone' => $telefone,
       ':empresa_id' => $empresa_id_to_set,
+      ':ativo' => $ativo,
       ':id' => $id
     ]);
 

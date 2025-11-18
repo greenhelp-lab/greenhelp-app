@@ -7,27 +7,37 @@ if (!isset($_SESSION['user_id'])) {
   http_response_code(401);
   exit('Não autenticado');
 }
-$userId = (int)$_GET['id'];
 
-$st = $pdo->prepare("SELECT nome, email, telefone, avatar_path, papel, empresa_id FROM usuarios WHERE id = :id LIMIT 1");
+$userId = (int)($_GET['id'] ?? 0);
+
+$st = $pdo->prepare("SELECT id, nome, email, telefone, avatar_path, papel, empresa_id, ativo 
+                     FROM usuarios 
+                     WHERE id = :id LIMIT 1");
 $st->execute([':id' => $userId]);
 $usuario = $st->fetch();
 
+if (!$usuario) {
+  http_response_code(404);
+  exit('Usuário não encontrado');
+}
+
 $avatarUrl = BASE_URL . '/public/imgs/add-photo.svg';
-if ($usuario && !empty($usuario['avatar_path'])) {
+if (!empty($usuario['avatar_path'])) {
   $avatarUrl = $usuario['avatar_path'];
 }
 
-// carregar dados da empresa associada (se houver)
 $empresa = null;
 if (!empty($usuario['empresa_id'])) {
-  $es = $pdo->prepare("SELECT id, nome, cnpj, setor_atuacao, porte FROM empresas WHERE id = :id LIMIT 1");
+  $es = $pdo->prepare("SELECT id, nome, cnpj, setor_atuacao, porte 
+                       FROM empresas 
+                       WHERE id = :id LIMIT 1");
   $es->execute([':id' => (int)$usuario['empresa_id']]);
   $empresa = $es->fetch();
 }
-// carregar lista de empresas para select de associação/edit
+
 try {
-  $empresasStmt = $pdo->query("SELECT id, nome, cnpj, setor_atuacao, porte FROM empresas ORDER BY nome");
+  $empresasStmt = $pdo->query("SELECT id, nome, cnpj, setor_atuacao, porte 
+                               FROM empresas ORDER BY nome");
   $empresas = $empresasStmt->fetchAll();
 } catch (Exception $e) {
   $empresas = [];
@@ -39,8 +49,10 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/global.css">
-  <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/conta/conta.css">
+  <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/painel_admin/ver_usuario.css">
+
   <title>Ver Cliente</title>
 </head>
 
@@ -48,75 +60,185 @@ try {
 
   <?php include_once BASE_PATH . "/src/pages/partials/header_admin.php"; ?>
 
-  <main class="account-main">
+  <main class="account-main center-layout">
     <div class="conta-container">
-      <h1 class="account-title">Sobre o Cliente</h1>
 
-      <div class="user-photo">
-        <img id="fotoUsuario" src="<?= htmlspecialchars($avatarUrl, ENT_QUOTES) ?>" alt="Foto do usuário">
-      </div>
+      <!-- ============================
+            CLIENTE
+    ============================= -->
+      <section class="cliente-info">
+        <h1 class="account-title">Sobre o Cliente</h1>
 
-      <form id="formConta" class="account-form" autocomplete="off">
-        <input type="hidden" name="id" value="<?= (int)$userId ?>">
-        <input id="inpNome" type="text" name="nome" placeholder="Nome" value="<?= htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES) ?>" readonly>
-        <input id="inpTel" type="tel" name="telefone" placeholder="Telefone" value="<?= htmlspecialchars($usuario['telefone'] ?? '', ENT_QUOTES) ?>" readonly>
-        <input id="inpEmail" type="email" name="email" placeholder="Email" value="<?= htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES) ?>" readonly>
-        <input id="inpPapel" type="text" name="papel" placeholder="Papel" value="<?= htmlspecialchars(ucfirst($usuario['papel'] ?? ''), ENT_QUOTES) ?>" readonly disabled>
+        <div class="photo-card">
+          <img id="fotoUsuario"
+            src="<?= htmlspecialchars($avatarUrl, ENT_QUOTES) ?>"
+            alt="Foto do usuário">
+        </div>
 
-        <div class="empresa-form" style="margin-top:12px;">
+        <form id="formConta" class="account-form" autocomplete="off">
+          <input type="hidden" name="id" value="<?= (int)$userId ?>">
+
+          <div class="form-grid cliente-fields">
+
+            <div class="field">
+              <label for="inpNome">Nome</label>
+              <input id="inpNome"
+                type="text"
+                name="nome"
+                value="<?= htmlspecialchars($usuario['nome'], ENT_QUOTES) ?>"
+                readonly>
+            </div>
+
+            <div class="field">
+              <label for="inpTel">Telefone</label>
+              <input id="inpTel"
+                type="tel"
+                name="telefone"
+                value="<?= htmlspecialchars($usuario['telefone'], ENT_QUOTES) ?>"
+                readonly>
+            </div>
+
+            <div class="field">
+              <label for="inpEmail">Email</label>
+              <input id="inpEmail"
+                type="email"
+                name="email"
+                value="<?= htmlspecialchars($usuario['email'], ENT_QUOTES) ?>"
+                readonly>
+            </div>
+
+            <div class="field">
+              <label for="inpPapel">Papel</label>
+              <input id="inpPapel"
+                type="text"
+                name="papel"
+                value="<?= htmlspecialchars(ucfirst($usuario['papel']), ENT_QUOTES) ?>"
+                readonly disabled>
+            </div>
+
+            <!-- NOVO CAMPO ATIVO -->
+            <div class="field">
+              <label for="inpAtivo">Ativado? (0 = não, 1 = sim)</label>
+              <input id="inpAtivo"
+                type="number"
+                min="0"
+                max="1"
+                name="ativo"
+                value="<?= (int)$usuario['ativo'] ?>"
+                readonly>
+            </div>
+
+          </div><!-- grid -->
+
+      </section>
+
+      <!-- ============================
+            EMPRESA
+    ============================= -->
+      <section class="empresa-info">
+        <h2 class="section-title">Empresa vinculada</h2>
+
+        <div class="empresa-select-wrapper">
           <label for="empresa_select">Empresa / Associação</label>
-          <select id="empresa_select" name="empresa_select" class="input pill">
+          <select id="empresa_select" name="empresa_select" class="input pill" disabled>
             <option value="">-- Nenhuma --</option>
-            <?php foreach ($empresas as $empOpt): ?>
-              <option value="<?= (int)$empOpt['id'] ?>" <?= ($empresa && $empresa['id'] == $empOpt['id']) ? 'selected' : '' ?>><?= htmlspecialchars($empOpt['nome'], ENT_QUOTES) ?><?= $empOpt['cnpj'] ? ' — ' . htmlspecialchars($empOpt['cnpj'], ENT_QUOTES) : '' ?></option>
+
+            <?php foreach ($empresas as $emp): ?>
+              <option value="<?= (int)$emp['id'] ?>"
+                <?= ($empresa && $empresa['id'] == $emp['id']) ? 'selected' : '' ?>>
+                <?= htmlspecialchars($emp['nome'], ENT_QUOTES) ?>
+                <?= $emp['cnpj'] ? ' — ' . htmlspecialchars($emp['cnpj'], ENT_QUOTES) : '' ?>
+              </option>
             <?php endforeach; ?>
+
             <option value="new">Criar nova empresa</option>
           </select>
+        </div>
 
-          <div id="empresa-fields" style="margin-top:8px;">
+        <div class="empresa-card mt-12">
+          <h3 class="empresa-subtitle">Dados da empresa</h3>
+
+          <div id="empresa-fields" class="form-grid empresa-fields">
+
             <div class="field">
-              <label for="empresa_nome">Nome da Empresa</label>
-              <input id="empresa_nome" name="empresa_nome" class="input pill" type="text" value="<?= htmlspecialchars($empresa['nome'] ?? '', ENT_QUOTES) ?>" readonly />
+              <label for="empresa_nome">Nome</label>
+              <input id="empresa_nome"
+                type="text"
+                class="input pill"
+                value="<?= htmlspecialchars($empresa['nome'] ?? '', ENT_QUOTES) ?>"
+                readonly>
             </div>
+
             <div class="field">
               <label for="empresa_cnpj">CNPJ</label>
-              <input id="empresa_cnpj" name="empresa_cnpj" class="input pill" type="text" value="<?= htmlspecialchars($empresa['cnpj'] ?? '', ENT_QUOTES) ?>" readonly />
+              <input id="empresa_cnpj"
+                type="text"
+                class="input pill"
+                value="<?= htmlspecialchars($empresa['cnpj'] ?? '', ENT_QUOTES) ?>"
+                readonly>
             </div>
+
             <div class="field">
               <label for="empresa_setor">Setor</label>
-              <input id="empresa_setor" name="empresa_setor" class="input pill" type="text" value="<?= htmlspecialchars($empresa['setor_atuacao'] ?? '', ENT_QUOTES) ?>" readonly />
+              <input id="empresa_setor"
+                type="text"
+                class="input pill"
+                value="<?= htmlspecialchars($empresa['setor_atuacao'] ?? '', ENT_QUOTES) ?>"
+                readonly>
             </div>
+
             <div class="field">
               <label for="empresa_porte">Porte</label>
-              <input id="empresa_porte" name="empresa_porte" class="input pill" type="text" value="<?= htmlspecialchars($empresa['porte'] ?? '', ENT_QUOTES) ?>" readonly />
+              <input id="empresa_porte"
+                type="text"
+                class="input pill"
+                value="<?= htmlspecialchars($empresa['porte'] ?? '', ENT_QUOTES) ?>"
+                readonly>
             </div>
 
             <?php if ($empresa): ?>
               <div class="field">
-                <label><input type="checkbox" id="empresa_update" /> Atualizar dados da empresa associada</label>
+                <label>
+                  <input type="checkbox" id="empresa_update" disabled>
+                  Atualizar dados da empresa associada
+                </label>
               </div>
             <?php endif; ?>
+
           </div>
         </div>
+      </section>
 
-        <div class="action-buttons-top">
+      <!-- ============================
+            AÇÕES
+    ============================= -->
+      <section class="actions">
+
+        <div class="action-row primary-actions">
           <button type="button" id="btnEditar" class="btn edit-button">Editar</button>
           <button type="submit" id="btnSalvar" class="btn save-button">Salvar</button>
         </div>
 
-        <div class="action-buttons-bottom">
+        <div class="action-row danger-zone">
           <button type="button" id="btnDelete" class="btn delete-account-button">Deletar Conta</button>
         </div>
+
+      </section>
+
       </form>
+
     </div>
   </main>
 
-  <img src="<?= BASE_URL; ?>/public/imgs/engines-icons.svg" alt="Ícones de engrenagens decorativas" class="engines-icons">
+  <img src="<?= BASE_URL; ?>/public/imgs/engines-icons.svg"
+    alt="Ícones decorativos"
+    class="engines-icons">
 
   <script>
     const API = '<?= rtrim(BASE_URL, '/') ?>';
 
     (function() {
+
       const form = document.getElementById('formConta');
       if (!form) return;
 
@@ -128,87 +250,30 @@ try {
         nome: document.getElementById('inpNome'),
         tel: document.getElementById('inpTel'),
         email: document.getElementById('inpEmail'),
+        ativo: document.getElementById('inpAtivo'),
         papel: document.getElementById('inpPapel')
       };
 
-      // empresa controls
       const empresaSelect = document.getElementById('empresa_select');
-      const empresaFields = {
-        nome: document.getElementById('empresa_nome'),
-        cnpj: document.getElementById('empresa_cnpj'),
-        setor: document.getElementById('empresa_setor'),
-        porte: document.getElementById('empresa_porte')
-      };
-      const empresaUpdateCheckbox = document.getElementById('empresa_update');
-
-      // map of empresas for quick lookup
-      const empresasData = <?= json_encode($empresas, JSON_HEX_TAG) ?> || [];
-      const empresasMap = {};
-      empresasData.forEach(e => empresasMap[e.id] = e);
+      const empresaUpdate = document.getElementById('empresa_update');
 
       function setEditing(on) {
         inputs.nome.readOnly = !on;
         inputs.tel.readOnly = !on;
         inputs.email.readOnly = !on;
+        inputs.ativo.readOnly = !on;
+
         btnEditar.disabled = on;
-        // when enabling edit, enable empresa select and enable fields appropriately
+
         if (empresaSelect) empresaSelect.disabled = !on;
-        if (!on) {
-          // reset empresa fields to readonly when leaving edit mode
-          Object.values(empresaFields).forEach(i => i && (i.readOnly = true));
-          if (empresaUpdateCheckbox) empresaUpdateCheckbox.checked = false;
-        } else {
-          // if editing and a company is selected, allow toggling update via checkbox
-          if (empresaSelect && empresaSelect.value === 'new') {
-            // creating new company -> make fields editable and required
-            Object.values(empresaFields).forEach(i => i && (i.readOnly = false));
-            document.getElementById('empresa_nome').required = true;
-          } else if (empresaSelect && empresaSelect.value) {
-            // existing company selected -> keep fields readonly unless checkbox checked
-            Object.values(empresaFields).forEach(i => i && (i.readOnly = true));
-          }
-        }
+        if (empresaUpdate) empresaUpdate.disabled = !on;
+
         if (on) inputs.nome.focus();
       }
 
       setEditing(false);
       btnEditar.addEventListener('click', () => setEditing(true));
 
-      // empresa select change handling
-      if (empresaSelect) {
-        empresaSelect.addEventListener('change', () => {
-          const v = empresaSelect.value;
-          if (v === 'new') {
-            // clear fields and make editable
-            Object.values(empresaFields).forEach(i => i && (i.value = ''));
-            Object.values(empresaFields).forEach(i => i && (i.readOnly = false));
-            if (empresaUpdateCheckbox) empresaUpdateCheckbox.checked = false;
-          } else if (v === '') {
-            // no company
-            Object.values(empresaFields).forEach(i => i && (i.value = '', i.readOnly = true));
-            if (empresaUpdateCheckbox) empresaUpdateCheckbox.checked = false;
-          } else {
-            // existing company - populate
-            const obj = empresasMap[v];
-            if (obj) {
-              empresaFields.nome.value = obj.nome || '';
-              empresaFields.cnpj.value = obj.cnpj || '';
-              empresaFields.setor.value = obj.setor_atuacao || '';
-              empresaFields.porte.value = obj.porte || '';
-            }
-            Object.values(empresaFields).forEach(i => i && (i.readOnly = true));
-          }
-        });
-      }
-
-      if (empresaUpdateCheckbox) {
-        empresaUpdateCheckbox.addEventListener('change', () => {
-          const checked = empresaUpdateCheckbox.checked;
-          Object.values(empresaFields).forEach(i => i && (i.readOnly = !checked));
-        });
-      }
-
-      // SALVAR via AJAX
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -216,35 +281,28 @@ try {
           id: form.querySelector('input[name="id"]').value,
           nome: inputs.nome.value.trim(),
           telefone: inputs.tel.value.trim(),
-          email: inputs.email.value.trim()
+          email: inputs.email.value.trim(),
+          ativo: inputs.ativo.value.trim(),
+          empresa_id: empresaSelect ? empresaSelect.value : null,
+          empresa_update: empresaUpdate ? empresaUpdate.checked : false,
+          empresa_data: {
+            nome: document.getElementById('empresa_nome')?.value || '',
+            cnpj: document.getElementById('empresa_cnpj')?.value || '',
+            setor: document.getElementById('empresa_setor')?.value || '',
+            porte: document.getElementById('empresa_porte')?.value || ''
+          }
         };
-
-        // include empresa association/update info
-        if (empresaSelect) {
-          payload.empresa_select = empresaSelect.value; // '', 'new' or id
-          payload.empresa = {
-            nome: empresaFields.nome.value.trim(),
-            cnpj: empresaFields.cnpj.value.trim(),
-            setor_atuacao: empresaFields.setor.value.trim(),
-            porte: empresaFields.porte.value.trim()
-          };
-          payload.empresa_update = !!(empresaUpdateCheckbox && empresaUpdateCheckbox.checked);
-        }
-
-        if (!payload.nome || !payload.email) {
-          alert('Preencha nome e email.');
-          return;
-        }
 
         try {
           btnSalvar.disabled = true;
+
           const res = await fetch(`${API}/src/controllers/painel_admin/atualizar_cliente_controller.php`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(payload),
-            credentials: 'include'
+            credentials: 'include',
+            body: JSON.stringify(payload)
           });
 
           const j = await res.json().catch(() => ({}));
@@ -259,21 +317,23 @@ try {
         }
       });
 
-      // DELETAR CLIENTE via AJAX
       btnDelete.addEventListener('click', async () => {
-        if (!confirm('Tem certeza que deseja excluir este cliente? Esta ação não pode ser desfeita.')) return;
+        if (!confirm('Deseja excluir este cliente?')) return;
+
         try {
           const id = form.querySelector('input[name="id"]').value;
+
           const r = await fetch(`${API}/src/controllers/painel_admin/deletar_cliente_controller.php`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({
               id
-            }),
-            credentials: 'include'
+            })
           });
+
           const j = await r.json().catch(() => ({}));
           if (!r.ok || !j.ok) throw new Error(j.error || 'Erro ao deletar');
 
@@ -281,10 +341,12 @@ try {
         } catch (err) {
           alert('Falha ao deletar: ' + err.message);
         }
+
       });
 
     })();
   </script>
+
 </body>
 
 </html>

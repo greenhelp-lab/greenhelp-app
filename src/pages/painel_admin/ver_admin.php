@@ -26,7 +26,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/global.css">
-  <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/conta/conta.css">
+  <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/painel_admin/ver_usuario.css">
   <title>Ver Admin</title>
 </head>
 
@@ -34,36 +34,103 @@ if ($usuario && !empty($usuario['avatar_path'])) {
 
   <?php include_once BASE_PATH . "/src/pages/partials/header_admin.php"; ?>
 
-  <main class="account-main">
+  <main class="account-main center-layout">
     <div class="conta-container">
-      <h1 class="account-title">Sobre o Admin</h1>
 
-      <div class="user-photo">
-        <img id="fotoUsuario" src="<?= htmlspecialchars($avatarUrl, ENT_QUOTES) ?>" alt="Foto do usuário">
-      </div>
+      <!-- ============================
+            ADMIN
+      ============================= -->
+      <section class="cliente-info">
+        <h1 class="account-title">Sobre o Admin</h1>
 
-      <form id="formConta" class="account-form" autocomplete="off">
-        <input type="hidden" name="id" value="<?= (int)$userId ?>">
-        <input id="inpNome" type="text" name="nome" placeholder="Nome" value="<?= htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES) ?>" readonly>
-        <input id="inpTel" type="tel" name="telefone" placeholder="Telefone" value="<?= htmlspecialchars($usuario['telefone'] ?? '', ENT_QUOTES) ?>" readonly>
-        <input id="inpEmail" type="email" name="email" placeholder="Email" value="<?= htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES) ?>" readonly>
-        <input id="inpPapel" type="text" name="papel" placeholder="Papel" value="<?= htmlspecialchars(ucfirst($usuario['papel'] ?? ''), ENT_QUOTES) ?>" readonly disabled>
-        <label for="inpAtivo">Ativado? (0 para Não, 1 para Sim)</label>
-        <input id="inpAtivo" type="number" name="ativo" placeholder="Ativado?" value="<?= htmlspecialchars((string)$usuario['ativo'], ENT_QUOTES) ?>" readonly>
+        <!-- Foto -->
+        <div class="photo-card">
+          <img id="fotoUsuario"
+            src="<?= htmlspecialchars($avatarUrl, ENT_QUOTES) ?>"
+            alt="Foto do usuário">
+        </div>
 
-        <div class="action-buttons-top">
+        <!-- Form -->
+        <form id="formConta" class="account-form" autocomplete="off">
+          <input type="hidden" name="id" value="<?= (int)$userId ?>">
+
+          <div class="form-grid cliente-fields">
+
+            <div class="field">
+              <label for="inpNome">Nome</label>
+              <input id="inpNome"
+                type="text"
+                name="nome"
+                value="<?= htmlspecialchars($usuario['nome'], ENT_QUOTES) ?>"
+                readonly>
+            </div>
+
+            <div class="field">
+              <label for="inpTel">Telefone</label>
+              <input id="inpTel"
+                type="tel"
+                name="telefone"
+                value="<?= htmlspecialchars($usuario['telefone'], ENT_QUOTES) ?>"
+                readonly>
+            </div>
+
+            <div class="field">
+              <label for="inpEmail">Email</label>
+              <input id="inpEmail"
+                type="email"
+                name="email"
+                value="<?= htmlspecialchars($usuario['email'], ENT_QUOTES) ?>"
+                readonly>
+            </div>
+
+            <div class="field">
+              <label for="inpPapel">Papel</label>
+              <input id="inpPapel"
+                type="text"
+                name="papel"
+                value="<?= htmlspecialchars(ucfirst($usuario['papel']), ENT_QUOTES) ?>"
+                readonly disabled>
+            </div>
+
+            <div class="field">
+              <label for="inpAtivo">Ativado? (0 = não, 1 = sim)</label>
+              <input id="inpAtivo"
+                type="number"
+                min="0"
+                max="1"
+                name="ativo"
+                value="<?= (int)$usuario['ativo'] ?>"
+                readonly>
+            </div>
+
+          </div><!-- grid -->
+
+      </section>
+
+      <!-- ============================
+            AÇÕES
+      ============================= -->
+      <section class="actions">
+
+        <div class="action-row primary-actions">
           <button type="button" id="btnEditar" class="btn edit-button">Editar</button>
           <button type="submit" id="btnSalvar" class="btn save-button">Salvar</button>
         </div>
 
-        <div class="action-buttons-bottom">
+        <div class="action-row danger-zone">
           <button type="button" id="btnDelete" class="btn delete-account-button">Deletar Conta</button>
         </div>
+
+      </section>
+
       </form>
+
     </div>
   </main>
 
-  <img src="<?= BASE_URL; ?>/public/imgs/engines-icons.svg" alt="Ícones de engrenagens decorativas" class="engines-icons">
+  <img src="<?= BASE_URL; ?>/public/imgs/engines-icons.svg"
+    alt="Ícones decorativos"
+    class="engines-icons">
 
   <script>
     const API = '<?= rtrim(BASE_URL, '/') ?>';

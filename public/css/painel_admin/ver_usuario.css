@@ -1,0 +1,330 @@
+/* LAYOUT */
+.account-main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 40px var(--vh-pad);
+}
+
+.conta-container {
+  width: min(95%, 760px);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(0, 0, 0, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--card-radius);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: stretch;
+}
+
+/* TÍTULO */
+.account-title {
+  text-align: left;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--txt);
+}
+
+/* FOTO USUARIO */
+.photo-card {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.photo-card img,
+#fotoUsuario {
+  width: 140px;
+  height: 140px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 6px 18px rgba(10, 10, 30, 0.45);
+}
+
+/* FORM CONTA CLIENTE */
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.account-form input,
+.account-form select,
+.account-form textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--input);
+  border: 1.5px solid var(--stroke);
+  border-radius: 12px;
+  color: var(--txt);
+  font-size: 0.98rem;
+  line-height: 1.3;
+  outline: none;
+  transition: box-shadow 160ms ease, border-color 160ms ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+.account-form input::placeholder,
+.account-form textarea::placeholder {
+  color: var(--muted);
+}
+
+.account-form input:focus,
+.account-form select:focus,
+.account-form textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 6px 18px rgba(47, 201, 140, 0.12);
+}
+
+.account-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23ffffff' fill-opacity='0.85' d='M6 8L0 0h12z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+}
+
+.account-form select option {
+  background: var(--input);
+  color: var(--txt);
+}
+
+/* EMPRESA */
+.empresa-card {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(0, 0, 0, 0.03)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.empresa-subtitle {
+  color: var(--txt);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.empresa-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 14px;
+}
+
+.empresa-card input,
+.empresa-card select,
+.empresa-card textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--input);
+  border: 1.5px solid var(--stroke);
+  border-radius: 12px;
+  color: var(--txt);
+  font-size: 0.98rem;
+  line-height: 1.3;
+  outline: none;
+  transition: box-shadow 160ms ease, border-color 160ms ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+.empresa-card input::placeholder,
+.empresa-card textarea::placeholder {
+  color: var(--muted);
+}
+
+.empresa-card input:focus,
+.empresa-card select:focus,
+.empresa-card textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 6px 18px rgba(47, 201, 140, 0.12);
+}
+
+@media (max-width: 620px) {
+  .empresa-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Ajuste visual para o select da empresa */
+#empresa_select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background-color: var(--input);
+  border: 1.5px solid var(--stroke);
+  color: var(--txt);
+  transition: 160ms ease;
+}
+
+#empresa_select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 6px 18px rgba(47, 201, 140, 0.12);
+}
+
+/* Inputs dentro da empresa ficam visualmente iguais aos demais */
+.empresa-fields input {
+  background-color: var(--input) !important;
+}
+
+/* ===============================
+   Checkbox
+   =============================== */
+input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  border: 1.5px solid var(--stroke);
+  border-radius: 6px;
+  display: inline-block;
+  position: relative;
+  background: var(--bg);
+  cursor: pointer;
+}
+
+input[type='checkbox']:checked {
+  background-color: var(--accent) !important;
+  border-color: var(--accent);
+}
+
+input[type='checkbox']:checked::after {
+  content: '\2713';
+  color: var(--bg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  font-size: 12px;
+}
+
+.empresa-fields .field label,
+label[for='empresa_update'] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--txt);
+}
+
+/* ===============================
+   Ações
+   =============================== */
+.actions {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.action-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.primary-actions {
+  justify-content: space-between;
+}
+
+.danger-zone {
+  justify-content: center;
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.edit-button {
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid rgba(53, 242, 143, 0.16);
+}
+
+.save-button {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+}
+
+.delete-account-button {
+  background: var(--danger);
+  color: var(--bg);
+  border: none;
+}
+
+/*    Responsividade adicional  */
+@media (min-width: 900px) {
+  .conta-container {
+    padding: 28px;
+    gap: 20px;
+  }
+  .photo-card img {
+    width: 160px;
+    height: 160px;
+  }
+  .account-title {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .conta-container {
+    width: 92%;
+    padding: 16px;
+  }
+  .account-form input,
+  .account-form select {
+    padding: 10px 12px;
+  }
+}
+
+.engines-icons {
+  color: var(--stroke);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0.08;
+  z-index: -1;
+  pointer-events: none;
+}
+.engines-icons img {
+  width: 120px;
+  margin: 0 12px;
+  filter: grayscale(1) brightness(2);
+}
+.engines-icons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0.08;
+}
