@@ -68,8 +68,8 @@ if (!empty($_SESSION['user_id'])) {
 
     <!-- ===== Serviços em Andamento ===== -->
     <?php
-    $sql = "SELECT sa.id, sa.status, sa.data_inicio, 
-                   s.nome, s.descricao, s.preco,
+    $sql = "SELECT sa.id, sa.status, sa.valor_total, sa.data_inicio, 
+                   s.nome, s.descricao,
                    a.nome as area_nome, a.imagem_url as area_img
             FROM servicos_andamento sa
             INNER JOIN servicos s ON sa.servico_id = s.id
@@ -79,7 +79,7 @@ if (!empty($_SESSION['user_id'])) {
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':usuario_id', $_SESSION['user_id']);
     $stmt->execute();
-    $servicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $servicos = $stmt->fetchAll();
     ?>
 
     <section class="servicos-andamento">
@@ -110,7 +110,7 @@ if (!empty($_SESSION['user_id'])) {
               </div>
               <div class="servico-footer">
                 <span class="data">Adquirido: <?= date('d/m/Y', strtotime($servico['data_inicio'])) ?></span>
-                <span class="preco">R$ <?= number_format($servico['preco'], 2, ',', '.') ?></span>
+                <span class="preco">R$ <?= number_format($servico['valor_total'], 2, ',', '.') ?></span>
               </div>
             </div>
           <?php endforeach; ?>
@@ -167,7 +167,7 @@ if (!empty($_SESSION['user_id'])) {
   <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
 
   <script>
-    const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/actions/upload_logo.php';
+    const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/controllers/home/upload_logo_controller.php';
 
     (async function() {
       const btn = document.getElementById('btnLogo');
@@ -266,7 +266,7 @@ if (!empty($_SESSION['user_id'])) {
           f.cnpj.value = e.cnpj || '';
           f.perfil.value = e.porte || '';
           f.industria.value = e.setor_atuacao || '';
-          f.endereco.value = e.endereco || ''; // NOVO
+          f.endereco.value = e.endereco || '';
         }
       } catch (err) {
         console.error(err);

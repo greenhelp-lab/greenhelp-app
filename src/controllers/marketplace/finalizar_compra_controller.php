@@ -38,8 +38,9 @@ try {
   $pdo->beginTransaction();
 
   $placeholders = implode(',', array_fill(0, count($ids_carrinho), '?'));
-  $sql = "SELECT c.id, c.servico_id 
+  $sql = "SELECT c.id, c.servico_id, s.preco
           FROM carrinho c 
+          JOIN servicos s ON c.servico_id = s.id
           WHERE c.id IN ($placeholders) 
           AND c.usuario_id = ? 
           AND c.status = 'pendente'";
@@ -54,15 +55,24 @@ try {
   }
 
   $stmt_inserir = $pdo->prepare(
-    "INSERT INTO servicos_andamento (usuario_id, servico_id, status) VALUES (?, ?, 'pendente')"
+    "INSERT INTO servicos_andamento (usuario_id, servico_id, valor_total, status)
+   VALUES (?, ?, ?, 'pendente')"
   );
+
   $stmt_atualizar = $pdo->prepare(
-    "UPDATE carrinho SET status = 'processado' WHERE id = ? AND usuario_id = ?"
+    "UPDATE carrinho SET status = 'comprado' WHERE id = ? AND usuario_id = ?"
   );
 
   $ids_processados = [];
   foreach ($itens as $item) {
-    $stmt_inserir->execute([$id_usuario, $item['servico_id']]);
+    $valor_total = $item['preco']; // 1 serviço = 1 preço
+
+    $stmt_inserir->execute([
+      $id_usuario,
+      $item['servico_id'],
+      $valor_total
+    ]);
+
     $stmt_atualizar->execute([$item['id'], $id_usuario]);
     $ids_processados[] = $item['id'];
   }

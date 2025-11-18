@@ -173,7 +173,7 @@ if (!empty($usuario_id)) {
           const cartItem = this.closest('.cart-item');
 
           try {
-            const response = await fetch(`${window.location.origin}/greenhelp-app/src/actions/marketplace/remover_do_carrinho.php`, {
+            const response = await fetch(`${window.location.origin}/greenhelp-app/src/controllers/marketplace/remover_do_carrinho_controller.php`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -218,7 +218,7 @@ if (!empty($usuario_id)) {
         }
 
         try {
-          const response = await fetch(`${window.location.origin}/greenhelp-app/src/actions/marketplace/finalizar_compra.php`, {
+          const response = await fetch(`${window.location.origin}/greenhelp-app/src/controllers/marketplace/finalizar_compra_controller.php`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -231,7 +231,7 @@ if (!empty($usuario_id)) {
           const data = await response.json();
 
           if (data.success) {
-            window.location.href = `${window.location.origin}/greenhelp-app/src/pages/home/home_cliente.php`;
+            window.location.href = `${window.location.origin}/greenhelp-app/src/pages/home/home.php`;
           } else alert(data.message || 'Erro ao finalizar compra');
         } catch (error) {
           console.error('Erro:', error);

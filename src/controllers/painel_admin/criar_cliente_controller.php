@@ -49,14 +49,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
     // Inserir usuário com possível empresa_id (ou null)
-    $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, telefone, senha, papel, ativado, empresa_id) VALUES (:nome, :email, :telefone, :senha, :papel, :ativado, :empresa_id)");
+    $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, telefone, senha, papel, ativo, empresa_id) VALUES (:nome, :email, :telefone, :senha, :papel, :ativo, :empresa_id)");
     $stmt->execute([
       ':nome' => $nome,
       ':email' => $email,
       ':telefone' => $telefone,
       ':senha' => $senha_hash,
       ':papel' => 'cliente',
-      ':ativado' => 1,
+      ':ativo' => 1,
       ':empresa_id' => $empresa_id !== '' ? $empresa_id : null
     ]);
 

@@ -30,7 +30,7 @@ try {
   $nome     = trim($data['nome'] ?? '');
   $email    = trim($data['email'] ?? '');
   $telefone = trim($data['telefone'] ?? '');
-  $ativado  = (int)($data['ativado'] ?? '');
+  $ativo  = (int)($data['ativo'] ?? '');
 
   if ($nome === '' || $email === '') {
     http_response_code(422);
@@ -53,7 +53,7 @@ try {
   }
 
   $sql = 'UPDATE usuarios
-          SET nome = :nome, email = :email, telefone = :telefone, ativado = :ativado
+          SET nome = :nome, email = :email, telefone = :telefone, ativo = :ativo
           WHERE id = :id';
   $st = $pdo->prepare($sql);
   $st->execute([
@@ -61,7 +61,7 @@ try {
     ':email'    => $email,
     ':telefone' => $telefone,
     ':id'       => $userId,
-    ':ativado'  => $ativado
+    ':ativo'  => $ativo
   ]);
 
   echo json_encode(['ok' => true]);

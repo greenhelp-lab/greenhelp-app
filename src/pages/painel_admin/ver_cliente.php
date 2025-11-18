@@ -23,12 +23,12 @@ $empresa = null;
 if (!empty($usuario['empresa_id'])) {
   $es = $pdo->prepare("SELECT id, nome, cnpj, setor_atuacao, porte FROM empresas WHERE id = :id LIMIT 1");
   $es->execute([':id' => (int)$usuario['empresa_id']]);
-  $empresa = $es->fetch(PDO::FETCH_ASSOC);
+  $empresa = $es->fetch();
 }
 // carregar lista de empresas para select de associação/edit
 try {
   $empresasStmt = $pdo->query("SELECT id, nome, cnpj, setor_atuacao, porte FROM empresas ORDER BY nome");
-  $empresas = $empresasStmt->fetchAll(PDO::FETCH_ASSOC);
+  $empresas = $empresasStmt->fetchAll();
 } catch (Exception $e) {
   $empresas = [];
 }

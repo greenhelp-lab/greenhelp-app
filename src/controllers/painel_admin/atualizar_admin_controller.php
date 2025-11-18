@@ -26,7 +26,7 @@ try {
   $nome = trim($data['nome'] ?? '');
   $email = trim($data['email'] ?? '');
   $telefone = trim($data['telefone'] ?? '');
-  $ativado = (int)($data['ativado'] ?? 0);
+  $ativo = (int)($data['ativo'] ?? 0);
 
   if (!$nome) {
     http_response_code(422);
@@ -53,7 +53,7 @@ try {
     nome = :nome,
     email = :email,
     telefone = :telefone,
-    ativado = :ativado
+    ativo = :ativo
     WHERE id = :id';
 
   $stmt = $pdo->prepare($sql);
@@ -61,7 +61,7 @@ try {
     ':nome' => $nome,
     ':email' => $email,
     ':telefone' => $telefone,
-    ':ativado' => $ativado,
+    ':ativo' => $ativo,
     ':id' => $id
   ]);
 

@@ -30,7 +30,7 @@
     form.append('servico_id', servicoId);
 
     // envia requisição para o servidor
-    fetch('/greenhelp-app/src/actions/marketplace/adicionar_ao_carrinho.php', {
+    fetch('/greenhelp-app/src/controllers/marketplace/adicionar_ao_carrinho_controller.php', {
       method: 'POST',
       body: form,
       credentials: 'same-origin',

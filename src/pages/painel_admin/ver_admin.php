@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $userId = (int)$_GET['id'];
 
 /* -------- CARREGAR DADOS -------- */
-$st = $pdo->prepare("SELECT nome, email, telefone, avatar_path, papel, ativado FROM usuarios WHERE id = :id LIMIT 1");
+$st = $pdo->prepare("SELECT nome, email, telefone, avatar_path, papel, ativo FROM usuarios WHERE id = :id LIMIT 1");
 $st->execute([':id' => $userId]);
 $usuario = $st->fetch();
 
@@ -48,8 +48,8 @@ if ($usuario && !empty($usuario['avatar_path'])) {
         <input id="inpTel" type="tel" name="telefone" placeholder="Telefone" value="<?= htmlspecialchars($usuario['telefone'] ?? '', ENT_QUOTES) ?>" readonly>
         <input id="inpEmail" type="email" name="email" placeholder="Email" value="<?= htmlspecialchars($usuario['email'] ?? '', ENT_QUOTES) ?>" readonly>
         <input id="inpPapel" type="text" name="papel" placeholder="Papel" value="<?= htmlspecialchars(ucfirst($usuario['papel'] ?? ''), ENT_QUOTES) ?>" readonly disabled>
-        <label for="inpAtivado">Ativado? (0 para Não, 1 para Sim)</label>
-        <input id="inpAtivado" type="number" name="ativado" placeholder="Ativado?" value="<?= htmlspecialchars((string)$usuario['ativado'], ENT_QUOTES) ?>" readonly>
+        <label for="inpAtivo">Ativado? (0 para Não, 1 para Sim)</label>
+        <input id="inpAtivo" type="number" name="ativo" placeholder="Ativado?" value="<?= htmlspecialchars((string)$usuario['ativo'], ENT_QUOTES) ?>" readonly>
 
         <div class="action-buttons-top">
           <button type="button" id="btnEditar" class="btn edit-button">Editar</button>
@@ -81,14 +81,14 @@ if ($usuario && !empty($usuario['avatar_path'])) {
         tel: document.getElementById('inpTel'),
         email: document.getElementById('inpEmail'),
         papel: document.getElementById('inpPapel'),
-        ativado: document.getElementById('inpAtivado')
+        ativo: document.getElementById('inpAtivo')
       };
 
       function setEditing(on) {
         inputs.nome.readOnly = !on;
         inputs.tel.readOnly = !on;
         inputs.email.readOnly = !on;
-        inputs.ativado.readOnly = !on;
+        inputs.ativo.readOnly = !on;
         btnEditar.disabled = on;
         if (on) inputs.nome.focus();
       }
@@ -105,7 +105,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
           nome: inputs.nome.value.trim(),
           telefone: inputs.tel.value.trim(),
           email: inputs.email.value.trim(),
-          ativado: inputs.ativado.value.trim()
+          ativado: inputs.ativo.value.trim()
         };
 
         if (!payload.nome || !payload.email) {

@@ -27,14 +27,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   try {
     $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-    $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, telefone, senha, papel, ativado) VALUES (:nome, :email, :telefone, :senha, :papel, :ativado)");
+    $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, telefone, senha, papel, ativo) VALUES (:nome, :email, :telefone, :senha, :papel, :ativo)");
     $stmt->execute([
       ':nome' => $nome,
       ':email' => $email,
       ':telefone' => $telefone,
       ':senha' => $senha_hash,
       ':papel' => 'admin',
-      ':ativado' => 1
+      ':ativo' => 1
     ]);
 
     header("Location: " . BASE_URL . "/src/pages/painel_admin/painel_admin.php?status=admin_criado");

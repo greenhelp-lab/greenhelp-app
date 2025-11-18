@@ -2,7 +2,6 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/controllers/criar_conta_controller.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Coleta e validação básica
