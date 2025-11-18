@@ -1,121 +1,128 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
+session_start();
 
-declare(strict_types=1);
+header('Content-Type: application/json');
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
-include_once BASE_PATH . '/src/config/conexao.php';
+if (!isset($_SESSION['user_id'])) {
+  http_response_code(401);
+  echo json_encode(['ok' => false, 'error' => 'Não autenticado']);
+  exit;
+}
 
-header('Content-Type: application/json; charset=utf-8');
+$body = json_decode(file_get_contents("php://input"), true);
+if (!$body) {
+  echo json_encode(['ok' => false, 'error' => 'JSON inválido']);
+  exit;
+}
+
+$id           = (int)($body['id'] ?? 0);
+$nome         = trim($body['nome'] ?? '');
+$telefone     = trim($body['telefone'] ?? '');
+$email        = trim($body['email'] ?? '');
+$ativo        = (int)($body['ativo'] ?? 0);
+$empresa_sel  = $body['empresa_id'] ?? '';
+$empresa_data = $body['empresa_data'] ?? [];
+
+if ($id <= 0) {
+  echo json_encode(['ok' => false, 'error' => 'ID inválido']);
+  exit;
+}
 
 try {
-  if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['ok' => false, 'error' => 'Método não permitido']);
-    exit;
-  }
-
-  $data = json_decode(file_get_contents('php://input'), true);
-
-  if (!$data || !isset($data['id'])) {
-    http_response_code(400);
-    echo json_encode(['ok' => false, 'error' => 'ID do cliente obrigatório']);
-    exit;
-  }
-
-  $id = (int)$data['id'];
-  $nome = trim($data['nome'] ?? '');
-  $email = trim($data['email'] ?? '');
-  $telefone = trim($data['telefone'] ?? '');
-  $ativo = (int)($data['ativo'] ?? 0);
-  // empresa-related data (optional)
-  $empresa_select = $data['empresa_select'] ?? null; // '', 'new' or id
-  $empresa_obj = $data['empresa'] ?? null; // array with nome, cnpj, setor_atuacao, porte
-  $empresa_update = !empty($data['empresa_update']);
-
-  if (!$nome) {
-    http_response_code(422);
-    echo json_encode(['ok' => false, 'error' => 'Nome obrigatório']);
-    exit;
-  }
-
-  if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    http_response_code(422);
-    echo json_encode(['ok' => false, 'error' => 'Email inválido']);
-    exit;
-  }
-
-  // Verificar duplicação de email em outro usuário
-  $st = $pdo->prepare('SELECT id FROM usuarios WHERE email = :email AND id <> :id LIMIT 1');
-  $st->execute([':email' => $email, ':id' => $id]);
-  if ($st->fetchColumn()) {
-    http_response_code(409);
-    echo json_encode(['ok' => false, 'error' => 'Email já está em uso']);
-    exit;
-  }
-
-  // Start transaction if company operations may happen
   $pdo->beginTransaction();
+  // Buscar empresa atual do usuário
+  $st = $pdo->prepare("SELECT empresa_id FROM usuarios WHERE id = :id LIMIT 1");
+  $st->execute([':id' => $id]);
+  $usuario = $st->fetch();
 
-  try {
-    $empresa_id_to_set = null;
+  if (!$usuario) {
+    echo json_encode(['ok' => false, 'error' => 'Usuário não encontrado']);
+    exit;
+  }
 
-    if ($empresa_select === 'new') {
-      // create new empresa if nome provided
-      if ($empresa_obj && !empty(trim($empresa_obj['nome'] ?? ''))) {
-        $ins = $pdo->prepare("INSERT INTO empresas (nome, cnpj, setor_atuacao, porte) VALUES (:nome, :cnpj, :setor, :porte)");
-        $ins->execute([
-          ':nome' => trim($empresa_obj['nome']),
-          ':cnpj' => trim($empresa_obj['cnpj'] ?? ''),
-          ':setor' => trim($empresa_obj['setor_atuacao'] ?? ''),
-          ':porte' => trim($empresa_obj['porte'] ?? '')
-        ]);
-        $empresa_id_to_set = $pdo->lastInsertId();
-      }
-    } elseif ($empresa_select === '' || $empresa_select === null) {
-      $empresa_id_to_set = null;
-    } else {
-      // numeric id selected
-      $empresa_id_to_set = (int)$empresa_select;
-      // if requested, update empresa fields
-      if ($empresa_update && $empresa_obj) {
-        $up = $pdo->prepare("UPDATE empresas SET nome = :nome, cnpj = :cnpj, setor_atuacao = :setor, porte = :porte WHERE id = :id");
-        $up->execute([
-          ':nome' => trim($empresa_obj['nome'] ?? ''),
-          ':cnpj' => trim($empresa_obj['cnpj'] ?? ''),
-          ':setor' => trim($empresa_obj['setor_atuacao'] ?? ''),
-          ':porte' => trim($empresa_obj['porte'] ?? ''),
-          ':id' => $empresa_id_to_set
-        ]);
-      }
-    }
+  $empresaAtualId = $usuario['empresa_id'] ? (int)$usuario['empresa_id'] : null;
 
-    // Update usuario including empresa_id
-    $sql = 'UPDATE usuarios SET
-      nome = :nome,
-      email = :email,
-      telefone = :telefone,
-      empresa_id = :empresa_id,
-      ativo = :ativo
-      WHERE id = :id';
+  // ---------------------------------------------------------
+  // 1. TRATAR EMPRESA SELECIONADA (criar, alterar, trocar)
+  // ---------------------------------------------------------
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-      ':nome' => $nome,
-      ':email' => $email,
-      ':telefone' => $telefone,
-      ':empresa_id' => $empresa_id_to_set,
-      ':ativo' => $ativo,
-      ':id' => $id
+  $newEmpresaId = null;
+
+  if ($empresa_sel === "new") {
+
+    // Criando nova empresa
+    $ins = $pdo->prepare("
+    INSERT INTO empresas (nome, cnpj, setor_atuacao, porte)
+    VALUES (:n, :c, :s, :p)
+  ");
+    $ins->execute([
+      ':n' => trim($empresa_data['nome'] ?? ''),
+      ':c' => trim($empresa_data['cnpj'] ?? ''),
+      ':s' => trim($empresa_data['setor'] ?? ''),
+      ':p' => trim($empresa_data['porte'] ?? '')
     ]);
 
-    $pdo->commit();
-    echo json_encode(['ok' => true]);
-    exit;
-  } catch (Throwable $e) {
-    $pdo->rollBack();
-    throw $e;
+    $newEmpresaId = (int)$pdo->lastInsertId();
+  } elseif ($empresa_sel === "" || $empresa_sel === null) {
+
+    // Nenhuma empresa vinculada
+    $newEmpresaId = null;
+  } else {
+
+    $empresa_sel_id = (int)$empresa_sel;
+    $newEmpresaId = $empresa_sel_id;
+
+    // Caso a empresa selecionada seja existente, permitir edição dos campos
+    // (Você já tornou os campos editáveis no front, então o controller precisa aceitar isso)
+    $upd = $pdo->prepare("
+    UPDATE empresas
+       SET nome = :n,
+           cnpj = :c,
+           setor_atuacao = :s,
+           porte = :p
+     WHERE id = :id
+    LIMIT 1
+  ");
+    $upd->execute([
+      ':n'  => trim($empresa_data['nome'] ?? ''),
+      ':c'  => trim($empresa_data['cnpj'] ?? ''),
+      ':s'  => trim($empresa_data['setor'] ?? ''),
+      ':p'  => trim($empresa_data['porte'] ?? ''),
+      ':id' => $empresa_sel_id
+    ]);
   }
-} catch (Throwable $e) {
+
+  // ---------------------------------------------------------
+  // 2. ATUALIZAR DADOS DO USUÁRIO
+  // ---------------------------------------------------------
+
+  $up = $pdo->prepare("
+  UPDATE usuarios
+     SET nome = :n,
+         telefone = :t,
+         email = :e,
+         ativo = :a,
+         empresa_id = :emp
+   WHERE id = :id
+   LIMIT 1
+");
+
+  $up->execute([
+    ':n'   => $nome,
+    ':t'   => $telefone,
+    ':e'   => $email,
+    ':a'   => $ativo,
+    ':emp' => $newEmpresaId,
+    ':id'  => $id
+  ]);
+  $pdo->commit();
+  echo json_encode(['ok' => true]);
+} catch (Exception $e) {
+  if ($pdo->inTransaction()) {
+    $pdo->rollBack();
+  }
   http_response_code(500);
-  echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+  echo json_encode(['ok' => false, 'error' => 'Erro ao atualizar cliente: ' . $e->getMessage()]);
 }

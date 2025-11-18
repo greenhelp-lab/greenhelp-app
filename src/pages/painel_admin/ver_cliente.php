@@ -63,9 +63,6 @@ try {
   <main class="account-main center-layout">
     <div class="conta-container">
 
-      <!-- ============================
-            CLIENTE
-    ============================= -->
       <section class="cliente-info">
         <h1 class="account-title">Sobre o Cliente</h1>
 
@@ -116,7 +113,6 @@ try {
                 readonly disabled>
             </div>
 
-            <!-- NOVO CAMPO ATIVO -->
             <div class="field">
               <label for="inpAtivo">Ativado? (0 = não, 1 = sim)</label>
               <input id="inpAtivo"
@@ -128,13 +124,10 @@ try {
                 readonly>
             </div>
 
-          </div><!-- grid -->
+          </div>
 
       </section>
 
-      <!-- ============================
-            EMPRESA
-    ============================= -->
       <section class="empresa-info">
         <h2 class="section-title">Empresa vinculada</h2>
 
@@ -163,6 +156,7 @@ try {
             <div class="field">
               <label for="empresa_nome">Nome</label>
               <input id="empresa_nome"
+                name="empresa_nome"
                 type="text"
                 class="input pill"
                 value="<?= htmlspecialchars($empresa['nome'] ?? '', ENT_QUOTES) ?>"
@@ -172,6 +166,7 @@ try {
             <div class="field">
               <label for="empresa_cnpj">CNPJ</label>
               <input id="empresa_cnpj"
+                name="empresa_cnpj"
                 type="text"
                 class="input pill"
                 value="<?= htmlspecialchars($empresa['cnpj'] ?? '', ENT_QUOTES) ?>"
@@ -181,6 +176,7 @@ try {
             <div class="field">
               <label for="empresa_setor">Setor</label>
               <input id="empresa_setor"
+                name="empresa_setor"
                 type="text"
                 class="input pill"
                 value="<?= htmlspecialchars($empresa['setor_atuacao'] ?? '', ENT_QUOTES) ?>"
@@ -190,30 +186,18 @@ try {
             <div class="field">
               <label for="empresa_porte">Porte</label>
               <input id="empresa_porte"
+                name="empresa_porte"
                 type="text"
                 class="input pill"
                 value="<?= htmlspecialchars($empresa['porte'] ?? '', ENT_QUOTES) ?>"
                 readonly>
             </div>
 
-            <?php if ($empresa): ?>
-              <div class="field">
-                <label>
-                  <input type="checkbox" id="empresa_update" disabled>
-                  Atualizar dados da empresa associada
-                </label>
-              </div>
-            <?php endif; ?>
-
           </div>
         </div>
       </section>
 
-      <!-- ============================
-            AÇÕES
-    ============================= -->
       <section class="actions">
-
         <div class="action-row primary-actions">
           <button type="button" id="btnEditar" class="btn edit-button">Editar</button>
           <button type="submit" id="btnSalvar" class="btn save-button">Salvar</button>
@@ -222,7 +206,6 @@ try {
         <div class="action-row danger-zone">
           <button type="button" id="btnDelete" class="btn delete-account-button">Deletar Conta</button>
         </div>
-
       </section>
 
       </form>
@@ -236,9 +219,11 @@ try {
 
   <script>
     const API = '<?= rtrim(BASE_URL, '/') ?>';
+    const empresasData = <?= json_encode($empresas, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+    const empresasMap = {};
+    (empresasData || []).forEach(e => empresasMap[String(e.id)] = e);
 
     (function() {
-
       const form = document.getElementById('formConta');
       if (!form) return;
 
@@ -255,26 +240,83 @@ try {
       };
 
       const empresaSelect = document.getElementById('empresa_select');
-      const empresaUpdate = document.getElementById('empresa_update');
+
+      const empresaInputs = {
+        nome: document.getElementById('empresa_nome'),
+        cnpj: document.getElementById('empresa_cnpj'),
+        setor: document.getElementById('empresa_setor'),
+        porte: document.getElementById('empresa_porte')
+      };
+
+      function populateEmpresaFieldsById(id) {
+        if (!id || id === '' || id === 'new') {
+          empresaInputs.nome.value = '';
+          empresaInputs.cnpj.value = '';
+          empresaInputs.setor.value = '';
+          empresaInputs.porte.value = '';
+          return;
+        }
+
+        const e = empresasMap[String(id)];
+        if (!e) {
+          empresaInputs.nome.value = '';
+          empresaInputs.cnpj.value = '';
+          empresaInputs.setor.value = '';
+          empresaInputs.porte.value = '';
+          return;
+        }
+
+        empresaInputs.nome.value = e.nome || '';
+        empresaInputs.cnpj.value = e.cnpj || '';
+        empresaInputs.setor.value = e.setor_atuacao || '';
+        empresaInputs.porte.value = e.porte || '';
+      }
+
+      // -------------------------------
+      // CORREÇÃO FUNDAMENTAL
+      // -------------------------------
+      let editingMode = false;
+
+      function updateEmpresaFieldsEditable(editing) {
+        Object.values(empresaInputs).forEach(inp => inp.readOnly = !editing);
+      }
 
       function setEditing(on) {
+        editingMode = on;
+
         inputs.nome.readOnly = !on;
         inputs.tel.readOnly = !on;
         inputs.email.readOnly = !on;
         inputs.ativo.readOnly = !on;
 
         btnEditar.disabled = on;
+        empresaSelect.disabled = !on;
 
-        if (empresaSelect) empresaSelect.disabled = !on;
-        if (empresaUpdate) empresaUpdate.disabled = !on;
+        updateEmpresaFieldsEditable(on);
 
         if (on) inputs.nome.focus();
       }
 
-      setEditing(false);
-      btnEditar.addEventListener('click', () => setEditing(true));
+      empresaSelect.addEventListener('change', e => {
+        const v = e.target.value;
+        populateEmpresaFieldsById(v);
 
-      form.addEventListener('submit', async (e) => {
+        // agora usa o estado real
+        updateEmpresaFieldsEditable(editingMode);
+      });
+      // -------------------------------
+
+      if (empresaSelect) {
+        populateEmpresaFieldsById(empresaSelect.value || (<?= json_encode($usuario['empresa_id'] ?? '') ?>));
+      }
+
+      setEditing(false);
+
+      btnEditar.addEventListener('click', () => {
+        setEditing(true);
+      });
+
+      form.addEventListener('submit', async e => {
         e.preventDefault();
 
         const payload = {
@@ -284,12 +326,11 @@ try {
           email: inputs.email.value.trim(),
           ativo: inputs.ativo.value.trim(),
           empresa_id: empresaSelect ? empresaSelect.value : null,
-          empresa_update: empresaUpdate ? empresaUpdate.checked : false,
           empresa_data: {
-            nome: document.getElementById('empresa_nome')?.value || '',
-            cnpj: document.getElementById('empresa_cnpj')?.value || '',
-            setor: document.getElementById('empresa_setor')?.value || '',
-            porte: document.getElementById('empresa_porte')?.value || ''
+            nome: empresaInputs.nome.value || '',
+            cnpj: empresaInputs.cnpj.value || '',
+            setor: empresaInputs.setor.value || '',
+            porte: empresaInputs.porte.value || ''
           }
         };
 
@@ -341,11 +382,11 @@ try {
         } catch (err) {
           alert('Falha ao deletar: ' + err.message);
         }
-
       });
 
     })();
   </script>
+
 
 </body>
 
