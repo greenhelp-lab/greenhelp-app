@@ -1,8 +1,20 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+<?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 
 session_start();
 $is_admin = isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin';
 $is_admin = false ?? die;
+
+
+$totClientes = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE papel = 'cliente'")->fetchColumn();
+$totAdmins   = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE papel = 'admin'")->fetchColumn();
+$totServicos = $pdo->query("SELECT COUNT(*) FROM servicos")->fetchColumn();
+$totFaturamento = $pdo->query("SELECT SUM(valor_total) FROM servicos_andamento WHERE status = 'concluido'")->fetchColumn();
+$totServicosAndamento = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHERE status = 'em_andamento'")->fetchColumn();
+$totServicosConcluidos = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHERE status = 'concluido'")->fetchColumn();
+$totServicosCancelados = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHERE status = 'cancelado'")->fetchColumn();
+$totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHERE status = 'pendente'")->fetchColumn();
 
 ?>
 <!DOCTYPE html>
@@ -42,23 +54,43 @@ $is_admin = false ?? die;
     <div class="dash-cards">
       <div class="dash-card">
         <h4>Clientes</h4>
-        <span class="value">1.234</span>
+        <span class="value"><?php echo $totClientes; ?></span>
         <span class="meta">Clientes na plataforma</span>
       </div>
       <div class="dash-card">
         <h4>Admins</h4>
-        <span class="value">1.234</span>
+        <span class="value"><?php echo $totAdmins; ?></span>
         <span class="meta">Admins na plataforma</span>
       </div>
       <div class="dash-card">
         <h4>Serviços</h4>
-        <span class="value">87</span>
+        <span class="value"><?php echo $totServicos; ?></span>
         <span class="meta">Serviços cadastrados</span>
       </div>
       <div class="dash-card">
-        <h4>Receita (Mês)</h4>
-        <span class="value">R$ 12.430</span>
-        <span class="meta">Serviços contratados e finalizados</span>
+        <h4>Faturamento</h4>
+        <span class="value"><?php echo "R$ " . number_format($totFaturamento, 2, ',', '.'); ?></span>
+        <span class="meta">decorrente de serviços concluidos</span>
+      </div>
+      <div class="dash-card">
+        <h4>Serviços Pendentes</h4>
+        <span class="value"><?php echo $totServicosPendentes; ?></span>
+        <span class="meta">Serviços pendentes</span>
+      </div>
+      <div class="dash-card">
+        <h4>Serviços em Andamento</h4>
+        <span class="value"><?php echo $totServicosAndamento; ?></span>
+        <span class="meta">Serviços em andamento</span>
+      </div>
+      <div class="dash-card">
+        <h4>Serviços Concluidos</h4>
+        <span class="value"><?php echo $totServicosConcluidos; ?></span>
+        <span class="meta">Serviços concluídos</span>
+      </div>
+      <div class="dash-card">
+        <h4>Serviços Cancelados</h4>
+        <span class="value"><?php echo $totServicosCancelados; ?></span>
+        <span class="meta">Serviços cancelados</span>
       </div>
     </div>
 
