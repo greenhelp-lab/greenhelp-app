@@ -31,7 +31,7 @@ $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHE
 <body>
   <?php include_once BASE_PATH . '/src/pages/partials/header_admin.php'; ?>
 
-  <h1 class="shop-title">Painel de Admin</h1>
+  <h1 class="shop-title">Painel Admin</h1>
   <div class="shop-container">
     <p>Bem-vindo ao painel de administração. Aqui você pode gerenciar usuários, serviços e configurações do sistema.</p>
   </div>

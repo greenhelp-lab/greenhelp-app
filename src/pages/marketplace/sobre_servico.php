@@ -135,14 +135,6 @@ if (!$servico) {
         </aside>
       </section>
 
-      <section class="detail-related">
-        <h3>Serviços relacionados</h3>
-        <div class="related-list">
-          <a class="related-item" href="#">Monitoramento Remoto</a>
-          <a class="related-item" href="#">Otimização Energética</a>
-          <a class="related-item" href="#">Manutenção Preditiva</a>
-        </div>
-      </section>
     </div>
   </main>
   <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
