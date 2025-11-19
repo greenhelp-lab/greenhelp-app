@@ -1,347 +1,46 @@
-/* ===== ESTILO DA PÁGINA HOME (COMPATÍVEL COM O CSS GLOBAL) ===== */
-
 .container {
   width: 100%;
   max-width: 960px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 14px 60px;
   text-align: center;
 }
 
-/* ======== SEÇÃO DE SERVIÇOS EM ANDAMENTO ======== */
-.servicos-andamento {
+.welcome-title {
   width: 100%;
-  margin-bottom: 40px;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.section-header h2 {
-  font-size: 24px;
-  color: var(--accent);
-  text-shadow: 0 0 12px rgba(57, 255, 166, 0.3);
-  margin-bottom: 8px;
-}
-
-.servicos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  width: 100%;
-}
-
-.servico-card {
-  background: var(--card-bg);
-  border: 1px solid var(--stroke);
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.servico-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(9, 10, 25, 0.12);
-}
-
-.servico-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.area-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-}
-
-.status-badge {
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.status-pendente {
-  background: rgba(255, 191, 0, 0.1);
-  color: #ffbf00;
-}
-
-.status-andamento {
-  background: rgba(57, 255, 166, 0.1);
-  color: var(--accent);
-}
-
-.status-concluido {
-  background: rgba(132, 204, 22, 0.1);
-  color: #84cc16;
-}
-
-.status-cancelado {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-}
-
-.servico-body {
-  text-align: left;
-}
-
-.servico-body h3 {
-  font-size: 16px;
+  font-size: 2rem;
+  font-weight: 700;
   color: var(--txt);
-  margin-bottom: 4px;
+  margin: 20px 0;
+  justify-content: flex-start;
 }
 
-.area-nome {
-  font-size: 13px;
-  color: var(--accent);
-  margin-bottom: 8px;
-}
-
-.descricao {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.servico-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid var(--stroke);
-}
-
-.data {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.preco {
-  font-size: 14px;
-  font-weight: 600;
+.container h2 {
+  font-size: 1.75rem;
   color: var(--txt);
-}
-
-.no-services {
-  text-align: center;
-  color: var(--muted);
-  grid-column: 1 / -1;
-  padding: 40px;
-  background: var(--card-bg);
-  border: 1px solid var(--stroke);
-  border-radius: 16px;
-}
-
-.no-services a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.no-services a:hover {
-  text-decoration: underline;
+  margin: 8px 0 16px 0;
 }
 
 /* ---------- FOTO DO USUÁRIO ---------- */
+/* FOTO USUARIO */
 .user-photo {
-  margin: 20px 0;
-}
-.user-photo img {
-  height: 200px;
-}
-
-/* ---------- FORMULÁRIO ---------- */
-form {
-  width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-form input {
-  background: var(--input);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 50px;
-  padding: 12px 16px;
-  color: var(--txt);
-  font-size: 13px;
-  outline: none;
-  box-shadow: inset 0 0 4px var(--glow);
-}
-form input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* ---------- PAINEL PONTUAÇÕES ---------- */
-.pontuacoes {
-  width: 100%;
-  background: var(--card-bg);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-  margin-top: 26px;
-  padding: 20px;
-}
-
-.pontuacoes-header {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.pontuacoes-img {
-  width: 34px;
-  height: 34px;
-}
-/* ======== PAINEL DE PONTUAÇÕES VERDES ======== */
-.pontuacoes {
-  width: 100%;
-  max-width: 360px;
-  background: #0f1035;
-  border-radius: 20px;
-  border: 2px solid rgba(53, 242, 143, 0.15);
-  box-shadow: 0 0 25px rgba(53, 242, 143, 0.08);
-  padding: 22px 18px;
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 12px 0;
 }
 
-/* topo com ícone + título */
-.pontuacoes-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 12px;
+.user-photo img,
+#fotoUsuario {
+  width: 140px;
+  height: 140px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 6px 18px rgba(10, 10, 30, 0.45);
 }
 
-.pontuacoes-img {
-  width: 34px;
-  height: 34px;
-}
-
-.pontuacoes-title {
-  color: var(--accent);
-  font-size: 20px;
-  font-weight: 800;
-  text-shadow: 0 0 12px var(--accent);
-}
-
-/* descrição */
-.pontuacoes-desc {
-  font-size: 13px;
-  text-align: center;
-  color: var(--muted);
-  line-height: 1.4;
-  margin-bottom: 20px;
-}
-
-/* ======== LISTA DE NÍVEIS ======== */
-.niveis {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
-.nivel-card {
-  background: linear-gradient(
-    180deg,
-    rgba(26, 27, 90, 0.9),
-    rgba(15, 16, 53, 0.9)
-  );
-  border: 1px solid rgba(53, 242, 143, 0.2);
-  border-radius: 12px;
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.nivel-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 10px rgba(53, 242, 143, 0.25);
-}
-
-/* lado esquerdo */
-.nivel-left {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-size: 12px;
-}
-
-.nivel {
-  color: var(--accent);
-  font-weight: 700;
-  margin-bottom: 2px;
-}
-
-.faltam {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-/* barra de progresso */
-.progress-bar {
-  width: 70px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  overflow: hidden;
-  margin-top: 4px;
-}
-
-.progress {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), #39ffa6);
-  width: 65%;
-  border-radius: 6px;
-}
-
-/* lado direito */
-.nivel-desc {
-  font-size: 13px;
-  color: var(--txt);
-  font-weight: 600;
-  text-align: right;
-  width: 50%;
-  line-height: 1.3;
-}
-
-/* ======== TOTAL ======== */
-.pontuacao-total {
-  margin-top: 20px;
-  font-weight: 600;
-  color: var(--muted);
-  font-size: 13px;
-  text-align: center;
-}
-.pontuacao-total strong {
-  display: block;
-  color: var(--accent);
-  font-size: 26px;
-  margin-top: 6px;
-  text-shadow: 0 0 12px var(--accent);
-}
-
-/* ===== FORM EMPRESA – VISUAL IGUAL AO conta.php ===== */
+/* ===== FORM EMPRESA ===== */
 
 /* Container do form */
 .form-empresa {
@@ -349,8 +48,7 @@ form input::placeholder {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin: 24px 0;
-  max-width: 820px; /* opcional: limita a largura no desktop */
+  max-width: 520px;
 }
 
 /* Inputs (empresa, cnpj, perfil, industria) */
@@ -437,4 +135,439 @@ form input::placeholder {
   cursor: text;
   border-color: var(--stroke);
   box-shadow: none;
+}
+
+/* ======== SEÇÃO DE SERVIÇOS CONTRATADOS ======== */
+
+.servicos-andamento {
+  width: 100%;
+  margin-bottom: 40px;
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(0, 0, 0, 0.03)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.servicos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.servico-card {
+  background: var(--card-bg);
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.servico-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(9, 10, 25, 0.12);
+}
+
+.servico-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.area-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-pendente {
+  background: rgba(255, 191, 0, 0.1);
+  color: #ffbf00;
+}
+
+.status-andamento {
+  background: rgba(57, 255, 166, 0.1);
+  color: var(--accent);
+}
+
+.status-concluido {
+  background: rgba(132, 204, 22, 0.1);
+  color: #84cc16;
+}
+
+.status-cancelado {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.servico-body {
+  text-align: left;
+}
+
+.servico-body h3 {
+  font-size: 16px;
+  color: var(--txt);
+  margin-bottom: 4px;
+}
+
+.area-nome {
+  font-size: 13px;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.descricao {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.servico-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--stroke);
+}
+
+.data {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.preco {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--txt);
+}
+
+.no-services {
+  text-align: center;
+  color: var(--muted);
+  grid-column: 1 / -1;
+  padding: 40px;
+  background: var(--card-bg);
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+}
+
+.no-services a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.no-services a:hover {
+  text-decoration: underline;
+}
+
+/*  PAINEL PONTUAÇÕES  */
+.pontuacoes {
+  width: 100%;
+  background: var(--card-bg);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  margin: 26px 0 26px 0;
+  padding: 20px;
+}
+
+.pontuacoes-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.pontuacoes-img {
+  width: 34px;
+  height: 34px;
+}
+
+/* Texto descritivo do painel de pontuações */
+.pontuacoes-desc {
+  font-size: 0.98rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.45;
+  max-width: 560px;
+  margin: 8px auto 16px;
+}
+.pontuacoes-desc .cor_verde {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.pontuacao-total {
+  margin-top: 20px;
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+.pontuacao-total strong {
+  display: block;
+  color: var(--accent);
+  font-size: 28px;
+  margin-top: 8px;
+  text-shadow: 0 0 12px rgba(53, 242, 143, 0.18);
+  font-weight: 800;
+}
+
+/* Inputs (empresa, cnpj, perfil, industria) */
+.form-empresa input {
+  width: 100%;
+  padding: 15px 20px;
+  background-color: var(--input);
+  border: 2px solid var(--stroke);
+  border-radius: 30px;
+  color: var(--txt);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.2s ease;
+  box-shadow: none; /* sobrescreve estilo antigo do home.css */
+}
+
+.form-empresa input::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+.form-empresa input:focus:not(:disabled) {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--glow);
+}
+
+/* Estado desabilitado */
+.form-empresa input:disabled {
+  opacity: 0.9;
+  cursor: not-allowed;
+  border-color: var(--stroke);
+  box-shadow: none;
+}
+
+/* Área dos botões */
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 12px;
+  width: 100%;
+  max-width: 520px;
+  align-self: center;
+}
+
+/* Botões – base */
+.form-empresa .btn {
+  flex: 1 1 0;
+  padding: 12px 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  text-align: center;
+}
+
+/* Hover */
+.form-empresa .btn:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+/* Editar (contorno verde) */
+.form-empresa .edit-button {
+  background-color: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+}
+
+/* Salvar (preenchido verde) */
+.form-empresa .save-button {
+  background-color: var(--accent);
+  color: var(--bg);
+  border: none;
+}
+
+/* Desabilitado */
+.form-empresa .btn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Evita ícone de bloqueado quando os inputs estão travados */
+.form-empresa input[readonly] {
+  opacity: 1;
+  cursor: text;
+  border-color: var(--stroke);
+  box-shadow: none;
+}
+
+/* PONTUAÇÕES */
+.niveis {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.nivel-card {
+  width: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 27, 90, 0.9),
+    rgba(15, 16, 53, 0.9)
+  );
+  border: 1px solid rgba(53, 242, 143, 0.12);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 180ms ease, box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+.nivel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(6, 10, 25, 0.25);
+  border-color: rgba(53, 242, 143, 0.22);
+}
+
+.nivel-card-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.nivel-titles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.nivel-desc {
+  font-size: 1rem;
+  color: var(--txt);
+  font-weight: 700;
+  margin: 0;
+}
+
+.nivel-meta {
+  margin: 4px 0 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.nivel-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress {
+  width: 0%; /* will be set per-card by server-generated CSS */
+  height: 100%;
+  border-radius: 999px;
+  transition: width 700ms cubic-bezier(0.2, 0.9, 0.3, 1), background 350ms ease;
+  background: linear-gradient(
+    90deg,
+    var(--level-accent, var(--accent)),
+    #39ffa6
+  );
+}
+
+.nivel-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.pontos {
+  font-weight: 600;
+  color: var(--txt);
+}
+.percent {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Level color tokens (variation subtle, harmonizes with project green accent) */
+.nivel-card[data-nivel='1'] {
+  --level-accent: #35f28f;
+}
+.nivel-card[data-nivel='2'] {
+  --level-accent: #8bd57a;
+}
+.nivel-card[data-nivel='3'] {
+  --level-accent: #52e09a;
+}
+.nivel-card[data-nivel='4'] {
+  --level-accent: #ffb86c;
+}
+.nivel-card[data-nivel='5'] {
+  --level-accent: #ffd166;
+}
+
+/* Desktop: layout cards horizontally with description on the left and progress on the right */
+@media (min-width: 720px) {
+  .nivel-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+  }
+  .nivel-card-header {
+    flex: 1 1 55%;
+  }
+  .nivel-card-body {
+    flex: 1 1 40%;
+  }
+  .nivel-titles {
+    gap: 2px;
+  }
+}
+
+/* Small adjustments for very small screens */
+@media (max-width: 420px) {
+  .area-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .progress-bar {
+    height: 8px;
+  }
+  .nivel-desc {
+    font-size: 0.98rem;
+  }
 }

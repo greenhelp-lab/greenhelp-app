@@ -40,7 +40,7 @@ if (!empty($_SESSION['user_id'])) {
   <?php include_once BASE_PATH . "/src/pages/partials/header_cliente.php"; ?>
 
   <main class="container">
-    <h1>Home</h1>
+    <h1 class="welcome-title">Bem vindo(a), <?= htmlspecialchars($_SESSION['primeiro_nome'] ?? ''); ?>!</h1>
 
     <div class="user-photo">
       <button type="button" id="btnLogo" aria-label="Alterar logo da empresa" disabled>
@@ -51,7 +51,7 @@ if (!empty($_SESSION['user_id'])) {
 
     <h2>Sobre Sua Empresa</h2>
 
-    <form id="formEmpresa" class="form-empresa" style="margin:24px 0;">
+    <form id="formEmpresa" class="form-empresa">
       <input readonly id="empresa" type="text" placeholder="Nome da Empresa">
       <input readonly id="cnpj" type="text" placeholder="CNPJ">
       <input readonly id="perfil" type="text" placeholder="Tamanho da Empresa">
@@ -84,7 +84,7 @@ if (!empty($_SESSION['user_id'])) {
 
     <section class="servicos-andamento">
       <div class="section-header">
-        <h2>Serviços em Andamento</h2>
+        <h2>Serviços Contratados</h2>
       </div>
       <div class="servicos-grid">
         <?php if (!empty($servicos)): ?>
@@ -122,44 +122,145 @@ if (!empty($_SESSION['user_id'])) {
 
     <section class="pontuacoes">
       <div class="pontuacoes-header">
-        <img src="<?= BASE_URL; ?>/public/imgs/pontuação_verde.png" alt="Pontuações Verdes" class="pontuacoes-img">
         <h2 class="pontuacoes-title">Pontuações Verdes</h2>
       </div>
       <p class="pontuacoes-desc">
         Ganhe mais pontos através da <span class="cor_verde">compra de serviços</span> e
         <span class="cor_verde">melhoras sustentáveis</span> na sua empresa
       </p>
-      <div class="niveis">
-        <div class="nivel-card">
-          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
-          <div class="nivel-desc">Infraestrutura Eficiente</div>
-          <div class="progress-bar">
-            <div class="progress" style="width:60%;"></div>
-          </div>
-        </div>
-        <div class="nivel-card">
-          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
-          <div class="nivel-desc">Energia Renovável</div>
-          <div class="progress-bar">
-            <div class="progress" style="width:60%;"></div>
-          </div>
-        </div>
-        <div class="nivel-card">
-          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
-          <div class="nivel-desc">Computação em Nuvem</div>
-          <div class="progress-bar">
-            <div class="progress" style="width:60%;"></div>
-          </div>
-        </div>
-        <div class="nivel-card">
-          <div class="nivel-left"><span class="nivel">Nível 7</span><span class="faltam">Faltam 1435 pontos</span></div>
-          <div class="nivel-desc">Políticas Sustentáveis</div>
-          <div class="progress-bar">
-            <div class="progress" style="width:60%;"></div>
-          </div>
-        </div>
+      <?php
+      // Funções de cálculo de nível e progresso (seguem regras do projeto)
+      function calcularNivel(int $pontos): int
+      {
+        if ($pontos >= 1000) return 5;
+        if ($pontos >= 500) return 4;
+        if ($pontos >= 250) return 3;
+        if ($pontos >= 100) return 2;
+        return 1;
+      }
+
+      function progressoParaProximoNivel(int $pontos): array
+      {
+        $nivel = calcularNivel($pontos);
+
+        switch ($nivel) {
+          case 1:
+            $limite = 100;
+            break;
+          case 2:
+            $limite = 250;
+            break;
+          case 3:
+            $limite = 500;
+            break;
+          case 4:
+            $limite = 1000;
+            break;
+          default:
+            return ['nivel' => 5, 'progress' => 100, 'faltam' => 0];
+        }
+
+        $progress = min(100, ($pontos / $limite) * 100);
+        $faltam = max(0, $limite - $pontos);
+
+        return [
+          'nivel' => $nivel,
+          'progress' => (int) round($progress),
+          'faltam' => (int) $faltam
+        ];
+      }
+
+      // Busca áreas e pontuações do usuário (usando PDO, conforme padrão do projeto)
+      $usuarioId = $_SESSION['user_id'] ?? null;
+      $areas = [];
+      if ($usuarioId) {
+        $sqlAreas = "SELECT a.id AS area_id, a.nome AS area_nome, p.pontos, p.nivel
+                    FROM areas_sustentaveis a
+                    LEFT JOIN pontuacoes_areas p
+                      ON p.area_id = a.id AND p.usuario_id = :uid
+                    ORDER BY a.nome";
+        $stAreas = $pdo->prepare($sqlAreas);
+        $stAreas->execute([':uid' => $usuarioId]);
+        $areas = $stAreas->fetchAll();
+      }
+
+      // Calcula pontuação total (soma de todas as áreas)
+      $pontuacaoTotal = 0;
+      foreach ($areas as $aRow) {
+        $pontuacaoTotal += (int) ($aRow['pontos'] ?? 0);
+      }
+      ?>
+
+      <div class="niveis" aria-live="polite">
+        <?php if (!empty($areas)): ?>
+          <?php
+          // Gera CSS específico por cartão para definir a largura da barra (sem usar style="...")
+          $areaCustomCss = "";
+          foreach ($areas as $aTmp) {
+            $aidTmp = (int) $aTmp['area_id'];
+            $pTmp = (int) ($aTmp['pontos'] ?? 0);
+            $prTmp = progressoParaProximoNivel($pTmp);
+            $areaCustomCss .= ".nivel-card[data-area-id=\"" . $aidTmp . "\"] .progress{width: " . (int) $prTmp['progress'] . "%;}\n";
+          }
+          if ($areaCustomCss) {
+            echo "<style type=\"text/css\">\n" . $areaCustomCss . "</style>";
+          }
+          ?>
+
+          <?php foreach ($areas as $a):
+            $areaId = (int) $a['area_id'];
+            $areaNome = $a['area_nome'] ?? '';
+            $pontos = (int) ($a['pontos'] ?? 0);
+            // recalcula o nível a partir dos pontos para garantir consistência com regras
+            $nivel = calcularNivel($pontos);
+            $prog = progressoParaProximoNivel($pontos);
+
+            // Tenta detectar um ícone local seguindo um padrão (se existir)
+            $iconUrl = null;
+            $possibleFiles = [
+              $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/public/imgs/areas/area_' . $areaId . '.svg',
+              $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/public/imgs/areas/area_' . $areaId . '.png',
+              $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/public/imgs/areas/area_' . $areaId . '.webp',
+              $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/public/imgs/areas/area_' . $areaId . '.jpg'
+            ];
+            foreach ($possibleFiles as $pf) {
+              if (file_exists($pf)) {
+                $rel = str_replace($_SERVER['DOCUMENT_ROOT'], '', $pf);
+                $iconUrl = rtrim(BASE_URL, '/') . $rel;
+                break;
+              }
+            }
+          ?>
+            <div class="nivel-card" data-area-id="<?= $areaId ?>" data-nivel="<?= $nivel ?>">
+              <div class="nivel-card-header">
+                <?php if ($iconUrl): ?>
+                  <img class="area-icon" src="<?= htmlspecialchars($iconUrl) ?>" alt="<?= htmlspecialchars($areaNome) ?>">
+                <?php endif; ?>
+                <div class="nivel-titles">
+                  <h3 class="nivel-desc"><?= htmlspecialchars($areaNome) ?></h3>
+                  <p class="nivel-meta">
+                    <span class="nivel">Nível <?= $nivel ?></span>
+                    <span class="faltam">• Faltam <?= $prog['faltam'] ?> pts</span>
+                  </p>
+                </div>
+              </div>
+              <div class="nivel-card-body">
+                <div class="progress-bar" aria-hidden="true">
+                  <div class="progress" data-progress="<?= $prog['progress'] ?>"></div>
+                </div>
+                <div class="nivel-stats">
+                  <span class="pontos"><?= $pontos ?> pts</span>
+                  <span class="percent"><?= $prog['progress'] ?>%</span>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <p class="no-services">Nenhuma área cadastrada no sistema.</p>
+        <?php endif; ?>
       </div>
-      <p class="pontuacao-total">Pontuação Total: <strong>4769</strong></p>
+
+      <p class="pontuacao-total">Pontuação Total: <strong><?= $pontuacaoTotal ?></strong></p>
     </section>
 
   </main>
@@ -315,6 +416,7 @@ if (!empty($_SESSION['user_id'])) {
       setEditing(false);
     })();
   </script>
+
 </body>
 
 </html>
