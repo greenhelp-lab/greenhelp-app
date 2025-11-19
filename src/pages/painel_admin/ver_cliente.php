@@ -195,6 +195,63 @@ try {
 
           </div>
         </div>
+        <div class="servicos-card mt-12">
+          <h3 class="empresa-subtitle">Serviços Contratados</h3>
+
+          <div class="servicos-grid-admin">
+            <?php
+            $servicosStmt = $pdo->prepare("SELECT sa.id, sa.status, sa.valor_total, sa.data_inicio, s.nome, s.descricao, s.id as servico_id, a.nome as area_nome, a.imagem_url as area_img 
+              FROM servicos_andamento sa
+              INNER JOIN servicos s ON sa.servico_id = s.id
+              LEFT JOIN areas_sustentaveis a ON s.area_id = a.id
+              WHERE sa.usuario_id = :cliente_id 
+              ORDER BY sa.data_inicio DESC");
+
+            $servicosStmt->execute([':cliente_id' => (int)$userId]);
+            $servicos = $servicosStmt->fetchAll();
+
+            if (empty($servicos)):
+            ?>
+              <p class="no-services">Nenhum serviço contratado.</p>
+              <?php
+            else:
+              foreach ($servicos as $servico):
+                $status_class = match ($servico['status']) {
+                  'pendente' => 'status-pendente',
+                  'em andamento' => 'status-andamento',
+                  'concluido' => 'status-concluido',
+                  'cancelado' => 'status-cancelado',
+                  default => ''
+                };
+              ?>
+                <div class="servico-card-admin">
+                  <div class="servico-header">
+                    <?php if ($servico['area_img']): ?>
+                      <img src="<?= htmlspecialchars($servico['area_img'], ENT_QUOTES) ?>" alt="<?= htmlspecialchars($servico['area_nome'], ENT_QUOTES) ?>" class="area-icon">
+                    <?php endif; ?>
+                    <div class="status-edit-wrapper">
+                      <select class="status-select" data-servico-id="<?= (int)$servico['id'] ?>" data-current-status="<?= htmlspecialchars($servico['status'], ENT_QUOTES) ?>">
+                        <option value="pendente" <?= $servico['status'] === 'pendente' ? 'selected' : '' ?>>Pendente</option>
+                        <option value="em andamento" <?= $servico['status'] === 'em andamento' ? 'selected' : '' ?>>Em Andamento</option>
+                        <option value="concluido" <?= $servico['status'] === 'concluido' ? 'selected' : '' ?>>Concluído</option>
+                        <option value="cancelado" <?= $servico['status'] === 'cancelado' ? 'selected' : '' ?>>Cancelado</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="servico-body">
+                    <h3><?= htmlspecialchars($servico['nome'], ENT_QUOTES) ?></h3>
+                    <p class="area-nome"><?= htmlspecialchars($servico['area_nome'], ENT_QUOTES) ?></p>
+                    <p class="descricao"><?= htmlspecialchars($servico['descricao'], ENT_QUOTES) ?></p>
+                  </div>
+                  <div class="servico-footer">
+                    <span class="data">Adquirido: <?= date('d/m/Y', strtotime($servico['data_inicio'])) ?></span>
+                    <span class="preco">R$ <?= number_format($servico['valor_total'], 2, ',', '.') ?></span>
+                  </div>
+                </div>
+            <?php
+              endforeach;
+            endif;
+            ?>
       </section>
 
       <section class="actions">
@@ -384,6 +441,40 @@ try {
         }
       });
 
+    })();
+
+    (function() {
+      const statusSelects = document.querySelectorAll('.status-select');
+
+      statusSelects.forEach(select => {
+        select.addEventListener('change', async (e) => {
+          const servicoId = parseInt(e.target.getAttribute('data-servico-id'), 10);
+          const novoStatus = e.target.value;
+          const statusAnterior = e.target.getAttribute('data-current-status');
+
+          try {
+            const res = await fetch(`${API}/src/controllers/painel_admin/atualizar_status_servico_controller.php`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              credentials: 'include',
+              body: JSON.stringify({
+                id: servicoId,
+                status: novoStatus
+              })
+            });
+
+            const j = await res.json().catch(() => ({}));
+            if (!res.ok || !j.ok) throw new Error(j.error || 'Erro ao atualizar');
+
+            e.target.setAttribute('data-current-status', novoStatus);
+          } catch (err) {
+            alert('Falha ao atualizar status: ' + err.message);
+            e.target.value = statusAnterior;
+          }
+        });
+      });
     })();
   </script>
 
