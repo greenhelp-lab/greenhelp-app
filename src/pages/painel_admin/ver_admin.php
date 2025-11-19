@@ -37,9 +37,6 @@ if ($usuario && !empty($usuario['avatar_path'])) {
   <main class="account-main center-layout">
     <div class="conta-container">
 
-      <!-- ============================
-            ADMIN
-      ============================= -->
       <section class="cliente-info">
         <h1 class="account-title">Sobre o Admin</h1>
 
@@ -107,9 +104,6 @@ if ($usuario && !empty($usuario['avatar_path'])) {
 
       </section>
 
-      <!-- ============================
-            AÇÕES
-      ============================= -->
       <section class="actions">
 
         <div class="action-row primary-actions">
@@ -172,7 +166,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
           nome: inputs.nome.value.trim(),
           telefone: inputs.tel.value.trim(),
           email: inputs.email.value.trim(),
-          ativado: inputs.ativo.value.trim()
+          ativo: inputs.ativo.value.trim()
         };
 
         if (!payload.nome || !payload.email) {
