@@ -20,7 +20,7 @@
         </div>
 
         <!-- Formulário -->
-        <form class="auth-form" action="<?php echo BASE_URL; ?>/src/actions/criar_empresa_action.php" method="post">
+        <form class="auth-form" action="<?php echo BASE_URL; ?>/src/controllers/auth/criar_empresa_controller.php" method="post">
 
           <div class="form-group">
             <label for="business_name">Nome da Empresa</label>

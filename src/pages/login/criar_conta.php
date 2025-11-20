@@ -19,7 +19,7 @@
           <p class="lead">Use um email confiável (entraremos em contato por ele)</p>
         </div>
 
-        <form class="auth-form" action="<?php echo BASE_URL; ?>/src/actions/criar_conta_action.php" method="post">
+        <form class="auth-form" action="<?php echo BASE_URL; ?>/src/controllers/auth/criar_conta_controller.php" method="post">
           <div class="form-group">
             <label for="client_name">Nome Completo</label>
             <input type="text" id="client_name" name="client_name" placeholder="Digite seu nome completo" required>
