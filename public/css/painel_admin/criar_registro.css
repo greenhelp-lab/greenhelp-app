@@ -84,6 +84,19 @@ input::placeholder {
   height: 44px;
 }
 
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='12' viewBox='0 0 16 12'><path fill='%23ffffff' fill-opacity='0.85' d='M6 8L0 0h12z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+}
+
+select.input option {
+  background: var(--input);
+  color: var(--txt);
+}
+
 /* 1º campo com borda verde */
 .field:first-of-type .input {
   border-color: var(--accent);

@@ -15,8 +15,11 @@ $user = $stmt->fetch();
 
 if ($user && password_verify($senha, $user['senha'])) {
   $_SESSION['user_id'] = $user['id'];
-  print("user id: " . $user['id']);
   $_SESSION['papel'] = $user['papel'];
+
+  // primeiro nome
+  $partes = preg_split('/\s+/', trim($user['nome']));
+  $_SESSION['primeiro_nome'] = $partes[0];
 
   $sql = "SELECT id FROM empresas WHERE usuario_id = :user_id";
   $stmt = $pdo->prepare($sql);
