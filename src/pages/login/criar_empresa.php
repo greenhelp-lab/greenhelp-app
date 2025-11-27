@@ -37,10 +37,16 @@
             <input type="text" id="business_industry" name="business_industry" placeholder="Digite o setor da sua empresa" required>
           </div>
 
-          <div class="form-group">
+         <div class="form-group">
             <label for="business_size">Tamanho da Empresa</label>
-            <input type="text" id="business_size" name="business_size" placeholder="Digite o tamanho da sua empresa" required>
-          </div>
+                <select id="business_size" name="business_size" required>
+                   <option value="" disabled selected>Selecione...</option>
+                     <option value="pequeno">Pequeno</option>
+                      <option value="medio">Médio</option>
+                      <option value="grande">Grande</option>
+                     </select>
+                    </div>
+
 
           <button type="submit">Criar Conta</button>
         </form>
