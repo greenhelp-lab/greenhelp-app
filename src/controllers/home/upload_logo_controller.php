@@ -68,10 +68,6 @@ try {
     exit;
   }
 
-  // checa suporte a WEBP no GD (muitos ambientes não têm)
-  $webpSemSuporte = ($mime === 'image/webp' && !function_exists('imagecreatefromwebp'));
-
-
   // --- Pasta destino ---
   $dir = $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/public/uploads/logos';
   if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
@@ -93,41 +89,54 @@ try {
     exit;
   }
 
-  // --- Redimensiona (máx 1080px) ---
-  [$w, $h] = getimagesize($dest);
-  $scale = min(1, 1080 / max($w, $h));
-  if ($scale < 1) {
-    $nw = (int)round($w * $scale);
-    $nh = (int)round($h * $scale);
-    // loaders
-    if ($mime === 'image/jpeg') $src = imagecreatefromjpeg($dest);
-    elseif ($mime === 'image/png')  $src = imagecreatefrompng($dest);
-    else                          $src = imagecreatefromwebp($dest);
-    if (!$src) {
-      http_response_code(500);
-      echo json_encode(['ok' => false, 'error' => 'falha_carregar_imagem']);
-      exit;
-    }
+  // --- Redimensiona (máx 1080px) SE GD ESTIVER DISPONÍVEL ---
+  if (function_exists('imagecreatetruecolor')) {
+    [$w, $h] = getimagesize($dest);
+    $scale = min(1, 1080 / max($w, $h));
 
-    $dst = imagecreatetruecolor($nw, $nh);
-    imagealphablending($dst, false);
-    imagesavealpha($dst, true);
-    imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+    if ($scale < 1) {
+      $nw = (int)round($w * $scale);
+      $nh = (int)round($h * $scale);
 
-    // savers
-    $ok = false;
-    if ($mime === 'image/jpeg') $ok = imagejpeg($dst, $dest, 88);
-    elseif ($mime === 'image/png')  $ok = imagepng($dst, $dest, 6);
-    else                          $ok = imagewebp($dst, $dest, 88);
+      // loaders com checagem de suporte
+      $src = null;
+      if ($mime === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
+        $src = imagecreatefromjpeg($dest);
+      } elseif ($mime === 'image/png' && function_exists('imagecreatefrompng')) {
+        $src = imagecreatefrompng($dest);
+      } elseif ($mime === 'image/webp' && function_exists('imagecreatefromwebp')) {
+        $src = imagecreatefromwebp($dest);
+      }
 
-    imagedestroy($src);
-    imagedestroy($dst);
-    if (!$ok) {
-      http_response_code(500);
-      echo json_encode(['ok' => false, 'error' => 'falha_redimensionar']);
-      exit;
+      // se não tiver suporte ao tipo no GD, apenas NÃO redimensiona
+      if ($src) {
+        $dst = imagecreatetruecolor($nw, $nh);
+        imagealphablending($dst, false);
+        imagesavealpha($dst, true);
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+
+        $ok = true;
+        if ($mime === 'image/jpeg' && function_exists('imagejpeg')) {
+          $ok = imagejpeg($dst, $dest, 88);
+        } elseif ($mime === 'image/png' && function_exists('imagepng')) {
+          $ok = imagepng($dst, $dest, 6);
+        } elseif ($mime === 'image/webp' && function_exists('imagewebp')) {
+          $ok = imagewebp($dst, $dest, 88);
+        }
+
+        imagedestroy($src);
+        imagedestroy($dst);
+
+        if (!$ok) {
+          http_response_code(500);
+          echo json_encode(['ok' => false, 'error' => 'falha_redimensionar']);
+          exit;
+        }
+      }
+      // se $src for null, seguimos com a imagem original sem erro
     }
   }
+  // se não tiver GD, simplesmente NÃO redimensiona e segue com o arquivo original
 
   // --- Atualiza BD ---
   $st = $pdo->prepare("UPDATE empresas SET logo_path = :p WHERE id = :id");
@@ -135,7 +144,7 @@ try {
 
   echo json_encode(['ok' => true, 'url' => $public]);
 } catch (Throwable $e) {
-  // algo explodiu (ex.: função GD ausente, permissão etc.)
+  // algo explodiu (ex.: permissão etc.)
   error_log('upload_logo.php: ' . $e->getMessage());
   http_response_code(500);
   echo json_encode(['ok' => false, 'error' => 'excecao', 'msg' => $e->getMessage()]);

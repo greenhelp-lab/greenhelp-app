@@ -73,7 +73,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
 
   <script>
     const API = '<?= rtrim(BASE_URL, '/') ?>';
-    const UPLOAD_URL = API + '/src/actions/home/upload_avatar.php';
+    const UPLOAD_URL = API + '/src/controllers/home/upload_avatar_controller.php';
 
     (function() {
       const form = document.getElementById('formConta');
@@ -103,7 +103,6 @@ if ($usuario && !empty($usuario['avatar_path'])) {
       setEditing(false);
       btnEditar.addEventListener('click', () => setEditing(true));
 
-      // salvar via AJAX (sem reload)
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -140,25 +139,36 @@ if ($usuario && !empty($usuario['avatar_path'])) {
         }
       });
 
-      // DELETAR CONTA (AJAX) -> usa redirect do backend ou fallback para /src/pages/login/login.php
-      btnDelete.addEventListener('click', async () => {
-        if (!confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')) return;
-        try {
-          const r = await fetch(`${API}/src/controllers/home/delete_usuario_controller.php`, {
-            method: 'POST',
-            credentials: 'include'
-          });
-          const j = await r.json().catch(() => ({}));
-          if (!r.ok || !j.ok) throw new Error(j.error || 'Erro ao deletar');
+    btnDelete.addEventListener('click', async () => {
+  if (!confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')) return;
+  try {
+    const r = await fetch(`${API}/src/controllers/home/delete_usuario_controller.php`, {
+      method: 'POST',
+      credentials: 'include'
+    });
 
-          const to = j.redirect || ('<?= rtrim(BASE_URL, '/') ?>/src/pages/login/login.php');
-          window.location.href = to;
-        } catch (err) {
-          alert('Falha ao deletar conta: ' + err.message);
-        }
-      });
+    const text = await r.text();
+    let j = {};
+    try {
+      j = JSON.parse(text);
+    } catch {
+      // não é JSON, vamos usar o texto bruto
+    }
 
-      // upload de avatar
+    if (!r.ok || !j.ok) {
+      const msg = j.error || text || `HTTP ${r.status}`;
+      throw new Error(msg);
+    }
+
+    const to = j.redirect || ('<?= rtrim(BASE_URL, '/') ?>/src/pages/login/login.php');
+    window.location.href = to;
+  } catch (err) {
+    alert('Falha ao deletar conta: ' + err.message);
+  }
+});
+
+
+
       const okMimes = ['image/jpeg', 'image/png', 'image/webp'];
       const MAX = 3 * 1024 * 1024;
 
@@ -184,19 +194,34 @@ if ($usuario && !empty($usuario['avatar_path'])) {
         const fd = new FormData();
         fd.append('foto', file);
 
-        try {
+                try {
           const r = await fetch(UPLOAD_URL, {
             method: 'POST',
             body: fd,
             credentials: 'include'
           });
-          if (!r.ok) throw new Error(await r.text());
-          const data = await r.json();
-          if (data.url) img.src = data.url + '?t=' + Date.now();
+
+          const text = await r.text();
+          let data = {};
+          try {
+            data = JSON.parse(text);
+          } catch {
+            // se vier algo que não é JSON (ex.: HTML), mostra bruto
+            throw new Error(text || `HTTP ${r.status}`);
+          }
+
+          if (!r.ok || !data.ok) {
+            throw new Error(data.error || text || `HTTP ${r.status}`);
+          }
+
+          if (data.url) {
+            img.src = data.url + '?t=' + Date.now();
+          }
         } catch (e) {
           alert('Falha no upload: ' + e.message);
           inputFile.value = '';
         }
+
       });
     })();
   </script>

@@ -62,8 +62,6 @@ if (!empty($_SESSION['user_id'])) {
         <button type="button" class="btn edit-button" id="btnEditar">Editar</button>
         <button type="submit" class="btn save-button" id="btnSalvar">Salvar</button>
       </div>
-
-
     </form>
 
     <!-- ===== Serviços em Andamento ===== -->
@@ -316,14 +314,27 @@ if (!empty($_SESSION['user_id'])) {
 
         const fd = new FormData();
         fd.append('logo', file);
+
         try {
           const r = await fetch(UPLOAD_LOGO_URL, {
             method: 'POST',
             body: fd,
             credentials: 'include'
           });
-          const data = await r.json();
-          if (!r.ok || !data?.url) throw new Error(data?.error || ('HTTP ' + r.status));
+
+          const text = await r.text();
+          let data = {};
+          try {
+            data = JSON.parse(text);
+          } catch {
+            throw new Error(text || ('HTTP ' + r.status));
+          }
+
+          if (!r.ok || !data?.url) {
+            const msg = data.msg || data.error || ('HTTP ' + r.status);
+            throw new Error(msg);
+          }
+
           img.src = data.url + '?t=' + Date.now();
         } catch (e) {
           alert('Falha no upload: ' + e.message);

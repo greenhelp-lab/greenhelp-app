@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 session_start();
 
 header('Content-Type: application/json; charset=utf-8');
@@ -44,9 +45,9 @@ try {
   if ($empIds) {
     $in = implode(',', array_fill(0, count($empIds), '?'));
 
-    // 4.1) Apaga dependentes dessas empresas
-    $pdo->prepare("DELETE FROM pedidos WHERE empresa_id IN ($in)")->execute($empIds);
-    $pdo->prepare("DELETE FROM pontuacoes_sustentaveis WHERE empresa_id IN ($in)")->execute($empIds);
+    // 4.1) (REMOVIDO) deletes em tabelas que não existem no seu banco:
+    // $pdo->prepare("DELETE FROM pedidos WHERE empresa_id IN ($in)")->execute($empIds);
+    // $pdo->prepare("DELETE FROM pontuacoes_sustentaveis WHERE empresa_id IN ($in)")->execute($empIds);
 
     // 4.2) Agora pode apagar as empresas
     $pdo->prepare("DELETE FROM empresas WHERE id IN ($in)")->execute($empIds);
@@ -80,14 +81,14 @@ try {
 
   echo json_encode(['ok' => true, 'redirect' => $redirectUrl]);
 } catch (PDOException $e) {
-  if ($pdo?->inTransaction()) $pdo->rollBack();
+  if (isset($pdo) && $pdo->inTransaction()) $pdo->rollBack();
   $msg = $e->getCode() === '23000'
     ? 'Não foi possível excluir: há registros vinculados por chave estrangeira.'
     : ('Exceção PDO: ' . $e->getMessage());
   http_response_code(500);
   echo json_encode(['ok' => false, 'error' => $msg]);
 } catch (Throwable $e) {
-  if ($pdo?->inTransaction()) $pdo->rollBack();
+  if (isset($pdo) && $pdo->inTransaction()) $pdo->rollBack();
   http_response_code(500);
   echo json_encode(['ok' => false, 'error' => 'Exceção: ' . $e->getMessage()]);
 }
