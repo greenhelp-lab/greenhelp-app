@@ -25,7 +25,7 @@ $areas = $query->fetchAll();
       <button class="close" id="close-btn" aria-label="Fechar">✕</button>
     </div>
 
-    <form method="POST" action="<?php echo BASE_URL; ?>/src/actions/painel_admin/criar_servico_action.php">
+    <form method="POST" action="<?php echo BASE_URL; ?>/src/controllers/painel_admin/criar_servico_controller.php">
       <div class="field">
         <label for="nome">Nome</label>
         <input id="nome" name="nome" class="input pill" type="text" required />

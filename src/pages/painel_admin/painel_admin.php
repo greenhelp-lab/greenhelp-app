@@ -11,7 +11,7 @@ $totClientes = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE papel = 'cliente
 $totAdmins   = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE papel = 'admin'")->fetchColumn();
 $totServicos = $pdo->query("SELECT COUNT(*) FROM servicos")->fetchColumn();
 $totFaturamento = $pdo->query("SELECT SUM(valor_total) FROM servicos_andamento WHERE status = 'concluido'")->fetchColumn();
-$totServicosAndamento = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHERE status = 'em_andamento'")->fetchColumn();
+$totServicosAndamento = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHERE status = 'em andamento'")->fetchColumn();
 $totServicosConcluidos = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHERE status = 'concluido'")->fetchColumn();
 $totServicosCancelados = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHERE status = 'cancelado'")->fetchColumn();
 $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHERE status = 'pendente'")->fetchColumn();
@@ -47,7 +47,7 @@ $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHE
   </div>
 
   <!-- Dashboard principal -->
-  <main class="dashboard" role="main" aria-labelledby="dashboard-heading">
+  <main class="dashboard">
     <h2>Visão geral</h2>
 
     <!-- Cards de métricas -->
@@ -169,7 +169,7 @@ $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHE
       const adminsList = document.getElementById("admins-list");
       const serviceSearch = document.getElementById("service-search");
       const servicesList = document.getElementById("services-list");
-      const base = window.location.origin + "/greenhelp-app/src/controllers/";
+      const base = window.location.origin + "/greenhelp-app/src/controllers/painel_admin/";
 
       // Busca de clientes
       if (clientSearch && clientsList) {

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 include_once BASE_PATH . '/src/config/conexao.php';
 
@@ -26,36 +24,30 @@ try {
 
   $pdo->beginTransaction();
 
-  // 1) Pega avatar (para tentar excluir arquivo depois)
-  $st = $pdo->prepare('SELECT avatar_path FROM usuarios WHERE id = :id FOR UPDATE');
-  $st->execute([':id' => $id]);
-  $avatarPath = $st->fetchColumn();
-
-  // 2) QUEBRA A REFERÊNCIA CIRCULAR: zera empresa_id do usuário
+  // zera empresa_id do cliente
   $pdo->prepare('UPDATE usuarios SET empresa_id = NULL WHERE id = :id')
     ->execute([':id' => $id]);
 
-  // 3) Apaga registros do usuário em servicos_andamento
+  // Apaga registros da tabela servicos_andamento do cliente
   $pdo->prepare('DELETE FROM servicos_andamento WHERE usuario_id = :id')
     ->execute([':id' => $id]);
-
-  // 4) Descobre empresas do usuário
+   
+  // descobre empresa do usuário
   $stmtEmp = $pdo->prepare('SELECT id FROM empresas WHERE usuario_id = :id');
   $stmtEmp->execute([':id' => $id]);
-  $empIds = $stmtEmp->fetchAll(PDO::FETCH_COLUMN);
+  $empId = $stmtEmp->fetch();
+  $empresaId = (int)$empId['id'];
+  
 
-  if ($empIds) {
-    $in = implode(',', array_fill(0, count($empIds), '?'));
+  if ($empId) {
+    // Apaga registros da tabela pontuacoes_areas
+    $pdo->prepare("DELETE FROM pontuacoes_areas WHERE empresa_id = :id")->execute([':id' => $empresaId]);
 
-    // 4.1) Apaga dependentes dessas empresas
-    $pdo->prepare("DELETE FROM pedidos WHERE empresa_id IN ($in)")->execute($empIds);
-    $pdo->prepare("DELETE FROM pontuacoes_sustentaveis WHERE empresa_id IN ($in)")->execute($empIds);
-
-    // 4.2) Agora pode apagar as empresas
-    $pdo->prepare("DELETE FROM empresas WHERE id IN ($in)")->execute($empIds);
+    // apagar a empresa
+    $pdo->prepare("DELETE FROM empresas WHERE id = :id")->execute([':id' => $empresaId]);
   }
 
-  // 5) Por último: apaga o usuário
+  // apaga o usuário
   $del = $pdo->prepare('DELETE FROM usuarios WHERE id = :id LIMIT 1');
   $ok  = $del->execute([':id' => $id]);
 
@@ -67,12 +59,6 @@ try {
   }
 
   $pdo->commit();
-
-  // Remove avatar local (se não for URL http)
-  if (!empty($avatarPath) && !preg_match('~^https?://~i', $avatarPath)) {
-    $abs = $avatarPath[0] === '/' ? $_SERVER['DOCUMENT_ROOT'] . $avatarPath : $avatarPath;
-    @unlink($abs);
-  }
 
   echo json_encode(['ok' => true]);
 } catch (Throwable $e) {

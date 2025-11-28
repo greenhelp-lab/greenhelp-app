@@ -43,11 +43,6 @@ try {
   }
 
   $empresaAtualId = $usuario['empresa_id'] ? (int)$usuario['empresa_id'] : null;
-
-  // ---------------------------------------------------------
-  // 1. TRATAR EMPRESA SELECIONADA (criar, alterar, trocar)
-  // ---------------------------------------------------------
-
   $newEmpresaId = null;
 
   if ($empresa_sel === "new") {
@@ -75,7 +70,6 @@ try {
     $newEmpresaId = $empresa_sel_id;
 
     // Caso a empresa selecionada seja existente, permitir edição dos campos
-    // (Você já tornou os campos editáveis no front, então o controller precisa aceitar isso)
     $upd = $pdo->prepare("
     UPDATE empresas
        SET nome = :n,
@@ -94,10 +88,7 @@ try {
     ]);
   }
 
-  // ---------------------------------------------------------
-  // 2. ATUALIZAR DADOS DO USUÁRIO
-  // ---------------------------------------------------------
-
+// atualizar dados do usuário
   $up = $pdo->prepare("
   UPDATE usuarios
      SET nome = :n,

@@ -33,7 +33,7 @@ session_start();
     }
     ?>
 
-    <form id="criarClienteForm" method="POST" action="<?php echo BASE_URL; ?>/src/actions/painel_admin/criar_cliente_action.php">
+    <form id="criarClienteForm" method="POST" action="<?php echo BASE_URL; ?>/src/controllers/painel_admin/criar_cliente_controller.php">
       <div class="field">
         <label for="nome">Nome</label>
         <input id="nome" name="nome" class="input pill" type="text" required />

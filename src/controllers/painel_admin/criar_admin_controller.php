@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   try {
-    $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
+    $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
     $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, telefone, senha, papel, ativo) VALUES (:nome, :email, :telefone, :senha, :papel, :ativo)");
     $stmt->execute([
       ':nome' => $nome,

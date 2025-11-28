@@ -7,7 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $email = trim($_POST['email'] ?? '');
   $telefone = trim($_POST['telefone'] ?? '');
   $senha = $_POST['senha'] ?? '';
-  // empresa association: either existing id, or create new when empresa_id === 'new'
   $empresa_id = $_POST['empresa_id'] ?? '';
   $empresa_nome = trim($_POST['empresa_nome'] ?? '');
   $empresa_cnpj = trim($_POST['empresa_cnpj'] ?? '');
@@ -31,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
   }
 
-  // Criar/associar empresa dentro de transação quando necessário
+  // Criar/associar empresa
   try {
     $pdo->beginTransaction();
 
@@ -46,9 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $empresa_id = $pdo->lastInsertId();
     }
 
-    $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
+    $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
 
-    // Inserir usuário com possível empresa_id (ou null)
+    // Inserir usuário
     $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, telefone, senha, papel, ativo, empresa_id) VALUES (:nome, :email, :telefone, :senha, :papel, :ativo, :empresa_id)");
     $stmt->execute([
       ':nome' => $nome,

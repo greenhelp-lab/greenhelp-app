@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 
 $email = $_POST['email'];
 $senha = $_POST['senha'];
