@@ -168,17 +168,17 @@ if (!empty($_SESSION['user_id'])) {
         ];
       }
 
-      // Busca áreas e pontuações do usuário (usando PDO, conforme padrão do projeto)
+      // Busca áreas e pontuações (agora sem usar coluna inexistente p.usuario_id)
       $usuarioId = $_SESSION['user_id'] ?? null;
       $areas = [];
       if ($usuarioId) {
         $sqlAreas = "SELECT a.id AS area_id, a.nome AS area_nome, p.pontos, p.nivel
-                    FROM areas_sustentaveis a
-                    LEFT JOIN pontuacoes_areas p
-                      ON p.area_id = a.id AND p.usuario_id = :uid
-                    ORDER BY a.nome";
+                     FROM areas_sustentaveis a
+                     LEFT JOIN pontuacoes_areas p
+                       ON p.area_id = a.id
+                     ORDER BY a.nome";
         $stAreas = $pdo->prepare($sqlAreas);
-        $stAreas->execute([':uid' => $usuarioId]);
+        $stAreas->execute(); // sem parâmetro, pois não há mais :uid
         $areas = $stAreas->fetchAll();
       }
 
