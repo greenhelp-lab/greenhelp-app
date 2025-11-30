@@ -33,11 +33,21 @@
   align-items: center;
   margin: 20px 0 20px 0;
 }
-.shop-intro {
-  color: var(--muted);
+
+.shop-intros {
+  width: 100%;
+  max-width: 800px;
   margin-bottom: 20px;
+}
+
+.shop-intro {
+  font-size: 1.3rem;
+  color: var(--muted);
   text-align: center;
-  max-width: 600px;
+}
+
+.shop-intro::after {
+  margin-bottom: 20px;
 }
 .shop-intro span {
   font-weight: 600;
@@ -55,7 +65,7 @@
 
   padding-top: 1rem;
   width: min(93vw, 1200px);
-  max-height: 900px;
+  max-height: 1300px;
   margin: 0 auto;
   border: 2px solid var(--stroke);
   border-radius: 22px;
@@ -185,7 +195,7 @@
 /* CARDS DE SERVIÇOS NA LOJA */
 .service-cards {
   width: 100%;
-  max-height: 600px;
+  max-height: 900px;
   display: grid;
   overflow-y: auto; /* scroll vertical apenas aqui */
   overflow-x: hidden;

@@ -18,15 +18,18 @@ $is_admin = isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin';
 
 <body>
   <?php include_once BASE_PATH . "/src/pages/partials/header_cliente.php"; ?>
-  <h1 class="service-title">Marketplace</h1>
-  <div class="shortcuts">
-    <button onclick="window.location.href='carrinho.php'">Seu Carrinho</button>
-  </div>
 
   <!-- Seção Loja de Serviços -->
   <section class="shop-section">
-    <h2>Loja de Serviços</h2>
-    <p class="shop-intro">Veja um catálogo de todos os serviços da <span>GreenHelp.</span> Use a <span>barra de pesquisa</span> e <span>filtros</span> para melhores resultados.</p>
+    <h1>Loja de Serviços</h1>
+    <div class="shop-intros">
+      <p class="shop-intro">
+        Veja um catálogo de todos os serviços da <span>GreenHelp.</span> 
+      </p>
+      <p class="shop-intro">
+        Use a <span>barra de pesquisa</span> e <span>filtros</span> para melhores resultados.
+      </p>
+    </div>
 
     <div class="shop-block"> <!-- Bloco da Loja -->
       <div class="search">
