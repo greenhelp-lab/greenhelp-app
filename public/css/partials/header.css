@@ -35,7 +35,7 @@ header {
 }
 
 /* estilo e display dos elementos do header que continuam nos menores tamanhos de tela. Estilização dos outros elementos está em @media */
-.notification-icon,
+.cart-icon,
 .account-icon,
 .config-icon,
 .logout-icon {
