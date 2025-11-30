@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/controllers/home/areasPontuacaoController.php';
 session_start();
 
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -25,6 +26,7 @@ if (!empty($_SESSION['user_id'])) {
   }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -35,7 +37,6 @@ if (!empty($_SESSION['user_id'])) {
   <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/global.css">
   <link rel="stylesheet" href="<?= BASE_URL; ?>/public/css/home/home.css">
 </head>
-
 <body>
   <?php include_once BASE_PATH . "/src/pages/partials/header_cliente.php"; ?>
 
@@ -64,7 +65,7 @@ if (!empty($_SESSION['user_id'])) {
       </div>
     </form>
 
-    <!-- ===== Serviços em Andamento ===== -->
+    <!-- Serviços em Andamento -->
     <?php
     $sql = "SELECT sa.id, sa.status, sa.valor_total, sa.data_inicio, 
                    s.nome, s.descricao,
@@ -117,7 +118,7 @@ if (!empty($_SESSION['user_id'])) {
         <?php endif; ?>
       </div>
     </section>
-
+    <!-- Pontuações de Sustentabilidade da Empresa -->
     <section class="pontuacoes">
       <div class="pontuacoes-header">
         <h2 class="pontuacoes-title">Pontuações Verdes</h2>
@@ -126,136 +127,59 @@ if (!empty($_SESSION['user_id'])) {
         Ganhe mais pontos através da <span class="cor_verde">compra de serviços</span> e
         <span class="cor_verde">melhoras sustentáveis</span> na sua empresa
       </p>
-      <?php
-      // Funções de cálculo de nível e progresso (seguem regras do projeto)
-      function calcularNivel(int $pontos): int
-      {
-        if ($pontos >= 1000) return 5;
-        if ($pontos >= 500) return 4;
-        if ($pontos >= 250) return 3;
-        if ($pontos >= 100) return 2;
-        return 1;
-      }
+      <div class="niveis">
+          <?php foreach ($areasPontuacao as $area): ?>
+            <?php
 
-      function progressoParaProximoNivel(int $pontos): array
-      {
-        $nivel = calcularNivel($pontos);
+            $areaId   = $area['id'];
+            $areaNome = $area['nome'];
+            $iconUrl  = $area['icone'];
+            $pontos   = $area['pontos'];
+            $nivel    = $area['nivel'];
+            $pontuacaoTotal = 0;
+            $pontuacaoTotal += $pontos;
 
-        switch ($nivel) {
-          case 1:
-            $limite = 100;
-            break;
-          case 2:
-            $limite = 250;
-            break;
-          case 3:
-            $limite = 500;
-            break;
-          case 4:
-            $limite = 1000;
-            break;
-          default:
-            return ['nivel' => 5, 'progress' => 100, 'faltam' => 0];
-        }
+            // progressão demonstrativa até implementar a lógica
+            $progress = ($pontos % 100);
+            $faltam   = 100 - $progress;
+            ?>
+            <div class="nivel-card" 
+                data-area-id="<?= $areaId ?>" 
+                data-nivel="<?= $nivel ?>">
 
-        $progress = min(100, ($pontos / $limite) * 100);
-        $faltam = max(0, $limite - $pontos);
-
-        return [
-          'nivel' => $nivel,
-          'progress' => (int) round($progress),
-          'faltam' => (int) $faltam
-        ];
-      }
-
-      // Busca áreas e pontuações do usuário (usando PDO, conforme padrão do projeto)
-      $usuarioId = $_SESSION['user_id'] ?? null;
-      $areas = [];
-      if ($usuarioId) {
-        $sqlAreas = "SELECT a.id AS area_id, a.nome AS area_nome, p.pontos, p.nivel
-                    FROM areas_sustentaveis a
-                    LEFT JOIN pontuacoes_areas p
-                      ON p.area_id = a.id AND p.usuario_id = :uid
-                    ORDER BY a.nome";
-        $stAreas = $pdo->prepare($sqlAreas);
-        $stAreas->execute([':uid' => $usuarioId]);
-        $areas = $stAreas->fetchAll();
-      }
-
-      // Calcula pontuação total (soma de todas as áreas)
-      $pontuacaoTotal = 0;
-      foreach ($areas as $aRow) {
-        $pontuacaoTotal += (int) ($aRow['pontos'] ?? 0);
-      }
-      ?>
-
-      <div class="niveis" aria-live="polite">
-        <?php if (!empty($areas)): ?>
-          <?php
-          // Gera CSS específico por cartão para definir a largura da barra (sem usar style="...")
-          $areaCustomCss = "";
-          foreach ($areas as $aTmp) {
-            $aidTmp = (int) $aTmp['area_id'];
-            $pTmp = (int) ($aTmp['pontos'] ?? 0);
-            $prTmp = progressoParaProximoNivel($pTmp);
-            $areaCustomCss .= ".nivel-card[data-area-id=\"" . $aidTmp . "\"] .progress{width: " . (int) $prTmp['progress'] . "%;}\n";
-          }
-          if ($areaCustomCss) {
-            echo "<style type=\"text/css\">\n" . $areaCustomCss . "</style>";
-          }
-          ?>
-
-          <?php foreach ($areas as $a):
-            $areaId = (int) $a['area_id'];
-            $areaNome = $a['area_nome'] ?? '';
-            $pontos = (int) ($a['pontos'] ?? 0);
-            // recalcula o nível a partir dos pontos para garantir consistência com regras
-            $nivel = calcularNivel($pontos);
-            $prog = progressoParaProximoNivel($pontos);
-
-            // Tenta detectar um ícone local seguindo um padrão (se existir)
-            $iconUrl = null;
-            $possibleFiles = [
-              $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/public/imgs/areas/area_' . $areaId . '.svg',
-              $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/public/imgs/areas/area_' . $areaId . '.png',
-              $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/public/imgs/areas/area_' . $areaId . '.webp',
-              $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/public/imgs/areas/area_' . $areaId . '.jpg'
-            ];
-            foreach ($possibleFiles as $pf) {
-              if (file_exists($pf)) {
-                $rel = str_replace($_SERVER['DOCUMENT_ROOT'], '', $pf);
-                $iconUrl = rtrim(BASE_URL, '/') . $rel;
-                break;
-              }
-            }
-          ?>
-            <div class="nivel-card" data-area-id="<?= $areaId ?>" data-nivel="<?= $nivel ?>">
               <div class="nivel-card-header">
-                <?php if ($iconUrl): ?>
-                  <img class="area-icon" src="<?= htmlspecialchars($iconUrl) ?>" alt="<?= htmlspecialchars($areaNome) ?>">
+
+                <?php if (!empty($iconUrl)): ?>
+                  <img class="area-icon" 
+                      src="<?= htmlspecialchars($iconUrl) ?>" 
+                      alt="<?= htmlspecialchars($areaNome) ?>">
                 <?php endif; ?>
+
                 <div class="nivel-titles">
                   <h3 class="nivel-desc"><?= htmlspecialchars($areaNome) ?></h3>
+
                   <p class="nivel-meta">
                     <span class="nivel">Nível <?= $nivel ?></span>
-                    <span class="faltam">• Faltam <?= $prog['faltam'] ?> pts</span>
+                    <span class="faltam">• Faltam <?= $faltam ?> pts</span>
                   </p>
                 </div>
+
               </div>
+
               <div class="nivel-card-body">
                 <div class="progress-bar" aria-hidden="true">
-                  <div class="progress" data-progress="<?= $prog['progress'] ?>"></div>
+                  <div class="progress" data-progress="<?= $progress ?>"></div>
                 </div>
+
                 <div class="nivel-stats">
                   <span class="pontos"><?= $pontos ?> pts</span>
-                  <span class="percent"><?= $prog['progress'] ?>%</span>
+                  <span class="percent"><?= $progress ?>%</span>
                 </div>
               </div>
+
             </div>
+
           <?php endforeach; ?>
-        <?php else: ?>
-          <p class="no-services">Nenhuma área cadastrada no sistema.</p>
-        <?php endif; ?>
       </div>
 
       <p class="pontuacao-total">Pontuação Total: <strong><?= $pontuacaoTotal ?></strong></p>
@@ -265,169 +189,7 @@ if (!empty($_SESSION['user_id'])) {
 
   <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
 
-  <script>
-    const UPLOAD_LOGO_URL = '<?= rtrim(BASE_URL, '/') ?>/src/controllers/home/upload_logo_controller.php';
-
-    (async function() {
-      const btn = document.getElementById('btnLogo');
-      const img = document.getElementById('imgLogo');
-      const inp = document.getElementById('inpLogo');
-      const MAX = 3 * 1024 * 1024;
-      const ok = ['image/jpeg', 'image/png', 'image/webp'];
-
-      try {
-        const res = await fetch('<?= rtrim(BASE_URL, '/') ?>/src/controllers/home/read_empresa_controller.php', {
-          credentials: 'include'
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const json = await res.json();
-        if (json.ok && json.empresa) {
-          const e = json.empresa;
-          document.getElementById("empresa").value = e.nome || '';
-          document.getElementById("cnpj").value = e.cnpj || '';
-          document.getElementById("perfil").value = e.porte || '';
-          document.getElementById("industria").value = e.setor_atuacao || '';
-          document.getElementById("endereco").value = e.endereco || ''; // NOVO
-        }
-      } catch (err) {
-        console.error('read_empresa_controller:', err);
-      }
-
-      btn.addEventListener('click', () => inp.click());
-      inp.addEventListener('change', async () => {
-        const file = inp.files?.[0];
-        if (!file) return;
-        if (!ok.includes(file.type)) {
-          alert('JPG/PNG/WEBP');
-          inp.value = '';
-          return;
-        }
-        if (file.size > MAX) {
-          alert('Até 3MB');
-          inp.value = '';
-          return;
-        }
-
-        const t = URL.createObjectURL(file);
-        img.src = t;
-        img.onload = () => URL.revokeObjectURL(t);
-
-        const fd = new FormData();
-        fd.append('logo', file);
-
-        try {
-          const r = await fetch(UPLOAD_LOGO_URL, {
-            method: 'POST',
-            body: fd,
-            credentials: 'include'
-          });
-
-          const text = await r.text();
-          let data = {};
-          try {
-            data = JSON.parse(text);
-          } catch {
-            throw new Error(text || ('HTTP ' + r.status));
-          }
-
-          if (!r.ok || !data?.url) {
-            const msg = data.msg || data.error || ('HTTP ' + r.status);
-            throw new Error(msg);
-          }
-
-          img.src = data.url + '?t=' + Date.now();
-        } catch (e) {
-          alert('Falha no upload: ' + e.message);
-          inp.value = '';
-        }
-      });
-    })();
-
-    (async function() {
-      const API = '<?= rtrim(BASE_URL, '/') ?>';
-      const form = document.getElementById('formEmpresa');
-      const btnEdit = document.getElementById('btnEditar');
-      const btnSave = document.getElementById('btnSalvar');
-      const btnLogo = document.getElementById('btnLogo');
-
-      const f = {
-        empresa: document.getElementById('empresa'),
-        cnpj: document.getElementById('cnpj'),
-        perfil: document.getElementById('perfil'),
-        industria: document.getElementById('industria'),
-        endereco: document.getElementById('endereco') // NOVO
-      };
-
-      function setEditing(on) {
-        Object.values(f).forEach(i => i.readOnly = !on);
-        if (btnLogo) btnLogo.disabled = !on;
-        btnSave.disabled = false;
-        btnEdit.disabled = on;
-        if (on) f.empresa.focus();
-      }
-
-      try {
-        const res = await fetch(`${API}/src/controllers/home/read_empresa_controller.php`, {
-          credentials: 'include'
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const j = await res.json();
-        if (j.ok && j.empresa) {
-          const e = j.empresa;
-          f.empresa.value = e.nome || '';
-          f.cnpj.value = e.cnpj || '';
-          f.perfil.value = e.porte || '';
-          f.industria.value = e.setor_atuacao || '';
-          f.endereco.value = e.endereco || '';
-        }
-      } catch (err) {
-        console.error(err);
-      }
-
-      btnEdit.addEventListener('click', () => setEditing(true));
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const payload = {
-          nome: f.empresa.value.trim(),
-          cnpj: f.cnpj.value.trim(),
-          porte: f.perfil.value.trim(),
-          setor_atuacao: f.industria.value.trim(),
-          endereco: f.endereco.value.trim()
-        };
-        if (!payload.nome) {
-          alert('Informe o nome da empresa.');
-          f.empresa.focus();
-          return;
-        }
-
-        try {
-          btnSave.disabled = true;
-          const r = await fetch(`${API}/src/controllers/home/update_empresa_controller.php`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload),
-            credentials: 'include'
-          });
-          const j = await r.json().catch(() => ({}));
-          if (!r.ok || !j.ok) {
-            alert('Erro ao salvar: ' + (j.error || r.status));
-            return;
-          }
-          setEditing(false);
-        } catch (e) {
-          alert('Falha ao salvar: ' + e.message);
-        } finally {
-          btnSave.disabled = false;
-        }
-      });
-
-      setEditing(false);
-    })();
-  </script>
-
+  <script src="<?= BASE_URL; ?>/src/helpers/home.js"></script>
 </body>
 
 </html>

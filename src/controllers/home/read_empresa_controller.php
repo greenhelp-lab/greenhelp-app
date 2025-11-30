@@ -9,7 +9,7 @@ header('Pragma: no-cache');
 session_start();
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/greenhelp-app/src/config/config.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/greenhelp-app/src/config/conexao.php'; // <<< precisa disso
+require_once $_SERVER['DOCUMENT_ROOT'].'/greenhelp-app/src/config/conexao.php';
 
 try {
   $userId = $_SESSION['user_id'] ?? null;
