@@ -60,7 +60,7 @@ form {
 
 /* INPUTS */
 .input,
-textarea {
+textarea, select {
   width: 100%;
   background: linear-gradient(180deg, var(--input), #13135a);
   border: 1.5px solid var(--stroke);
@@ -84,7 +84,7 @@ input::placeholder {
   height: 44px;
 }
 
-select.input {
+select input {
   appearance: none;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='12' viewBox='0 0 16 12'><path fill='%23ffffff' fill-opacity='0.85' d='M6 8L0 0h12z'/></svg>");
   background-repeat: no-repeat;
@@ -92,22 +92,17 @@ select.input {
   padding-right: 40px;
 }
 
-select.input option {
+select option {
   background: var(--input);
   color: var(--txt);
-}
-
-/* 1º campo com borda verde */
-.field:first-of-type .input {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(53, 242, 143, 0.18);
 }
 
 /* foco */
 .input:focus,
 textarea:focus {
-  border-color: var(--stroke);
   box-shadow: 0 0 0 3px var(--glow);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(53, 242, 143, 0.18);
 }
 
 /* BOTÕES */
