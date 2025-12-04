@@ -1,19 +1,9 @@
 <?php
 
-/**
- * finalizar_compra.php
- * -------------------
- * Finaliza a compra dos itens no carrinho.
- * Entrada: JSON { items: number[] }
- * Saída: JSON { success, message, ids_processados }
- */
-
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 header('Content-Type: application/json; charset=utf-8');
-
-$resposta = ['success' => false, 'message' => 'Erro desconhecido'];
 
 $id_usuario = $_SESSION['user_id'] ?? null;
 if (!$id_usuario) {
@@ -23,26 +13,24 @@ if (!$id_usuario) {
 }
 
 $dados = json_decode(file_get_contents('php://input'), true);
-if (empty($dados['items']) || !is_array($dados['items'])) {
-  echo json_encode(['success' => false, 'message' => 'Dados inválidos!']);
-  exit;
-}
+$ids_carrinho = isset($dados['items']) && is_array($dados['items'])
+  ? array_map('intval', $dados['items'])
+  : [];
 
-$ids_carrinho = array_map('intval', $dados['items']);
 if (!$ids_carrinho) {
-  echo json_encode(['success' => false, 'message' => 'Selecione pelo menos um item!']);
+  echo json_encode(['success' => false, 'message' => 'Dados inválidos!']);
   exit;
 }
 
 try {
   $pdo->beginTransaction();
 
-  $placeholders = implode(',', array_fill(0, count($ids_carrinho), '?'));
+  $ph = implode(',', array_fill(0, count($ids_carrinho), '?'));
   $sql = "SELECT c.id, c.servico_id, s.preco
-          FROM carrinho c 
+          FROM carrinho c
           JOIN servicos s ON c.servico_id = s.id
-          WHERE c.id IN ($placeholders) 
-          AND c.usuario_id = ? 
+          WHERE c.id IN ($ph)
+          AND c.usuario_id = ?
           AND c.status = 'pendente'";
   $stmt = $pdo->prepare($sql);
   $stmt->execute([...$ids_carrinho, $id_usuario]);
@@ -56,7 +44,7 @@ try {
 
   $stmt_inserir = $pdo->prepare(
     "INSERT INTO servicos_andamento (usuario_id, servico_id, valor_total, status)
-   VALUES (?, ?, ?, 'pendente')"
+     VALUES (?, ?, ?, 'pendente')"
   );
 
   $stmt_atualizar = $pdo->prepare(
@@ -65,14 +53,7 @@ try {
 
   $ids_processados = [];
   foreach ($itens as $item) {
-    $valor_total = $item['preco']; // 1 serviço = 1 preço
-
-    $stmt_inserir->execute([
-      $id_usuario,
-      $item['servico_id'],
-      $valor_total
-    ]);
-
+    $stmt_inserir->execute([$id_usuario, $item['servico_id'], $item['preco']]);
     $stmt_atualizar->execute([$item['id'], $id_usuario]);
     $ids_processados[] = $item['id'];
   }

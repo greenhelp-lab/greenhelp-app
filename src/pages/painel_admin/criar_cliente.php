@@ -75,7 +75,13 @@ session_start();
         </div>
         <div class="field">
           <label for="empresa_porte">Porte</label>
-          <input id="empresa_porte" name="empresa_porte" class="input pill" type="text" />
+          <select id="empresa_porte" name="empresa_porte" required>
+                  <option value="" disabled selected>Selecione...</option>
+                  <option value="Micro">Micro</option>
+                  <option value="Pequena">Pequena</option>
+                  <option value="Média">Média</option>
+                  <option value="Grande">Grande</option>
+          </select>
         </div>
       </div>
 
@@ -104,8 +110,7 @@ session_start();
         window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/painel_admin.php";
       }, 1600);
     }
-
-    // Toggle new company fields when user chooses to create a new empresa
+    
     (function() {
       const empresaSelect = document.getElementById('empresa_id');
       const newFields = document.getElementById('new-company-fields');
@@ -127,7 +132,6 @@ session_start();
       empresaSelect.addEventListener('change', toggle);
       toggle();
 
-      // client-side validation: if new company chosen, ensure empresa_nome filled
       form.addEventListener('submit', (e) => {
         if (empresaSelect.value === 'new') {
           const nome = document.getElementById('empresa_nome').value.trim();

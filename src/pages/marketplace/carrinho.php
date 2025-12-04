@@ -207,37 +207,42 @@ if (!empty($usuario_id)) {
 
       // Finalizar compra
       window.finalizarCompra = async function() {
-        const selectedItems = [];
-        document.querySelectorAll('.cart-item.selected-service').forEach(item => {
-          selectedItems.push(item.dataset.id);
+      const selectedItems = [];
+      document.querySelectorAll('.cart-item.selected-service').forEach(i =>
+        selectedItems.push(i.dataset.id)
+      );
+
+      if (selectedItems.length === 0) {
+        alert('Selecione pelo menos um serviço');
+        return;
+      }
+
+      try {
+        const response = await fetch(`/greenhelp-app/src/controllers/marketplace/finalizar_compra_controller.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: selectedItems })
         });
 
-        if (selectedItems.length === 0) {
-          alert('Selecione pelo menos um serviço');
+        if (!response.ok) {
+          alert('Erro no servidor ao finalizar compra');
           return;
         }
 
-        try {
-          const response = await fetch(`${window.location.origin}/greenhelp-app/src/controllers/marketplace/finalizar_compra_controller.php`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              items: selectedItems
-            })
-          });
+        const data = await response.json();
 
-          const data = await response.json();
-
-          if (data.success) {
-            window.location.href = `${window.location.origin}/greenhelp-app/src/pages/home/home.php`;
-          } else alert(data.message || 'Erro ao finalizar compra');
-        } catch (error) {
-          console.error('Erro:', error);
-          alert('Erro ao processar a compra');
+        if (data.success) {
+          window.location.href = `${window.location.origin}/greenhelp-app/src/pages/home/home.php`;
+        } else {
+          alert(data.message || 'Erro ao finalizar compra');
         }
-      };
+
+      } catch (error) {
+        console.error(error);
+        alert('Erro ao processar a compra');
+      }
+    };
+
 
       // Fechar modal se clicar fora
       modal.addEventListener('click', function(e) {

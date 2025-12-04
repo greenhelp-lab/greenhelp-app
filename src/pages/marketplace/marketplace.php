@@ -22,6 +22,9 @@ $is_admin = isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin';
   <!-- Seção Loja de Serviços -->
   <section class="shop-section">
     <h1>Loja de Serviços</h1>
+    <div class="shortcuts">
+      <button onclick="window.location.href='carrinho.php'">Seu Carrinho</button>
+    </div>
     <div class="shop-intros">
       <p class="shop-intro">
         Veja um catálogo de todos os serviços da <span>GreenHelp.</span> 

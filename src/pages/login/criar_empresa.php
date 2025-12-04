@@ -41,9 +41,10 @@
             <label for="business_size">Tamanho da Empresa</label>
                 <select id="business_size" name="business_size" required>
                    <option value="" disabled selected>Selecione...</option>
-                     <option value="pequeno">Pequeno</option>
-                      <option value="medio">Médio</option>
-                      <option value="grande">Grande</option>
+                      <option value="Micro">Micro</option>
+                      <option value="Pequena">Pequena</option>
+                      <option value="Média">Média</option>
+                      <option value="Grande">Grande</option>
                      </select>
                     </div>
 
