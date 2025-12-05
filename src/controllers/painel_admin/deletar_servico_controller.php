@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 include_once BASE_PATH . '/src/config/conexao.php';
 

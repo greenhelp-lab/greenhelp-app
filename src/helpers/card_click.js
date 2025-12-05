@@ -1,16 +1,8 @@
-/**
- * card_click.js — lógica simples para abrir a página de detalhe do serviço
- * - Usa delegação: escuta cliques no container `.service-cards`.
- * - Se o clique estiver dentro de `.btn-add-cart`, NÃO navega (permite adicionar ao carrinho).
- * - Se o clique atingir um `.service-card`, lê `data-id` e vai para sobre_servico.php?id=...
- * Comentários em português e código intencionalmente curto e direto.
- */
 (function () {
   'use strict';
 
-  // evita rodar antes do DOM estar pronto
   document.addEventListener('DOMContentLoaded', function () {
-    // container onde os cards são inseridos (presente em marketplace.php)
+    // container onde os cards são inseridos
     var container = document.querySelector('.service-cards');
     if (!container) return; // nada a fazer se não existir
 
