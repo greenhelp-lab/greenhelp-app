@@ -32,6 +32,8 @@ try {
   $telefone = trim($data['telefone'] ?? '');
   $ativo  = (int)($data['ativo'] ?? '');
 
+  session_write_close();
+  
   if ($nome === '' || $email === '') {
     http_response_code(422);
     echo json_encode(['ok' => false, 'error' => 'nome_email_required']);

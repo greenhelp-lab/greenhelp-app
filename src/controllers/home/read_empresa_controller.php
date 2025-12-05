@@ -8,11 +8,15 @@ header('Pragma: no-cache');
 
 session_start();
 
+$userId = $_SESSION['user_id'] ?? null;
+
+// libera o lock imediatamente após ler os dados necessários
+session_write_close();
+
 require_once $_SERVER['DOCUMENT_ROOT'].'/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/greenhelp-app/src/config/conexao.php';
 
 try {
-  $userId = $_SESSION['user_id'] ?? null;
   if (!$userId) {
     http_response_code(401);
     echo json_encode(['ok'=>false,'error'=>'unauthenticated']);
@@ -33,7 +37,10 @@ try {
     exit;
   }
 
+  // reabre a sessão apenas aqui, só no momento em que você realmente precisa escrever
+  session_start();
   $_SESSION['empresa_id'] = (int)$row['id'];
+  session_write_close();
 
   echo json_encode([
     'ok' => true,

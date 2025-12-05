@@ -45,6 +45,8 @@ try {
     $empresaId = (int)$st->fetchColumn();
     if ($empresaId) $_SESSION['empresa_id'] = $empresaId;
   }
+  session_write_close();
+  
   if (!$empresaId) { echo json_encode(['ok'=>false,'error'=>'empresa_not_found']); exit; }
 
   $st = $pdo->prepare("SELECT 1 FROM empresas WHERE id=:id AND usuario_id=:uid");

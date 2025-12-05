@@ -33,9 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $pdo->prepare("
       INSERT INTO servicos 
-      (nome, area_id, preco, prazo, pontos, categoria, descricao, descricao_longa, itens_incluidos, garantia, contato)
+      (nome, area_id, preco, prazo, pontos, categoria, descricao, descricao_longa, itens_incluidos, garantia, contato, disponivel)
       VALUES 
-      (:nome, :area_id, :preco, :prazo, :pontos, :categoria, :descricao, :descricao_longa, :itens_incluidos, :garantia, :contato)
+      (:nome, :area_id, :preco, :prazo, :pontos, :categoria, :descricao, :descricao_longa, :itens_incluidos, :garantia, :contato, 1)
     ");
 
     // execução da declaração atribuindo os valores das variáveis aos placeholders

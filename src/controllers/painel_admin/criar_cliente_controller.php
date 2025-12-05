@@ -58,6 +58,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       ':ativo' => 1,
       ':empresa_id' => $empresa_id !== '' ? $empresa_id : null
     ]);
+    $usuario_id = $pdo->lastInsertId();
+
+    //atualizar usuario_id na tabela empresas
+    $updt = $pdo->prepare("UPDATE empresas SET usuario_id = :usuario_id WHERE id = :empresa_id");
+    $updt->execute([
+      ':usuario_id' => $usuario_id,
+      ':empresa_id' => $empresa_id
+    ]);
 
     $pdo->commit();
     header("Location: " . BASE_URL . "/src/pages/painel_admin/painel_admin.php?status=cliente_criado");

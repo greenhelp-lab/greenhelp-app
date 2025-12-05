@@ -10,7 +10,8 @@ header('Pragma: no-cache');
 $logoUrl = BASE_URL . '/public/imgs/add-photo.svg';
 
 if (!empty($_SESSION['user_id'])) {
-  $empresaId = $_SESSION['empresa_id'] ?? null;
+
+  $empresaId = $_SESSION['empresa_id'];
   if (!$empresaId) {
     $st = $pdo->prepare("SELECT id FROM empresas WHERE usuario_id = :uid ORDER BY id DESC LIMIT 1");
     $st->execute([':uid' => $_SESSION['user_id']]);

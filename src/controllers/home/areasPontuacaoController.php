@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php'
 
 $usuarioId = $_SESSION['usuario_id'] ?? null;
 $empresaId = null;
+session_write_close();
 
 if ($usuarioId) {
     $sqlEmpresa = "SELECT id FROM empresas WHERE usuario_id = ?";

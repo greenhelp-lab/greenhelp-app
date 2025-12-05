@@ -29,7 +29,7 @@
 
           <div class="form-group">
             <label for="business_cnpj">CNPJ da Empresa</label>
-            <input type="text" id="business_cnpj" name="business_cnpj" placeholder="Digite o CNPJ da sua empresa" pattern="[0-9]*" required>
+            <input type="text" id="business_cnpj" name="business_cnpj" placeholder="Digite o CNPJ da sua empresa" required>
           </div>
 
           <div class="form-group">

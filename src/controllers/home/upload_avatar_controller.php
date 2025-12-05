@@ -16,6 +16,7 @@ try {
     if (!$userId) {
         throw new RuntimeException('nao autenticado');
     }
+    session_write_close();
 
     if (!isset($_FILES['foto']) || $_FILES['foto']['error'] !== UPLOAD_ERR_OK) {
         throw new RuntimeException('arquivo invalido');

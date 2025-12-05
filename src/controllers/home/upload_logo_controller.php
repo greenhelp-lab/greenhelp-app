@@ -1,8 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
-// SEM HTML DE ERRO
 ini_set('display_errors', '0');
 ini_set('html_errors', '0');
 ini_set('log_errors', '1');
@@ -32,6 +29,9 @@ try {
     $empresaId = $st->fetchColumn() ?: null;
     if ($empresaId) $_SESSION['empresa_id'] = (int)$empresaId;
   }
+  
+  session_write_close();
+
   if (!$empresaId) {
     http_response_code(401);
     echo json_encode(['ok' => false, 'error' => 'empresa_nao_autenticada']);
