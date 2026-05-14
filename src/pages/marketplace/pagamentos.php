@@ -45,13 +45,14 @@
       <input type="text" placeholder="Código de segurança">
 
       <div class="buttons">
-        <button type="button" class="btn voltar" onclick="javascript:history.back()">Voltar</button>
+        <button type="button" id="btn-voltar" class="btn voltar">Voltar</button>
         <button type="submit" class="btn comprar">
           Comprar <img src="<?php echo BASE_URL; ?>/public/imgs/card-icon.svg" alt="Carrinho">
         </button>
       </div>
     </form>
   </main>
+  <script src="<?php echo BASE_URL; ?>/public/js/marketplace/pagamentos.js"></script>
 </body>
 
 </html>

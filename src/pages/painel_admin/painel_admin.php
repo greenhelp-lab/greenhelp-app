@@ -3,9 +3,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 
 session_start();
-$is_admin = isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin';
-$is_admin = false ?? die;
 
+if (($_SESSION['papel'] ?? '') !== 'admin') {
+  http_response_code(403);
+  exit('Acesso negado');
+}
 
 $totClientes = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE papel = 'cliente'")->fetchColumn();
 $totAdmins   = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE papel = 'admin'")->fetchColumn();
@@ -28,7 +30,7 @@ $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHE
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/painel_admin/painel_admin.css">
 </head>
 
-<body>
+<body data-base-url="<?php echo BASE_URL; ?>">
   <?php include_once BASE_PATH . '/src/pages/partials/header_admin.php'; ?>
 
   <h1 class="shop-title">Painel Admin</h1>
@@ -36,7 +38,7 @@ $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHE
     <p>Bem-vindo ao painel de administração. Aqui você pode gerenciar usuários, serviços e configurações do sistema.</p>
   </div>
 
-  <!-- Tab com atalhos/ações rápidas -->
+  
   <div class="actions-tab" aria-label="Ações do administrador">
     <h3>Ações rápidas</h3>
     <div>
@@ -46,11 +48,11 @@ $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHE
     </div>
   </div>
 
-  <!-- Dashboard principal -->
+  
   <main class="dashboard">
     <h2>Visão geral</h2>
 
-    <!-- Cards de métricas -->
+    
     <div class="dash-cards">
       <div class="dash-card">
         <h4>Clientes</h4>
@@ -96,7 +98,7 @@ $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHE
 
   </main>
 
-  <!-- Seção de registros de usuários -->
+  
   <section class="records">
     <h2 id="records-heading">Clientes da Plataforma</h2>
     <p class="records-intro">Busque e visualize clientes. Clique em um cliente para ver detalhes.</p>
@@ -109,7 +111,7 @@ $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHE
     </div>
 
     <div class="records-box" id="clients-list" aria-live="polite">
-      <!-- Registros de exemplo, criando divs para cada usuário de forma dinâmica -->
+      
       <?php include_once BASE_PATH . "/src/controllers/painel_admin/listar_clientes.php"; ?>
     </div>
   </section>
@@ -126,7 +128,7 @@ $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHE
     </div>
 
     <div class="records-box" id="admins-list" aria-live="polite">
-      <!-- Registros de exemplo, criando divs para cada usuário de forma dinâmica -->
+      
       <?php include_once BASE_PATH . "/src/controllers/painel_admin/listar_admins.php"; ?>
     </div>
   </section>
@@ -151,66 +153,7 @@ $totServicosPendentes = $pdo->query("SELECT COUNT(*) FROM servicos_andamento WHE
 
   <?php include BASE_PATH . '/src/pages/partials/footer.php'; ?>
 
-  <script>
-    document.getElementById("create-service-btn").addEventListener("click", function() {
-      window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/criar_servico.php";
-    });
-    document.getElementById("create-admin-btn").addEventListener("click", function() {
-      window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/criar_admin.php";
-    });
-    document.getElementById("create-client-btn").addEventListener("click", function() {
-      window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/criar_cliente.php";
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const clientSearch = document.getElementById("client-search");
-      const adminSearch = document.getElementById("admin-search");
-      const clientsList = document.getElementById("clients-list");
-      const adminsList = document.getElementById("admins-list");
-      const serviceSearch = document.getElementById("service-search");
-      const servicesList = document.getElementById("services-list");
-      const base = window.location.origin + "/greenhelp-app/src/controllers/painel_admin/";
-
-      // Busca de clientes
-      if (clientSearch && clientsList) {
-        clientSearch.addEventListener("input", () => {
-          const termo = clientSearch.value.trim();
-          const url = base + "listar_clientes.php?q=" + encodeURIComponent(termo);
-
-          fetch(url)
-            .then(res => res.text())
-            .then(html => clientsList.innerHTML = html)
-            .catch(err => console.error("Erro ao buscar clientes:", err));
-        });
-      }
-
-      // Busca de administradores
-      if (adminSearch && adminsList) {
-        adminSearch.addEventListener("input", () => {
-          const termo = adminSearch.value.trim();
-          const url = base + "listar_admins.php?q=" + encodeURIComponent(termo);
-
-          fetch(url)
-            .then(res => res.text())
-            .then(html => adminsList.innerHTML = html)
-            .catch(err => console.error("Erro ao buscar administradores:", err));
-        });
-      }
-
-      // Busca de serviços
-      if (serviceSearch && servicesList) {
-        serviceSearch.addEventListener("input", () => {
-          const termo = serviceSearch.value.trim();
-          const url = base + "listar_servicos_admin.php?q=" + encodeURIComponent(termo);
-
-          fetch(url)
-            .then(res => res.text())
-            .then(html => servicesList.innerHTML = html)
-            .catch(err => console.error("Erro ao buscar serviços:", err));
-        });
-      }
-    });
-  </script>
+  <script src="<?php echo BASE_URL; ?>/public/js/painel_admin/painel_admin.js"></script>
 
 
 </body>

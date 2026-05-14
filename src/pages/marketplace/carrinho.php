@@ -1,17 +1,14 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
-// sessão e conexão com o banco
 if (session_status() === PHP_SESSION_NONE) session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 
-// id do usuário logado
 $usuario_id = $_SESSION['user_id'] ?? $_SESSION['usuario_id'] ?? null;
 if (!$usuario_id) {
   header('Location: ' . BASE_URL . '/src/pages/login/login.php');
   exit;
 }
 
-// busca itens do carrinho para o usuário logado
 $itens = [];
 if (!empty($usuario_id)) {
   $sql = "SELECT c.id AS cart_id,
@@ -44,7 +41,7 @@ if (!empty($usuario_id)) {
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/marketplace/carrinho.css">
 </head>
 
-<body>
+<body data-base-url="<?php echo BASE_URL; ?>">
   <?php include_once BASE_PATH . "/src/pages/partials/header_cliente.php"; ?>
   <div class="cart-main">
     <section class="cart-content">
@@ -110,7 +107,7 @@ if (!empty($usuario_id)) {
             Finalizar compra
           </button>
 
-          <button type="button" class="btn-ghost btn-continue" onclick="window.location.href='<?php echo BASE_URL; ?>/src/pages/marketplace/marketplace.php'">
+          <button type="button" id="continuar-compra" class="btn-ghost btn-continue">
             Continuar comprando
           </button>
         </div>
@@ -119,140 +116,20 @@ if (!empty($usuario_id)) {
     </section>
   </div>
 
-  <!-- Modal de confirmação -->
   <div class="modal" id="confirmModal" style="display: none;">
     <div class="modal-card">
       <h3>Confirmar compra</h3>
       <p>Deseja finalizar a compra dos serviços selecionados?</p>
       <div class="modal-actions">
-        <button type="button" class="btn-ghost" onclick="closeModal()">Cancelar</button>
-        <button type="button" class="btn-primary" onclick="finalizarCompra()">Confirmar</button>
+        <button type="button" id="cancelar-compra" class="btn-ghost">Cancelar</button>
+        <button type="button" id="confirmar-compra" class="btn-primary">Confirmar</button>
       </div>
     </div>
   </div>
 
   <?php include BASE_PATH . "/src/pages/partials/footer.php"; ?>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const modal = document.getElementById('confirmModal');
-      const cartContainer = document.getElementById('cartItems');
-      const totalElement = document.getElementById('total');
-      const itemsCountElement = document.getElementById('items-count');
-      const btnCheckout = document.getElementById('finalizar-compra');
-
-      function updateTotal() {
-        const selectedItems = document.querySelectorAll('.selected-service');
-        let total = 0;
-        let count = 0;
-
-        for (let i = 0; i < selectedItems.length; i++) {
-          total += parseFloat(selectedItems[i].dataset.price);
-          count++;
-        }
-
-        totalElement.textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
-        itemsCountElement.textContent = count;
-
-        btnCheckout.disabled = count === 0;
-        btnCheckout.style.opacity = count === 0 ? '0.5' : '1';
-        btnCheckout.style.cursor = count === 0 ? 'not-allowed' : 'pointer';
-      }
-
-      cartContainer.onclick = function(e) {
-        const card = e.target.closest('.cart-item');
-        if (!card) return;
-        card.classList.toggle('selected-service');
-        updateTotal();
-      };
-
-      // Remover item do carrinho
-      document.querySelectorAll('.item-remove').forEach(btn => {
-        btn.addEventListener('click', async function() {
-          const cartId = this.dataset.id;
-          const cartItem = this.closest('.cart-item');
-
-          try {
-            const response = await fetch(`${window.location.origin}/greenhelp-app/src/controllers/marketplace/remover_do_carrinho_controller.php`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-              },
-              body: `cart_id=${cartId}`
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-              cartItem.remove();
-              updateTotal();
-              if (document.querySelectorAll('.cart-item').length === 0) window.location.reload();
-            } else alert(data.message || 'Erro ao remover item');
-          } catch (error) {
-            console.error('Erro:', error);
-            alert('Erro ao remover item do carrinho');
-          }
-        });
-      });
-
-      // Mostrar modal
-      btnCheckout.addEventListener('click', function() {
-        if (!this.disabled) modal.style.display = 'grid';
-      });
-
-      // Fechar modal
-      window.closeModal = function() {
-        modal.style.display = 'none';
-      };
-
-      // Finalizar compra
-      window.finalizarCompra = async function() {
-      const selectedItems = [];
-      document.querySelectorAll('.cart-item.selected-service').forEach(i =>
-        selectedItems.push(i.dataset.id)
-      );
-
-      if (selectedItems.length === 0) {
-        alert('Selecione pelo menos um serviço');
-        return;
-      }
-
-      try {
-        const response = await fetch(`/greenhelp-app/src/controllers/marketplace/finalizar_compra_controller.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: selectedItems })
-        });
-
-        if (!response.ok) {
-          alert('Erro no servidor ao finalizar compra');
-          return;
-        }
-
-        const data = await response.json();
-
-        if (data.success) {
-          window.location.href = `${window.location.origin}/greenhelp-app/src/pages/home/home.php`;
-        } else {
-          alert(data.message || 'Erro ao finalizar compra');
-        }
-
-      } catch (error) {
-        console.error(error);
-        alert('Erro ao processar a compra');
-      }
-    };
-
-
-      // Fechar modal se clicar fora
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal) closeModal();
-      });
-
-      // Inicializa total corretamente
-      updateTotal();
-    });
-  </script>
+  <script src="<?php echo BASE_URL; ?>/public/js/marketplace/carrinho.js"></script>
 </body>
 
 </html>

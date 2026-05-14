@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 $userId = (int) $_SESSION['user_id'];
 
-/* -------- CARREGAR DADOS -------- */
 $st = $pdo->prepare("SELECT nome, email, telefone, avatar_path, papel FROM usuarios WHERE id = :id LIMIT 1");
 $st->execute([':id' => $userId]);
 $usuario = $st->fetch();
@@ -30,7 +29,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
   <title>Conta</title>
 </head>
 
-<body>
+<body data-base-url="<?= BASE_URL; ?>">
 
   <?php if (isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin') : {
       include_once BASE_PATH . "/src/pages/partials/header_admin.php";
@@ -71,160 +70,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
 
   <img src="<?= BASE_URL; ?>/public/imgs/engines-icons.svg" alt="Ícones de engrenagens decorativas" class="engines-icons">
 
-  <script>
-    const API = '<?= rtrim(BASE_URL, '/') ?>';
-    const UPLOAD_URL = API + '/src/controllers/home/upload_avatar_controller.php';
-
-    (function() {
-      const form = document.getElementById('formConta');
-      const btnFoto = document.getElementById('btnFoto');
-      const img = document.getElementById('fotoUsuario');
-      const inputFile = document.getElementById('inpFoto');
-      const btnEditar = document.getElementById('btnEditar');
-      const btnSalvar = document.getElementById('btnSalvar');
-      const btnDelete = document.getElementById('btnDelete');
-
-      const inputs = {
-        nome: document.getElementById('inpNome'),
-        tel: document.getElementById('inpTel'),
-        email: document.getElementById('inpEmail'),
-        papel: document.getElementById('inpPapel')
-      };
-
-      function setEditing(on) {
-        inputs.nome.readOnly = !on;
-        inputs.tel.readOnly = !on;
-        inputs.email.readOnly = !on;
-        btnFoto.disabled = !on;
-        btnEditar.disabled = on;
-        if (on) inputs.nome.focus();
-      }
-
-      setEditing(false);
-      btnEditar.addEventListener('click', () => setEditing(true));
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const payload = {
-          nome: inputs.nome.value.trim(),
-          telefone: inputs.tel.value.trim(),
-          email: inputs.email.value.trim()
-        };
-
-        if (!payload.nome || !payload.email) {
-          alert('Preencha nome e email.');
-          return;
-        }
-
-        try {
-          btnSalvar.disabled = true;
-          const res = await fetch(`${API}/src/controllers/home/update_usuario_controller.php`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload),
-            credentials: 'include'
-          });
-
-          const j = await res.json().catch(() => ({}));
-          if (!res.ok || !j.ok) throw new Error(j.error || 'Erro ao salvar');
-
-          setEditing(false);
-        } catch (err) {
-          alert('Falha ao salvar: ' + err.message);
-        } finally {
-          btnSalvar.disabled = false;
-        }
-      });
-
-    btnDelete.addEventListener('click', async () => {
-  if (!confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')) return;
-  try {
-    const r = await fetch(`${API}/src/controllers/home/delete_usuario_controller.php`, {
-      method: 'POST',
-      credentials: 'include'
-    });
-
-    const text = await r.text();
-    let j = {};
-    try {
-      j = JSON.parse(text);
-    } catch {
-      // não é JSON, vamos usar o texto bruto
-    }
-
-    if (!r.ok || !j.ok) {
-      const msg = j.error || text || `HTTP ${r.status}`;
-      throw new Error(msg);
-    }
-
-    const to = j.redirect || ('<?= rtrim(BASE_URL, '/') ?>/src/pages/login/login.php');
-    window.location.href = to;
-  } catch (err) {
-    alert('Falha ao deletar conta: ' + err.message);
-  }
-});
-
-
-
-      const okMimes = ['image/jpeg', 'image/png', 'image/webp'];
-      const MAX = 3 * 1024 * 1024;
-
-      btnFoto.addEventListener('click', () => inputFile.click());
-      inputFile.addEventListener('change', async () => {
-        const file = inputFile.files?.[0];
-        if (!file) return;
-        if (!okMimes.includes(file.type)) {
-          alert('JPG/PNG/WEBP');
-          inputFile.value = '';
-          return;
-        }
-        if (file.size > MAX) {
-          alert('Até 3MB');
-          inputFile.value = '';
-          return;
-        }
-
-        const t = URL.createObjectURL(file);
-        img.src = t;
-        img.onload = () => URL.revokeObjectURL(t);
-
-        const fd = new FormData();
-        fd.append('foto', file);
-
-                try {
-          const r = await fetch(UPLOAD_URL, {
-            method: 'POST',
-            body: fd,
-            credentials: 'include'
-          });
-
-          const text = await r.text();
-          let data = {};
-          try {
-            data = JSON.parse(text);
-          } catch {
-            // se vier algo que não é JSON (ex.: HTML), mostra bruto
-            throw new Error(text || `HTTP ${r.status}`);
-          }
-
-          if (!r.ok || !data.ok) {
-            throw new Error(data.error || text || `HTTP ${r.status}`);
-          }
-
-          if (data.url) {
-            img.src = data.url + '?t=' + Date.now();
-          }
-        } catch (e) {
-          alert('Falha no upload: ' + e.message);
-          inputFile.value = '';
-        }
-
-      });
-    })();
-  </script>
+  <script src="<?= BASE_URL; ?>/public/js/conta/conta.js"></script>
 </body>
 
 </html>

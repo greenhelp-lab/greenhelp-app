@@ -1,87 +1,14 @@
-const UPLOAD_LOGO_URL = '/greenhelp-app/src/controllers/home/upload_logo_controller.php';
+const HOME_API = '/greenhelp-app/src/controllers/home';
 
-(async function () {
-  const btn = document.getElementById('btnLogo');
-  const img = document.getElementById('imgLogo');
-  const inp = document.getElementById('inpLogo');
-  const MAX = 3 * 1024 * 1024;
-  const ok = ['image/jpeg', 'image/png', 'image/webp'];
-
-  try {
-    const res = await fetch('/greenhelp-app/src/controllers/home/read_empresa_controller.php', {
-      credentials: 'include'
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const json = await res.json();
-    if (json.ok && json.empresa) {
-      const e = json.empresa;
-      document.getElementById("empresa").value = e.nome || '';
-      document.getElementById("cnpj").value = e.cnpj || '';
-      document.getElementById("perfil").value = e.porte || '';
-      document.getElementById("industria").value = e.setor_atuacao || '';
-      document.getElementById("endereco").value = e.endereco || ''; // NOVO
-    }
-  } catch (err) {
-    console.error('read_empresa_controller:', err);
-  }
-
-  btn.addEventListener('click', () => inp.click());
-  inp.addEventListener('change', async () => {
-    const file = inp.files?.[0];
-    if (!file) return;
-    if (!ok.includes(file.type)) {
-      alert('JPG/PNG/WEBP');
-      inp.value = '';
-      return;
-    }
-    if (file.size > MAX) {
-      alert('Até 3MB');
-      inp.value = '';
-      return;
-    }
-
-    const t = URL.createObjectURL(file);
-    img.src = t;
-    img.onload = () => URL.revokeObjectURL(t);
-
-    const fd = new FormData();
-    fd.append('logo', file);
-
-    try {
-      const r = await fetch(UPLOAD_LOGO_URL, {
-        method: 'POST',
-        body: fd,
-        credentials: 'include'
-      });
-
-      const text = await r.text();
-      let data = {};
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error(text || ('HTTP ' + r.status));
-      }
-
-      if (!r.ok || !data?.url) {
-        const msg = data.msg || data.error || ('HTTP ' + r.status);
-        throw new Error(msg);
-      }
-
-      img.src = data.url + '?t=' + Date.now();
-    } catch (e) {
-      alert('Falha no upload: ' + e.message);
-      inp.value = '';
-    }
-  });
-})();
-
-(async function () {
+document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('formEmpresa');
-  const btnEdit = document.getElementById('btnEditar');
-  const btnSave = document.getElementById('btnSalvar');
-  const btnLogo = document.getElementById('btnLogo');
+  const editButton = document.getElementById('btnEditar');
+  const saveButton = document.getElementById('btnSalvar');
+  const logoButton = document.getElementById('btnLogo');
+  const logoImage = document.getElementById('imgLogo');
+  const logoInput = document.getElementById('inpLogo');
 
-  const f = {
+  const fields = {
     empresa: document.getElementById('empresa'),
     cnpj: document.getElementById('cnpj'),
     perfil: document.getElementById('perfil'),
@@ -89,52 +16,125 @@ const UPLOAD_LOGO_URL = '/greenhelp-app/src/controllers/home/upload_logo_control
     endereco: document.getElementById('endereco')
   };
 
-  function setEditing(on) {
-    Object.values(f).forEach(i => i.readOnly = !on);
-    if (btnLogo) btnLogo.disabled = !on;
-    btnSave.disabled = false;
-    btnEdit.disabled = on;
-    if (on) f.empresa.focus();
+  if (!form || !editButton || !saveButton) return;
+
+  function setEditing(active) {
+    Object.values(fields).forEach(input => {
+      if (input) input.readOnly = !active;
+    });
+
+    if (logoButton) logoButton.disabled = !active;
+    saveButton.disabled = false;
+    editButton.disabled = active;
+    if (active && fields.empresa) fields.empresa.focus();
   }
 
-  try {
-    const res = await fetch(`/greenhelp-app/src/controllers/home/read_empresa_controller.php`, {
+  async function loadCompany() {
+    try {
+      const response = await fetch(`${HOME_API}/read_empresa_controller.php`, {
+        credentials: 'include'
+      });
+
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+
+      const data = await response.json();
+      if (!data.ok || !data.empresa) return;
+
+      const empresa = data.empresa;
+      fields.empresa.value = empresa.nome || '';
+      fields.cnpj.value = empresa.cnpj || '';
+      fields.perfil.value = empresa.porte || '';
+      fields.industria.value = empresa.setor_atuacao || '';
+      fields.endereco.value = empresa.endereco || '';
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function uploadLogo(file) {
+    const formData = new FormData();
+    formData.append('logo', file);
+
+    const response = await fetch(`${HOME_API}/upload_logo_controller.php`, {
+      method: 'POST',
+      body: formData,
       credentials: 'include'
     });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const j = await res.json();
-    if (j.ok && j.empresa) {
-      const e = j.empresa;
-      f.empresa.value = e.nome || '';
-      f.cnpj.value = e.cnpj || '';
-      f.perfil.value = e.porte || '';
-      f.industria.value = e.setor_atuacao || '';
-      f.endereco.value = e.endereco || '';
+
+    const text = await response.text();
+    let data = {};
+
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(text || ('HTTP ' + response.status));
     }
-  } catch (err) {
-    console.error(err);
+
+    if (!response.ok || !data?.url) {
+      throw new Error(data.msg || data.error || ('HTTP ' + response.status));
+    }
+
+    return data.url;
   }
 
-  btnEdit.addEventListener('click', () => setEditing(true));
+  if (logoButton && logoInput && logoImage) {
+    logoButton.addEventListener('click', () => logoInput.click());
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    logoInput.addEventListener('change', async () => {
+      const file = logoInput.files?.[0];
+      const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+      const maxSize = 3 * 1024 * 1024;
+
+      if (!file) return;
+
+      if (!validTypes.includes(file.type)) {
+        alert('JPG/PNG/WEBP');
+        logoInput.value = '';
+        return;
+      }
+
+      if (file.size > maxSize) {
+        alert('Até 3MB');
+        logoInput.value = '';
+        return;
+      }
+
+      const previewUrl = URL.createObjectURL(file);
+      logoImage.src = previewUrl;
+      logoImage.onload = () => URL.revokeObjectURL(previewUrl);
+
+      try {
+        const url = await uploadLogo(file);
+        logoImage.src = url + '?t=' + Date.now();
+      } catch (error) {
+        alert('Falha no upload: ' + error.message);
+        logoInput.value = '';
+      }
+    });
+  }
+
+  editButton.addEventListener('click', () => setEditing(true));
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+
     const payload = {
-      nome: f.empresa.value.trim(),
-      cnpj: f.cnpj.value.trim(),
-      porte: f.perfil.value.trim(),
-      setor_atuacao: f.industria.value.trim(),
-      endereco: f.endereco.value.trim()
+      nome: fields.empresa.value.trim(),
+      cnpj: fields.cnpj.value.trim(),
+      porte: fields.perfil.value.trim(),
+      setor_atuacao: fields.industria.value.trim(),
+      endereco: fields.endereco.value.trim()
     };
+
     if (!payload.nome) {
       alert('Informe o nome da empresa.');
-      f.empresa.focus();
+      fields.empresa.focus();
       return;
     }
 
     try {
-      btnSave.disabled = true;
-      const r = await fetch(`/greenhelp-app/src/controllers/home/update_empresa_controller.php`, {
+      saveButton.disabled = true;
+      const response = await fetch(`${HOME_API}/update_empresa_controller.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -142,18 +142,22 @@ const UPLOAD_LOGO_URL = '/greenhelp-app/src/controllers/home/upload_logo_control
         body: JSON.stringify(payload),
         credentials: 'include'
       });
-      const j = await r.json().catch(() => ({}));
-      if (!r.ok || !j.ok) {
-        alert('Erro ao salvar: ' + (j.error || r.status));
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || !data.ok) {
+        alert('Erro ao salvar: ' + (data.error || response.status));
         return;
       }
+
       setEditing(false);
-    } catch (e) {
-      alert('Falha ao salvar: ' + e.message);
+    } catch (error) {
+      alert('Falha ao salvar: ' + error.message);
     } finally {
-      btnSave.disabled = false;
+      saveButton.disabled = false;
     }
   });
 
+  loadCompany();
   setEditing(false);
-})();
+});
