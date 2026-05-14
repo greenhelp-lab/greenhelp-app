@@ -14,7 +14,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php'
 
 
 try {
-  // --- Auth / empresa ---
   $userId = $_SESSION['user_id'] ?? null;
   if (!$userId) {
     http_response_code(401);
@@ -37,8 +36,6 @@ try {
     echo json_encode(['ok' => false, 'error' => 'empresa_nao_autenticada']);
     exit;
   }
-
-  // --- Arquivo ---
   if (!isset($_FILES['logo']) || $_FILES['logo']['error'] !== UPLOAD_ERR_OK) {
     http_response_code(400);
     echo json_encode(['ok' => false, 'error' => 'arquivo_invalido']);
@@ -60,23 +57,17 @@ try {
     exit;
   }
   $ext = $exts[$mime];
-
-  // valida imagem real
   if (!getimagesize($f['tmp_name'])) {
     http_response_code(415);
     echo json_encode(['ok' => false, 'error' => 'nao_e_imagem']);
     exit;
   }
-
-  // --- Pasta destino ---
   $dir = $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/public/uploads/logos';
   if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
     http_response_code(500);
     echo json_encode(['ok' => false, 'error' => 'falha_criar_diretorio']);
     exit;
   }
-
-  // apaga antiga e salva nova
   foreach (glob($dir . "/e{$empresaId}.*") as $old) {
     @unlink($old);
   }
@@ -88,8 +79,6 @@ try {
     echo json_encode(['ok' => false, 'error' => 'falha_ao_salvar']);
     exit;
   }
-
-  // --- Redimensiona (máx 1080px) SE GD ESTIVER DISPONÍVEL ---
   if (function_exists('imagecreatetruecolor')) {
     [$w, $h] = getimagesize($dest);
     $scale = min(1, 1080 / max($w, $h));
@@ -97,8 +86,6 @@ try {
     if ($scale < 1) {
       $nw = (int)round($w * $scale);
       $nh = (int)round($h * $scale);
-
-      // loaders com checagem de suporte
       $src = null;
       if ($mime === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
         $src = imagecreatefromjpeg($dest);
@@ -107,8 +94,6 @@ try {
       } elseif ($mime === 'image/webp' && function_exists('imagecreatefromwebp')) {
         $src = imagecreatefromwebp($dest);
       }
-
-      // se não tiver suporte ao tipo no GD, apenas NÃO redimensiona
       if ($src) {
         $dst = imagecreatetruecolor($nw, $nh);
         imagealphablending($dst, false);
@@ -133,19 +118,14 @@ try {
           exit;
         }
       }
-      // se $src for null, seguimos com a imagem original sem erro
     }
   }
-  // se não tiver GD, simplesmente NÃO redimensiona e segue com o arquivo original
-
-  // --- Atualiza BD ---
   $st = $pdo->prepare("UPDATE empresas SET logo_path = :p WHERE id = :id");
   $st->execute([':p' => $public, ':id' => $empresaId]);
 
   echo json_encode(['ok' => true, 'url' => $public]);
 } catch (Throwable $e) {
-  // algo explodiu (ex.: permissão etc.)
   error_log('upload_logo.php: ' . $e->getMessage());
   http_response_code(500);
-  echo json_encode(['ok' => false, 'error' => 'excecao', 'msg' => $e->getMessage()]);
+  echo json_encode(['ok' => false, 'error' => 'erro_upload']);
 }
