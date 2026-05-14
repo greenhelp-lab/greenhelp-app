@@ -24,7 +24,6 @@ session_start();
     </div>
 
     <?php
-    // carregar empresas existentes para associar
     try {
       $empresasStmt = $pdo->query("SELECT id, nome, cnpj FROM empresas ORDER BY nome");
       $empresas = $empresasStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -104,7 +103,6 @@ session_start();
 
     const params = new URLSearchParams(window.location.search);
     if (params.get('status') === 'success') {
-      // simples feedback visual, reusa pop-salvo se existir
       document.querySelector('.pop-salvo')?.classList.add('show');
       setTimeout(() => {
         window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/painel_admin.php";
@@ -121,7 +119,6 @@ session_start();
       function toggle() {
         if (empresaSelect.value === 'new') {
           newFields.style.display = 'block';
-          // make new company fields required when creating
           newFields.querySelectorAll('input').forEach(i => i.required = true);
         } else {
           newFields.style.display = 'none';

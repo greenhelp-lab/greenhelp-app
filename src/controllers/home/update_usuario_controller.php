@@ -44,8 +44,6 @@ try {
     echo json_encode(['ok' => false, 'error' => 'invalid_email']);
     exit;
   }
-
-  // checar e-mail duplicado em outro usuário
   $st = $pdo->prepare('SELECT id FROM usuarios WHERE email = :email AND id <> :id LIMIT 1');
   $st->execute([':email' => $email, ':id' => $userId]);
   if ($st->fetchColumn()) {
@@ -68,7 +66,6 @@ try {
 
   echo json_encode(['ok' => true]);
 } catch (Throwable $e) {
-  // Se houver UNIQUE KEY no email, cai aqui com SQLSTATE 23000
   $code = (int)($e->getCode() ?: 0);
   http_response_code(500);
   echo json_encode(['ok' => false, 'error' => 'server_error', 'msg' => $e->getMessage(), 'code' => $code]);

@@ -46,8 +46,6 @@ try {
     if (!is_dir($dir)) {
         mkdir($dir, 0755, true);
     }
-
-    // apaga antiga e salva nova
     foreach (glob($dir . "/u{$userId}.*") as $old) {
         @unlink($old);
     }
@@ -58,8 +56,6 @@ try {
     if (!move_uploaded_file($f['tmp_name'], $dest)) {
         throw new RuntimeException('falha ao salvar arquivo');
     }
-
-    // (opcional) redimensiona
     [$w, $h] = getimagesize($dest);
     $scale   = min(1, 1080 / max($w, $h));
 
@@ -95,8 +91,6 @@ try {
             imagedestroy($dst);
         }
     }
-
-    // atualiza no banco
     $st = $pdo->prepare("UPDATE usuarios SET avatar_path = :p WHERE id = :id");
     $st->execute([':p' => $public, ':id' => $userId]);
 

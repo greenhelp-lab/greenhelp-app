@@ -16,8 +16,6 @@ $user = $stmt->fetch();
 if ($user && password_verify($senha, $user['senha'])) {
   $_SESSION['user_id'] = $user['id'];
   $_SESSION['papel'] = $user['papel'];
-
-  // primeiro nome
   $partes = preg_split('/\s+/', trim($user['nome']));
   $_SESSION['primeiro_nome'] = $partes[0];
 
@@ -37,7 +35,6 @@ if ($user && password_verify($senha, $user['senha'])) {
   exit;
 } else {
   $_SESSION['mensagem_erro'] = "Credenciais inválidas.";
-  // mensagem de erro visivel no arquivo de login
   header('Location: ' . BASE_URL . '/src/pages/login/login.php');
   exit;
 }

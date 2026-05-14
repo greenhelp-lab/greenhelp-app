@@ -21,11 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':setor_atuacao' => $setor,
             ':porte' => $porte
         ]);
-
-        // 🔥 Salva o ID da empresa recém-criada na sessão
         $_SESSION['empresa_id'] = $pdo->lastInsertId();
-
-        // 🔁 Agora redireciona para criar a conta do usuário
         header('Location: ' . BASE_URL . '/src/pages/login/criar_conta.php');
         exit;
 

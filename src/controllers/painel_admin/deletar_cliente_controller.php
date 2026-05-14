@@ -23,16 +23,10 @@ try {
   $id = (int)$data['id'];
 
   $pdo->beginTransaction();
-
-  // zera empresa_id do cliente
   $pdo->prepare('UPDATE usuarios SET empresa_id = NULL WHERE id = :id')
     ->execute([':id' => $id]);
-
-  // Apaga registros da tabela servicos_andamento do cliente
   $pdo->prepare('DELETE FROM servicos_andamento WHERE usuario_id = :id')
     ->execute([':id' => $id]);
-   
-  // descobre empresa do usuário
   $stmtEmp = $pdo->prepare('SELECT id FROM empresas WHERE usuario_id = :id');
   $stmtEmp->execute([':id' => $id]);
   $empId = $stmtEmp->fetch();
@@ -40,14 +34,9 @@ try {
   
 
   if ($empId) {
-    // Apaga registros da tabela pontuacoes_areas
     $pdo->prepare("DELETE FROM pontuacoes_areas WHERE empresa_id = :id")->execute([':id' => $empresaId]);
-
-    // apagar a empresa
     $pdo->prepare("DELETE FROM empresas WHERE id = :id")->execute([':id' => $empresaId]);
   }
-
-  // apaga o usuário
   $del = $pdo->prepare('DELETE FROM usuarios WHERE id = :id LIMIT 1');
   $ok  = $del->execute([':id' => $id]);
 

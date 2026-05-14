@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 $userId = (int)$_GET['id'];
 
-/* -------- CARREGAR DADOS -------- */
+
 $st = $pdo->prepare("SELECT nome, email, telefone, avatar_path, papel, ativo FROM usuarios WHERE id = :id LIMIT 1");
 $st->execute([':id' => $userId]);
 $usuario = $st->fetch();
@@ -40,14 +40,14 @@ if ($usuario && !empty($usuario['avatar_path'])) {
       <section class="cliente-info">
         <h1 class="account-title">Sobre o Admin</h1>
 
-        <!-- Foto -->
+        
         <div class="photo-card">
           <img id="fotoUsuario"
             src="<?= htmlspecialchars($avatarUrl, ENT_QUOTES) ?>"
             alt="Foto do usuário">
         </div>
 
-        <!-- Form -->
+        
         <form id="formConta" class="account-form" autocomplete="off">
           <input type="hidden" name="id" value="<?= (int)$userId ?>">
 
@@ -100,7 +100,7 @@ if ($usuario && !empty($usuario['avatar_path'])) {
                 readonly>
             </div>
 
-          </div><!-- grid -->
+          </div>
 
       </section>
 
@@ -156,8 +156,6 @@ if ($usuario && !empty($usuario['avatar_path'])) {
 
       setEditing(false);
       btnEditar.addEventListener('click', () => setEditing(true));
-
-      // SALVAR via AJAX
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -196,8 +194,6 @@ if ($usuario && !empty($usuario['avatar_path'])) {
           btnSalvar.disabled = false;
         }
       });
-
-      // DELETAR ADMIN via AJAX
       btnDelete.addEventListener('click', async () => {
         if (!confirm('Tem certeza que deseja excluir este admin? Esta ação não pode ser desfeita.')) return;
         try {

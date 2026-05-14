@@ -26,7 +26,7 @@ try {
   $cnpj     = trim($data['cnpj'] ?? '');
   $porte    = trim($data['porte'] ?? '');
   $setor    = trim($data['setor_atuacao'] ?? '');
-  $endereco = trim($data['endereco'] ?? ''); // NOVO
+  $endereco = trim($data['endereco'] ?? '');
 
   if ($nome === '') {
     http_response_code(422);

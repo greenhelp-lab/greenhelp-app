@@ -3,8 +3,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 
 $termo = isset($_GET['q']) ? trim($_GET['q']) : '';
-
-// consulta: busca apenas clientes e inclui nome da empresa
 $sql = "
   SELECT u.id, u.nome, u.email, e.nome AS empresa_nome
   FROM usuarios u

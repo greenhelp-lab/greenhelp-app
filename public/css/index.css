@@ -1,9 +1,9 @@
-/* ===== Landing Page Styles ===== */
+
 body {
   margin: 0;
 }
 
-/* Header Styles */
+
 .site-header {
   position: fixed;
   top: 0;
@@ -65,7 +65,7 @@ body {
   box-shadow: 0 4px 12px rgba(26, 27, 90, 0.2);
 }
 
-/* Hero Section */
+
 .hero {
   width: 100%;
   min-height: 580px;
@@ -100,7 +100,7 @@ body {
   pointer-events: none;
 }
 
-/* Decorative Elements */
+
 .hero-decor {
   position: absolute;
   top: 0;
@@ -158,7 +158,7 @@ body {
   justify-content: center;
 }
 
-/* Main Content */
+
 .about-main {
   width: 100%;
   padding: 4rem 0;
@@ -195,41 +195,9 @@ body {
   pointer-events: none;
 }
 
-/* Decorative Plants */
-/* .decor-plants {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
 
-.plant-left,
-.plant-right {
-  position: fixed;
-  height: 100vh;
-  width: 300px;
-  opacity: 0.05;
-}
 
-.plant-left {
-  left: -100px;
-  top: 0;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><path d="M50,0 Q80,50 50,100 Q20,150 50,200" stroke="%2335f28f" fill="none" stroke-width="2"/><path d="M30,50 Q60,100 30,150" stroke="%2335f28f" fill="none" stroke-width="2"/></svg>')
-    no-repeat center;
-}
 
-.plant-right {
-  right: -100px;
-  top: 0;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><path d="M50,0 Q20,50 50,100 Q80,150 50,200" stroke="%2335f28f" fill="none" stroke-width="2"/><path d="M70,50 Q40,100 70,150" stroke="%2335f28f" fill="none" stroke-width="2"/></svg>')
-    no-repeat center;
-}
- */
-/* Section Grid */
 .section-grid {
   max-width: 1200px;
   margin: 0 auto;
@@ -240,7 +208,7 @@ body {
   text-align: center;
 }
 
-/* About Sections */
+
 .about-section {
   padding: 5rem 0;
 }
@@ -257,7 +225,7 @@ body {
   line-height: 1.6;
 }
 
-/* Cards Grid */
+
 .values-grid,
 .services-grid {
   display: grid;
@@ -294,7 +262,7 @@ body {
   line-height: 1.5;
 }
 
-/* Benefits Grid */
+
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -328,7 +296,7 @@ body {
   line-height: 1.5;
 }
 
-/* CTA Areas */
+
 .section-cta {
   margin-top: 3rem;
   text-align: center;
@@ -340,9 +308,9 @@ body {
   font-size: 0.9rem;
 }
 
-/* Buttons */
+
 .btn-primary {
-  /* background: linear-gradient(90deg, #29e18a, #12b281); */
+  
   color: var(--accent);
   font-weight: 600;
   padding: 1rem 2rem;
@@ -372,7 +340,7 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Footer */
+
 .site-footer {
   width: 100%;
   background: linear-gradient(
@@ -448,7 +416,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* Responsividade */
+
 @media (max-width: 1024px) {
   .hero h1 {
     font-size: 2.8rem;

@@ -151,7 +151,7 @@
   transform: scale(1.2);
 }
 
-/* BLOCO DA ÁREA DE PESQUISA DENTRO DA LOJA */
+
 .search {
   width: 100%;
   display: flex;
@@ -192,35 +192,35 @@
   font-size: 0.9rem;
 }
 
-/* CARDS DE SERVIÇOS NA LOJA */
+
 .service-cards {
   width: 100%;
   max-height: 900px;
   display: grid;
-  overflow-y: auto; /* scroll vertical apenas aqui */
+  overflow-y: auto; 
   overflow-x: hidden;
 
-  gap: 1.5rem; /* espaçamento entre os cards */
+  gap: 1.5rem; 
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   padding: 1.5rem 1rem 1rem 1rem;
   margin-bottom: 1rem;
 }
 
-/* Estilos da Barra de scroll dos cards de serviços */
 
-/* Scrollbar do container */
+
+
 .service-cards::-webkit-scrollbar {
-  width: 10px; /* largura da barra de scroll */
+  width: 10px; 
 }
 
-/* Track (fundo da barra) */
+
 .service-cards::-webkit-scrollbar-track {
-  background: var(--input); /* cor de fundo do track */
+  background: var(--input); 
 }
 
-/* Thumb (o “puxador”) */
+
 .service-cards::-webkit-scrollbar-thumb {
-  background-color: var(--stroke); /* cor do puxador */
+  background-color: var(--stroke); 
   border-radius: 10px;
 }
 
@@ -263,7 +263,7 @@
 }
 .service-card .area-name {
   display: inline-block;
-  align-self: flex-start; /* Prevent stretching in column flex container */
+  align-self: flex-start; 
   background-color: var(--input);
   color: var(--muted);
   font-weight: 600;
@@ -301,7 +301,7 @@
   width: 25px;
   height: 22px;
 }
-/* ------------------- RESPONSIVE RULES ------------------- */
+
 @media (max-width: 900px) {
   .service-title {
     font-size: 28px;

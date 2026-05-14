@@ -38,7 +38,7 @@
 }
 
 body {
-  /* background: linear-gradient(180deg, var(--panel) 0%, #0d0e2f 100%); */
+  
   background-image: linear-gradient(
     180deg,
     #24103a 0%,
@@ -83,25 +83,25 @@ h6 {
 
 h1 {
   font-weight: 800;
-  font-size: 2.4rem; /* 38px */
-  margin-bottom: 1.25rem; /* 20px */
+  font-size: 2.4rem; 
+  margin-bottom: 1.25rem; 
 }
 h2 {
-  font-size: 1.875rem; /* 30px */
+  font-size: 1.875rem; 
   font-weight: 700;
   margin: 8px 0 16px 0;
 }
 h3 {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem; 
   font-weight: 600;
-  margin-bottom: 0.75rem; /* 12px */
+  margin-bottom: 0.75rem; 
 }
 h4 {
-  font-size: 1.0625rem; /* 17px */
-  margin-bottom: 0.625rem; /* 10px */
+  font-size: 1.0625rem; 
+  margin-bottom: 0.625rem; 
 }
 button {
-  all: unset; /* limpa tudo */
+  all: unset; 
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -139,79 +139,9 @@ a {
   opacity: 0.08;
 }
 
-/* input:-autofill-selected {
-  background-color: var(--txt);
-  background-image: none !important;
-  color: var(--txt);
-  box-shadow: 0 0 0px 1000px var(--input) inset !important;
-  transition: background-color 5000s ease-in-out 0s;
-} */
 
-/* Quando a tela for maior que 1200px, aplica zoom de 150%  */
-/* @media (min-width: 1200px) {
-  body {
-    transform: scale(1.5);
-  }
-} */
 
-/* .header {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background-color: #28d87a;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
 
-nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-.footer-row {
-  width: 100%;
-  padding: 20px 0 10px 0;
-  margin-top: 40px;
-  text-align: center;
-  background-color: transparent;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.footer-row img {
-  height: 50px;
-  margin-bottom: 0px;
-}
 
-.footer-row p {
-  color: #999;
-  font-size: 10px;
-  margin: 20px;
-}
-
-footer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 10px 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-}
-
-footer ul li {
-  display: inline-block;
-}
-
-footer ul li a {
-  color: #60E395;
-  font-size: 12px;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-footer ul li a:hover {
-  color: #28d87a;
-} */

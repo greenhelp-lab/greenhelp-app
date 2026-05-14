@@ -5,7 +5,7 @@
   max-width: 1000px;
 }
 
-/* Actions area */
+
 .actions-tab {
   display: flex;
   flex-direction: column;
@@ -19,7 +19,7 @@
   margin-top: 20px;
 }
 
-/* Layout base do painel */
+
 .dashboard {
   width: min(95%, 1200px);
   display: flex;
@@ -32,7 +32,7 @@
   margin: 20px 0 10px 0;
 }
 
-/* Cards de métricas */
+
 .dash-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -62,7 +62,7 @@
   color: var(--muted);
 }
 
-/* Records (usuários) */
+
 .records {
   width: 100%;
   max-width: 1000px;
@@ -130,7 +130,7 @@
 }
 
 .records-box {
-  overflow-y: auto; /* scroll vertical apenas aqui */
+  overflow-y: auto; 
   overflow-x: hidden;
 
   display: flex;
@@ -167,7 +167,7 @@
   min-width: 72px;
 }
 
-/* Buttons */
+
 .action-btn {
   background: transparent;
   color: var(--accent);
@@ -197,30 +197,30 @@
   border-radius: 999px;
 }
 
-/* Estilos da Barra de scroll dos cards de serviços */
 
-/* Scrollbar do container */
+
+
 .records-box::-webkit-scrollbar {
-  width: 10px; /* largura da barra de scroll */
+  width: 10px; 
   margin: 1rem 0 1rem 0;
   border-radius: 10px;
 }
 
-/* Track (fundo da barra) */
+
 .records-box::-webkit-scrollbar-track {
   background: none;
   margin: 1rem 0 1rem 0;
   border-radius: 10px;
 }
 
-/* Thumb (o “puxador”) */
+
 .records-box::-webkit-scrollbar-thumb {
   margin: 1rem 0 1rem 0;
-  background-color: var(--stroke); /* cor do puxador */
+  background-color: var(--stroke); 
   border-radius: 10px;
 }
 
-/* Responsividade */
+
 @media (max-width: 1000px) {
   .dashboard {
     grid-template-columns: 1fr;

@@ -5,7 +5,7 @@ body {
   align-items: center;
 }
 
-/* Painel central */
+
 .panel {
   width: 100%;
   max-width: 490px;
@@ -15,7 +15,7 @@ body {
   gap: 1.5rem;
 }
 
-/* Container do form */
+
 .auth-container {
   background: var(--card-bg);
   border: 1px solid var(--stroke);
@@ -24,7 +24,7 @@ body {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
-/* Cabeçalho do form */
+
 .auth-header {
   margin-bottom: 1.5rem;
   text-align: center;
@@ -41,14 +41,14 @@ body {
   line-height: 1.4;
 }
 
-/* Form básico */
+
 .auth-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-/* Labels e campos */
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -96,7 +96,7 @@ body {
   margin-right: 0.5rem;
 }
 
-/* Links de apoio */
+
 .auth-links {
   display: flex;
   flex-direction: column;
@@ -116,7 +116,7 @@ body {
   color: #45c17a;
 }
 
-/* Botões */
+
 .auth-form button:not(.link-button) {
   background: var(--accent);
   color: var(--input);
@@ -157,7 +157,7 @@ body {
   margin-top: 0.5rem;
 }
 
-/* Botão voltar */
+
 .back-button {
   display: inline-flex;
   align-items: center;
@@ -184,13 +184,13 @@ body {
   font-size: 1.25rem !important;
 }
 
-/* Mensagens de suporte */
+
 .help-text {
   color: var(--muted);
   margin: 0.5rem 0;
 }
 
-/* Responsividade */
+
 @media (max-width: 902px) {
   .panel {
     max-width: 380px;

@@ -38,7 +38,7 @@ $areas = $query->fetchAll();
           <form id="formServico" autocomplete="off">
             <input type="hidden" name="id" value="<?= $servico['id']; ?>">
 
-            <!-- GRID PADRÃO -->
+            
             <div class="form-grid service-fields">
 
               <div class="field">
@@ -161,9 +161,9 @@ $areas = $query->fetchAll();
                   readonly>
               </div>
 
-            </div><!-- grid -->
+            </div>
 
-            <!-- AÇÕES -->
+            
             <section class="actions">
               <div class="action-row primary-actions">
                 <div class="action-row danger-zone">
@@ -245,8 +245,6 @@ $areas = $query->fetchAll();
 
       setEditing(false);
       btnEditar.addEventListener('click', () => setEditing(true));
-
-      // SALVAR via AJAX
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -292,8 +290,6 @@ $areas = $query->fetchAll();
           btnSalvar.disabled = false;
         }
       });
-
-      // DELETAR CONTA via AJAX
       btnDelete.addEventListener('click', async () => {
         if (!confirm('Tem certeza que deseja excluir este serviço? Esta ação não pode ser desfeita.')) return;
         try {

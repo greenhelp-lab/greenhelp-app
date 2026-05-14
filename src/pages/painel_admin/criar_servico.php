@@ -1,8 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 include_once BASE_PATH . '/src/config/conexao.php';
-
-// Busca as áreas sustentáveis do banco
 $query = $pdo->query("SELECT id, nome FROM areas_sustentaveis ORDER BY nome ASC");
 $areas = $query->fetchAll();
 ?>
@@ -94,12 +92,9 @@ $areas = $query->fetchAll();
   </div>
 
   <script>
-    // Fecha e retorna ao painel
     document.getElementById("close-btn").addEventListener("click", () => {
       window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/painel_admin.php";
     });
-
-    // Redireciona após criação bem-sucedida
     const params = new URLSearchParams(window.location.search);
     if (params.get('status') === 'success') {
       document.querySelector('.pop-salvo')?.classList.add('show');

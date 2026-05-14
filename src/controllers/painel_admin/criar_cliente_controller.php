@@ -29,8 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: " . BASE_URL . "/src/pages/painel_admin/criar_cliente.php?error=email_existente");
     exit;
   }
-
-  // Criar/associar empresa
   try {
     $pdo->beginTransaction();
 
@@ -46,8 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
-
-    // Inserir usuário
     $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, telefone, senha, papel, ativo, empresa_id) VALUES (:nome, :email, :telefone, :senha, :papel, :ativo, :empresa_id)");
     $stmt->execute([
       ':nome' => $nome,
@@ -59,8 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       ':empresa_id' => $empresa_id !== '' ? $empresa_id : null
     ]);
     $usuario_id = $pdo->lastInsertId();
-
-    //atualizar usuario_id na tabela empresas
     $updt = $pdo->prepare("UPDATE empresas SET usuario_id = :usuario_id WHERE id = :empresa_id");
     $updt->execute([
       ':usuario_id' => $usuario_id,

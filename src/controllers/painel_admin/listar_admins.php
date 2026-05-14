@@ -3,8 +3,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 
 $termo = isset($_GET['q']) ? trim($_GET['q']) : '';
-
-// consulta: busca apenas administradores
 $sql = "
   SELECT u.id, u.nome, u.email
   FROM usuarios u

@@ -1,6 +1,4 @@
 <?php
-
-// impede acesso direto via navegador
 if (basename(__FILE__) == basename($_SERVER['PHP_SELF'])) {
   http_response_code(403);
   exit('Acesso direto negado.');
@@ -14,7 +12,6 @@ $dbname = $env["DB_NAME"];
 $dbport = $env["PORT"];
 
 try {
-  // cria objeto PDO e define modo de erro para exceções
   $pdo = new PDO(
     "mysql:host=" . $dbhost . ";port=" . $dbport . ";dbname=" . $dbname,
     $dbuser,

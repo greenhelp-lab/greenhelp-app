@@ -2,7 +2,7 @@
 session_start();
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php'; // fornece $pdo
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -18,8 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($senha !== $senha_confirm) {
         die('As senhas não coincidem.');
     }
-
-    // Verifica se existe empresa criada ANTES
     if (empty($_SESSION['empresa_id'])) {
         die('Nenhuma empresa vinculada. Crie uma empresa antes de criar a conta.');
     }
@@ -27,10 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $empresa_id = (int)$_SESSION['empresa_id'];
 
     try {
-        // Hash seguro da senha
         $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
-
-        // Inserir usuário
         $stmt = $pdo->prepare("
             INSERT INTO usuarios (empresa_id, nome, email, senha)
             VALUES (:empresa_id, :nome, :email, :senha)
@@ -42,11 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':email'      => $email,
             ':senha'      => $senha_hash
         ]);
-
-        // ID do usuário recém-criado
         $usuario_id = $pdo->lastInsertId();
-
-        // 🔥 Vincula AGORA o usuário à empresa no banco
         $stmt = $pdo->prepare("
             UPDATE empresas
             SET usuario_id = :usuario_id
@@ -56,17 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':usuario_id' => $usuario_id,
             ':empresa_id' => $empresa_id
         ]);
-
-        // Salvar sessão do usuário
         $_SESSION['user_id'] = $usuario_id;
-
-        // Agora a empresa está vinculada ao usuário logado
         $_SESSION['empresa_id_logada'] = $empresa_id;
-
-        // Remove empresa temporária
         unset($_SESSION['empresa_id']);
-
-        // Redireciona para login
         header('Location: ' . BASE_URL . '/src/pages/login/login.php');
         exit;
 

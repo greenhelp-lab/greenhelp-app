@@ -1,6 +1,4 @@
 <?php
-
-// Configura resposta como JSON e inicia sessão
 header('Content-Type: application/json; charset=utf-8');
 if (session_status() === PHP_SESSION_NONE) session_start();
 

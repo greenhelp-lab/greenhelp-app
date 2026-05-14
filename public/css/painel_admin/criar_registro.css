@@ -1,4 +1,4 @@
-/* CARD */
+
 .card {
   width: 90%;
   max-width: 650px;
@@ -11,7 +11,7 @@
   position: relative;
 }
 
-/* HEADER */
+
 .header {
   display: flex;
   align-items: center;
@@ -45,7 +45,7 @@
   box-shadow: 0 2px 8px #0007, inset 0 0 8px #6aa0ff22;
 }
 
-/* FORM */
+
 form {
   display: flex;
   flex-direction: column;
@@ -58,7 +58,7 @@ form {
   margin: 0 8px 6px;
 }
 
-/* INPUTS */
+
 .input,
 textarea, select {
   width: 100%;
@@ -97,7 +97,7 @@ select option {
   color: var(--txt);
 }
 
-/* foco */
+
 .input:focus,
 textarea:focus {
   box-shadow: 0 0 0 3px var(--glow);
@@ -105,7 +105,7 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(53, 242, 143, 0.18);
 }
 
-/* BOTÕES */
+
 .footer {
   display: flex;
   justify-content: space-between;

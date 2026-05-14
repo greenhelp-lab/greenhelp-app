@@ -21,7 +21,7 @@
   align-items: stretch;
 }
 
-/* TÍTULO */
+
 .account-title {
   text-align: left;
   margin: 0;
@@ -30,7 +30,7 @@
   color: var(--txt);
 }
 
-/* FOTO USUARIO */
+
 .photo-card {
   display: flex;
   justify-content: center;
@@ -47,7 +47,7 @@
   box-shadow: 0 6px 18px rgba(10, 10, 30, 0.45);
 }
 
-/* FORM CONTA CLIENTE */
+
 .account-form {
   display: flex;
   flex-direction: column;
@@ -102,7 +102,7 @@
   color: var(--txt);
 }
 
-/* EMPRESA */
+
 .empresa-card {
   margin-top: 16px;
   padding: 18px;
@@ -164,7 +164,7 @@
   }
 }
 
-/* Ajuste visual para o select da empresa */
+
 #empresa_select {
   padding: 12px 16px;
   border-radius: 12px;
@@ -179,12 +179,12 @@
   box-shadow: 0 6px 18px rgba(47, 201, 140, 0.12);
 }
 
-/* Inputs dentro da empresa ficam visualmente iguais aos demais */
+
 .empresa-fields input {
   background-color: var(--input) !important;
 }
 
-/* SERVIÇOS CONTRATADOS */
+
 .servicos-card {
   margin-top: 16px;
   padding: 18px;
@@ -341,9 +341,7 @@
   }
 }
 
-/* ===============================
-   Checkbox
-   =============================== */
+
 input[type='checkbox'] {
   width: 18px;
   height: 18px;
@@ -380,9 +378,7 @@ label[for='empresa_update'] {
   color: var(--txt);
 }
 
-/* ===============================
-   Ações
-   =============================== */
+
 .actions {
   margin-top: 22px;
   display: flex;
@@ -436,7 +432,7 @@ label[for='empresa_update'] {
   border: none;
 }
 
-/*    Responsividade adicional  */
+
 @media (min-width: 900px) {
   .conta-container {
     padding: 28px;

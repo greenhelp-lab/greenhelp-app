@@ -39,8 +39,6 @@ try {
     echo json_encode(['ok' => false, 'error' => 'Email inválido']);
     exit;
   }
-
-  // Verificar duplicação de email em outro usuário
   $st = $pdo->prepare('SELECT id FROM usuarios WHERE email = :email AND id <> :id LIMIT 1');
   $st->execute([':email' => $email, ':id' => $id]);
   if ($st->fetchColumn()) {

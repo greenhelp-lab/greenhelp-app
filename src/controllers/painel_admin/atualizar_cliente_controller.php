@@ -32,7 +32,6 @@ if ($id <= 0) {
 
 try {
   $pdo->beginTransaction();
-  // Buscar empresa atual do usuário
   $st = $pdo->prepare("SELECT empresa_id FROM usuarios WHERE id = :id LIMIT 1");
   $st->execute([':id' => $id]);
   $usuario = $st->fetch();
@@ -46,8 +45,6 @@ try {
   $newEmpresaId = null;
 
   if ($empresa_sel === "new") {
-
-    // Criando nova empresa
     $ins = $pdo->prepare("
     INSERT INTO empresas (nome, cnpj, setor_atuacao, porte)
     VALUES (:n, :c, :s, :p)
@@ -61,15 +58,11 @@ try {
 
     $newEmpresaId = (int)$pdo->lastInsertId();
   } elseif ($empresa_sel === "" || $empresa_sel === null) {
-
-    // Nenhuma empresa vinculada
     $newEmpresaId = null;
   } else {
 
     $empresa_sel_id = (int)$empresa_sel;
     $newEmpresaId = $empresa_sel_id;
-
-    // Caso a empresa selecionada seja existente, permitir edição dos campos
     $upd = $pdo->prepare("
     UPDATE empresas
        SET nome = :n,
@@ -87,8 +80,6 @@ try {
       ':id' => $empresa_sel_id
     ]);
   }
-
-// atualizar dados do usuário
   $up = $pdo->prepare("
   UPDATE usuarios
      SET nome = :n,

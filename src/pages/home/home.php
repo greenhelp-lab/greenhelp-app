@@ -58,7 +58,7 @@ if (!empty($_SESSION['user_id'])) {
       <input readonly id="cnpj" type="text" placeholder="CNPJ">
       <input readonly id="perfil" type="text" placeholder="Tamanho da Empresa">
       <input readonly id="industria" type="text" placeholder="Indústria">
-      <input readonly id="endereco" type="text" placeholder="Endereço" maxlength="200"> <!-- NOVO -->
+      <input readonly id="endereco" type="text" placeholder="Endereço" maxlength="200"> 
 
       <div class="form-actions" style="display:flex; gap:12px; margin-top:12px;">
         <button type="button" class="btn edit-button" id="btnEditar">Editar</button>
@@ -66,7 +66,7 @@ if (!empty($_SESSION['user_id'])) {
       </div>
     </form>
 
-    <!-- Serviços em Andamento -->
+    
     <?php
     $sql = "SELECT sa.id, sa.status, sa.valor_total, sa.data_inicio, 
                    s.nome, s.descricao,
@@ -119,7 +119,7 @@ if (!empty($_SESSION['user_id'])) {
         <?php endif; ?>
       </div>
     </section>
-    <!-- Pontuações de Sustentabilidade da Empresa -->
+    
     <section class="pontuacoes">
       <div class="pontuacoes-header">
         <h2 class="pontuacoes-title">Pontuações Verdes</h2>
@@ -139,8 +139,6 @@ if (!empty($_SESSION['user_id'])) {
             $nivel    = $area['nivel'];
             $pontuacaoTotal = 0;
             $pontuacaoTotal += $pontos;
-
-            // progressão demonstrativa até implementar a lógica
             $progress = ($pontos % 100);
             $faltam   = 100 - $progress;
             ?>

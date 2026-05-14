@@ -1,5 +1,4 @@
 <?php
-// src/controllers/read_empresa_controller.php
 declare(strict_types=1);
 
 header('Content-Type: application/json; charset=utf-8');
@@ -9,8 +8,6 @@ header('Pragma: no-cache');
 session_start();
 
 $userId = $_SESSION['user_id'] ?? null;
-
-// libera o lock imediatamente após ler os dados necessários
 session_write_close();
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/greenhelp-app/src/config/config.php';
@@ -36,8 +33,6 @@ try {
     echo json_encode(['ok'=>true,'empresa'=>null]);
     exit;
   }
-
-  // reabre a sessão apenas aqui, só no momento em que você realmente precisa escrever
   session_start();
   $_SESSION['empresa_id'] = (int)$row['id'];
   session_write_close();

@@ -1,4 +1,4 @@
-/* CONTAINER PRINCIPAL E ALINHAMENTO */
+
 .account-main {
   width: 100%;
   display: flex;
@@ -15,14 +15,14 @@
   align-items: center;
 }
 
-/* TÍTULO */
+
 .account-title {
   text-align: center;
   margin-bottom: 25px;
   font-size: 2.125rem;
 }
 
-/* FOTO DO USUÁRIO */
+
 .photo-card {
   display: flex;
   justify-content: center;
@@ -46,7 +46,7 @@
   cursor: pointer;
 }
 
-/* FORMULÁRIO */
+
 .account-form {
   width: 100%;
   display: flex;
@@ -143,7 +143,7 @@
   }
 }
 
-/* Checkbox */
+
 input[type='checkbox'] {
   width: 20px;
   height: 20px;
@@ -166,7 +166,7 @@ input[type='checkbox']:checked {
 }
 
 input[type='checkbox']:checked::after {
-  content: '\2713'; /* checkmark */
+  content: '\2713'; 
   color: var(--bg);
   position: absolute;
   top: 50%;
@@ -176,7 +176,7 @@ input[type='checkbox']:checked::after {
   line-height: 1;
 }
 
-/* make checkbox label clearer */
+
 label[for='empresa_update'],
 #empresa-fields .field > label {
   display: flex;
@@ -186,14 +186,14 @@ label[for='empresa_update'],
   font-weight: 600;
 }
 
-/* ensure inputs remain column and centered */
+
 .conta-container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* AGRUPAMENTO DE BOTÕES */
+
 .action-buttons-top,
 .action-buttons-bottom {
   display: flex;
@@ -201,17 +201,17 @@ label[for='empresa_update'],
   margin-top: 10px;
 }
 
-/* Topo: dois botões lado a lado */
+
 .action-buttons-top {
   justify-content: space-between;
 }
 
-/* Rodapé: botão centralizado */
+
 .action-buttons-bottom {
   justify-content: center;
 }
 
-/* Botões gerais */
+
 .account-form .btn {
   padding: 12px 10px;
   font-size: 1rem;
@@ -225,39 +225,39 @@ label[for='empresa_update'],
   transform: scale(1.02);
 }
 
-/* No topo, expandem igualmente */
+
 .action-buttons-top .btn {
   flex: 1 1 0;
 }
 
-/* No rodapé, largura fixa e central */
+
 .action-buttons-bottom .btn {
   flex: 0 0 auto;
   min-width: 60%;
 }
 
-/* EDITAR */
+
 .edit-button {
   background-color: transparent;
   color: var(--accent);
   border: 2px solid var(--accent);
 }
 
-/* SALVAR */
+
 .save-button {
   background-color: var(--accent);
   color: var(--bg);
   border: none;
 }
 
-/* DELETAR */
+
 .delete-account-button {
   background-color: var(--danger);
   color: var(--txt);
   border: none;
 }
 
-/* ÍCONES DECORATIVOS */
+
 .engines-icons {
   position: fixed;
   bottom: 0;
@@ -269,7 +269,7 @@ label[for='empresa_update'],
   pointer-events: none;
 }
 
-/* REMOVIDO: botão de trocar conta não existe mais */
+
 .swap-account-button {
   display: none;
 }
