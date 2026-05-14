@@ -1,146 +1,80 @@
-# 🌿 GreenHelp — Green IT Platform
+# GreenHelp
 
-A web platform project designed to simulate and support the adoption of Green IT practices inside tech business through a company that offers and implements a variety of services - Greenhelp
+GreenHelp é uma aplicação acadêmica em PHP, HTML, CSS e JavaScript vanilla para simular a contratação e o acompanhamento de serviços de Green IT.
 
-This project explores how sustainability services could be structured, tracked, and visualized through a digital product — combining environmental awareness with product thinking.
+O projeto representa uma plataforma simples onde empresas podem visualizar serviços sustentáveis, adicionar serviços ao carrinho, simular uma contratação e acompanhar o andamento pelo painel do cliente. Também existe um painel administrativo para gerenciar usuários, empresas e serviços.
 
----
+## Objetivo
 
-## 📌 Project Overview
+O objetivo principal é demonstrar evolução incremental de uma aplicação web simples:
 
-GreenHelp is a full-stack web application where companies can:
+- organização básica de frontend e backend;
+- uso de sessões e perfis de acesso;
+- consultas e alterações com PDO;
+- fluxo de marketplace e carrinho;
+- painel administrativo;
+- melhoria gradual de legibilidade, responsividade e manutenção.
 
-- Explore sustainability-focused IT services  
-- Simulate contracting those services  
-- Track progress and environmental impact  
-- Visualize their “green maturity” through a scoring system  
+Este não é um sistema de produção. É um projeto de portfólio acadêmico com foco em clareza, funcionalidade e evolução realista.
 
-The project focuses on turning abstract sustainability initiatives into something structured, measurable, and interactive.
+## Funcionalidades
 
----
+- Login e logout de usuários.
+- Perfis de cliente e administrador.
+- Cadastro de empresa e usuário.
+- Catálogo de serviços sustentáveis.
+- Busca e filtro de serviços.
+- Carrinho com seleção e finalização simulada.
+- Serviços contratados com status.
+- Perfil do usuário com edição de dados e foto.
+- Perfil da empresa com edição de dados e logo.
+- Painel administrativo com métricas simples.
+- CRUD básico de clientes, administradores e serviços.
 
-## 🎯 Purpose of the Project
+## Stack
 
-This project was built to explore:
+- PHP
+- MySQL
+- HTML
+- CSS
+- JavaScript vanilla
 
-- Product design for sustainability-focused platforms  
-- Service catalog + lifecycle tracking systems  
-- Gamification through scoring (Green Score)  
-- Role-based systems (client vs admin)  
-- Full-stack development with a simple, structured architecture  
+Não há frameworks, TypeScript, Docker ou pipeline de build. A estrutura foi mantida simples para combinar com o escopo acadêmico do projeto.
 
-> This is not a production-ready system, but a functional prototype demonstrating how a Green IT platform could work in practice.
+## Estrutura
 
----
+```text
+public/
+  css/
+  icons/
+  imgs/
+  js/
+  uploads/
+src/
+  config/
+  controllers/
+  helpers/
+  pages/
+```
 
-## ⚙️ Core Features
+## Configuração local
 
-### Authentication & Roles
-- Login/logout system  
-- Role-based access (client, support, admin)  
-- Session validation for protected routes  
+Crie um arquivo `.env` na raiz do projeto:
 
-### Service Catalog
-- List of sustainability services (cards)  
-- Each service includes:
-  - Description  
-  - Sustainability category  
-  - Green score value  
-- Filtering by category  
-- Real-time search  
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=
+DB_NAME=greenhelp
+PORT=3306
+```
 
-### Cart & Service Simulation
-- Add/remove services  
-- Simulated acquisition flow  
-- Aggregated sustainability score preview  
+O projeto espera rodar dentro de uma pasta chamada `greenhelp-app`, por exemplo:
 
-### Service Tracking
-- View contracted services  
-- Status tracking:
-  - Pending  
-  - In progress  
-  - Completed  
-  - Cancelled  
+```text
+http://localhost/greenhelp-app/public/index.html
+```
 
-### Green Scoring System
-- Each service contributes to a total score  
-- Score is distributed across sustainability areas  
-- Provides a simple “maturity overview” of the company  
+## Status
 
-### Admin Panel
-- Manage users and companies  
-- Manage service catalog  
-- View platform-level metrics and scores  
-
----
-
-## 🧱 Tech Stack
-
-- **Backend:** PHP  
-- **Frontend:** HTML, CSS, JavaScript  
-- **Database:** MySQL  
-
-### Structure Highlights
-- Separation of concerns (logic, UI, config)  
-- Semantic commits *(in progress / intended)*  
-
----
-
-## 🗃️ Data Model (Simplified)
-
-Main entities:
-
-- `usuarios` — authentication, roles, status  
-- `empresas` — company data  
-- `areas_sustentaveis` — sustainability categories  
-- `servicos` — available services  
-- `carrinho` — temporary selections  
-- `servicos_andamento` — acquired services + status  
-- `pontuacoes_sustentaveis` — scoring per company  
-
----
-
-## 🔄 User Flow
-
-### Client
-1. Logs into the platform  
-2. Views company overview  
-3. Explores service catalog  
-4. Adds services to cart  
-5. Confirms acquisition (simulation)  
-6. Tracks progress and sustainability score  
-
-### Admin
-1. Logs in with admin role  
-2. Manages users and companies  
-3. Updates service catalog  
-4. Monitors platform metrics  
-
----
-
-## 🎨 Design Direction
-
-- Clean and accessible UI  
-- Sustainability-inspired visual language  
-- Focus on clarity and usability over complexity  
-
-> *(Screenshots and Figma prototype will be added soon)*
-
----
-
-## 🚧 Project Status
-
-This project is currently:
-
-- Partially implemented  
-- Not fully refactored  
-
-Some features and structures are still rough and will be improved over time.
-
----
-
-## ▶️ Running Locally
-
-```bash
-git clone https://github.com/greenhelp-lab/greenhelp-app.git
-cd greenhelp-app
+A V1 está em fase de refatoração e estabilização. O foco atual é manter o projeto funcional, reduzir duplicação, remover código morto e deixar a base mais fácil de apresentar e evoluir.
