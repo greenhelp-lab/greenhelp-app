@@ -19,7 +19,7 @@
           <p class="lead">Olá! Preencha algumas informações sobre a sua empresa</p>
         </div>
 
-        <!-- Formulário -->
+        
         <form class="auth-form" action="<?php echo BASE_URL; ?>/src/controllers/auth/criar_empresa_controller.php" method="post">
 
           <div class="form-group">
@@ -64,18 +64,7 @@
       </div>
     </section>
   </main>
-
-  <div vw class="enabled">
-  <div vw-access-button class="active"></div>
-  <div vw-plugin-wrapper>
-    <div class="vw-plugin-top-wrapper"></div>
-  </div>
-</div>
-
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-<script>
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
-</script>
+<?php include BASE_PATH . "/src/pages/partials/vlibras.php"; ?>
 
 </body>
 </html>

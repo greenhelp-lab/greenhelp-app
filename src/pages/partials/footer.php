@@ -11,7 +11,7 @@
         <h4>Empresa</h4>
         <ul>
           <li><a href="<?php echo BASE_URL ?>/public/index.html" target="_blank">Sobre nós</a></li>
-          <!-- <li><a href="cases.html">Cases</a></li> -->
+          
           <li><a href="">Blog</a></li>
           <li><a href="">Bastidores</a></li>
         </ul>
@@ -21,7 +21,7 @@
         <ul>
           <li><a href="">Central de Ajuda</a></li>
           <li><a href="">Contato</a></li>
-          <!-- <li><a href="status.html">Status</a></li> -->
+          
         </ul>
       </div>
       <div class="footer-links">
@@ -39,16 +39,3 @@
     <p>&copy; 2025 GreenHelp. Todos os direitos reservados.</p>
   </div>
 </footer>
-
-<!-- VLibras -->
-<div vw class="enabled">
-  <div vw-access-button class="active"></div>
-  <div vw-plugin-wrapper>
-    <div class="vw-plugin-top-wrapper"></div>
-  </div>
-</div>
-
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-<script>
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
-</script>
