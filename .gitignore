@@ -25,3 +25,9 @@ Thumbs.db
 # Arquivos de ambiente
 .env
 .env.*
+
+# Uploads locais
+/public/uploads/avatars/*
+/public/uploads/logos/*
+!/public/uploads/avatars/.htaccess
+!/public/uploads/logos/.htaccess
