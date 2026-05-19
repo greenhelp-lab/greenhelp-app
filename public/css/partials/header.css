@@ -1,5 +1,4 @@
-header {
-  
+.site-header {
   width: 100%;
   height: 70px;
   display: flex;
@@ -22,10 +21,9 @@ header {
 
 
 .nav-container a {
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease;
 }
 .nav-container a:hover {
-  transition: all 0.3s ease;
   transform: scale(1.1);
 }
 
@@ -44,14 +42,20 @@ header {
   text-decoration: none;
   color: var(--input);
 }
-.logo {
+.site-logo {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 142px;
+  height: 52px;
   text-decoration: none;
 }
-.logo img {
-  width: 140px;
+.site-logo img {
+  display: block;
+  width: 100%;
   height: auto;
+  max-height: 52px;
+  object-fit: contain;
 }
 
 
@@ -86,7 +90,7 @@ header {
 
 
 @media (max-width: 568px) {
-  header {
+  .site-header {
     padding: 2px 10px;
   }
   .nav-right {
@@ -118,7 +122,7 @@ header {
     text-decoration: none;
     color: var(--input);
   }
-  .logo {
+  .site-logo {
     display: none;
   }
 }

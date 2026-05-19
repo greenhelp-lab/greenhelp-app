@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/partials/header.css">
 <header class="site-header">
   <nav class="nav-container">
-    <a href="<?php echo BASE_URL; ?>/src/pages/home/home.php" class="logo">
-      <img src="<?php echo BASE_URL; ?>/public/imgs/logo.png" alt="Logo da GreenHelp">
+    <a href="<?php echo BASE_URL; ?>/src/pages/home/home.php" class="site-logo">
+      <img src="<?php echo BASE_URL; ?>/public/imgs/logo-whiteborder.svg" alt="GreenHelp">
     </a>
 
     <a href="<?php echo BASE_URL; ?>/src/pages/marketplace/marketplace.php" class="shop-center">

@@ -41,7 +41,7 @@ if ($servicos) {
                 <p>R$ ' . number_format($servico['preco'], 2, ',', '.') . '</p>
                 <button class="btn-add-cart" data-id="' . htmlspecialchars($servico['id']) . '">
                     <span>Adicionar</span>
-                    <img class="add-cart-icon" src="/greenhelp-app/public/icons/cart.svg" alt="">
+                    <span class="add-cart-icon" aria-hidden="true"></span>
                 </button>
             </div>
         </div>';
