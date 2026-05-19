@@ -200,6 +200,85 @@
   gap: 16px;
 }
 
+.pontuacoes-card {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(0, 0, 0, 0.03)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pontuacoes-admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pontuacoes-admin-header strong {
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.pontuacoes-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.pontuacao-admin-item {
+  background: var(--card-bg);
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pontuacao-admin-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--txt);
+  font-weight: 600;
+}
+
+.pontuacao-admin-title img {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+
+.pontuacao-admin-meta {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.pontuacao-admin-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.pontuacao-admin-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+}
+
 .servicos-grid-admin {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

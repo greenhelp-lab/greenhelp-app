@@ -1,12 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
-session_start();
-
-if (!isset($_SESSION['user_id'])) {
-  http_response_code(401);
-  exit('Não autenticado');
-}
+require_once BASE_PATH . '/src/controllers/painel_admin/require_admin.php';
 
 $userId = (int)($_GET['id'] ?? 0);
 
@@ -27,12 +22,26 @@ if (!empty($usuario['avatar_path'])) {
 }
 
 $empresa = null;
+$pontuacoes = [];
+$pontuacaoTotal = 0;
 if (!empty($usuario['empresa_id'])) {
   $es = $pdo->prepare("SELECT id, nome, cnpj, setor_atuacao, porte 
                        FROM empresas 
                        WHERE id = :id LIMIT 1");
   $es->execute([':id' => (int)$usuario['empresa_id']]);
   $empresa = $es->fetch();
+
+  $ps = $pdo->prepare("
+    SELECT a.nome, a.imagem_url, COALESCE(p.pontos, 0) AS pontos, COALESCE(p.nivel, 1) AS nivel
+    FROM areas_sustentaveis a
+    LEFT JOIN pontuacoes_areas p ON p.area_id = a.id AND p.empresa_id = :empresa_id
+    ORDER BY a.nome
+  ");
+  $ps->execute([':empresa_id' => (int)$usuario['empresa_id']]);
+  $pontuacoes = $ps->fetchAll();
+  foreach ($pontuacoes as $pontuacao) {
+    $pontuacaoTotal += (int)$pontuacao['pontos'];
+  }
 }
 
 try {
@@ -195,6 +204,39 @@ try {
 
           </div>
         </div>
+        <?php if ($empresa): ?>
+          <div class="pontuacoes-card mt-12">
+            <div class="pontuacoes-admin-header">
+              <h3 class="empresa-subtitle">Pontuações Sustentáveis</h3>
+              <strong><?= (int)$pontuacaoTotal ?> pts</strong>
+            </div>
+
+            <div class="pontuacoes-admin-grid">
+              <?php foreach ($pontuacoes as $pontuacao): ?>
+                <?php
+                  $pontosArea = (int)$pontuacao['pontos'];
+                  $progressoArea = $pontosArea % 100;
+                ?>
+                <div class="pontuacao-admin-item">
+                  <div class="pontuacao-admin-title">
+                    <?php if (!empty($pontuacao['imagem_url'])): ?>
+                      <img src="<?= htmlspecialchars($pontuacao['imagem_url'], ENT_QUOTES) ?>" alt="">
+                    <?php endif; ?>
+                    <span><?= htmlspecialchars($pontuacao['nome'], ENT_QUOTES) ?></span>
+                  </div>
+                  <div class="pontuacao-admin-meta">
+                    <span>Nível <?= (int)$pontuacao['nivel'] ?></span>
+                    <span><?= $pontosArea ?> pts</span>
+                  </div>
+                  <div class="pontuacao-admin-bar">
+                    <span style="width: <?= $progressoArea ?>%"></span>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        <?php endif; ?>
+
         <div class="servicos-card mt-12">
           <h3 class="empresa-subtitle">Serviços Contratados</h3>
 

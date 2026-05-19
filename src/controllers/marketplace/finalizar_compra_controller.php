@@ -1,6 +1,7 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/helpers/pontuacoes.php';
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 header('Content-Type: application/json; charset=utf-8');
@@ -25,8 +26,15 @@ if (!$ids_carrinho) {
 try {
   $pdo->beginTransaction();
 
+  $empresaId = buscarEmpresaDoUsuario($pdo, (int)$id_usuario);
+  if (!$empresaId) {
+    $pdo->rollBack();
+    echo json_encode(['success' => false, 'message' => 'Empresa não encontrada para este usuário.']);
+    exit;
+  }
+
   $ph = implode(',', array_fill(0, count($ids_carrinho), '?'));
-  $sql = "SELECT c.id, c.servico_id, s.preco
+  $sql = "SELECT c.id, c.servico_id, s.preco, s.area_id, s.pontos
           FROM carrinho c
           JOIN servicos s ON c.servico_id = s.id
           WHERE c.id IN ($ph)
@@ -54,6 +62,7 @@ try {
   $ids_processados = [];
   foreach ($itens as $item) {
     $stmt_inserir->execute([$id_usuario, $item['servico_id'], $item['preco']]);
+    adicionarPontosArea($pdo, (int)$empresaId, (int)$item['area_id'], (int)$item['pontos']);
     $stmt_atualizar->execute([$item['id'], $id_usuario]);
     $ids_processados[] = $item['id'];
   }
