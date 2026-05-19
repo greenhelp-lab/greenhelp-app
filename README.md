@@ -26,6 +26,7 @@ Este não é um sistema de produção. É um projeto de portfólio acadêmico co
 - Busca e filtro de serviços.
 - Carrinho com seleção e finalização simulada.
 - Serviços contratados com status.
+- Pontuação sustentável por área após a contratação de serviços.
 - Perfil do usuário com edição de dados e foto.
 - Perfil da empresa com edição de dados e logo.
 - Painel administrativo com métricas simples.
