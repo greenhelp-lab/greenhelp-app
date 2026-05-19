@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
+require_once BASE_PATH . '/src/controllers/painel_admin/require_admin.php';
 
 $termo = isset($_GET['q']) ? trim($_GET['q']) : '';
 
@@ -36,7 +37,7 @@ if ($servicos) {
           <div class="record-company">Preço: R$ ' . number_format($servico['preco'], 2, ',', '.') . '</div>
         </div>
         <div>
-          <button class="btn-ver" onclick="window.location.href=\'' . $url . '\'">Ver</button>
+          <a class="btn-ver" href="' . $url . '">Ver</a>
         </div>
       </div>
     ';

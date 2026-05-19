@@ -1,15 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
-session_start();
+require_once BASE_PATH . '/src/controllers/painel_admin/require_admin.php';
 
 header('Content-Type: application/json');
-
-if (!isset($_SESSION['user_id'])) {
-  http_response_code(401);
-  echo json_encode(['ok' => false, 'error' => 'Não autenticado']);
-  exit;
-}
 
 $body = json_decode(file_get_contents("php://input"), true);
 if (!$body) {
@@ -106,5 +100,5 @@ try {
     $pdo->rollBack();
   }
   http_response_code(500);
-  echo json_encode(['ok' => false, 'error' => 'Erro ao atualizar cliente: ' . $e->getMessage()]);
+  echo json_encode(['ok' => false, 'error' => 'Erro ao atualizar cliente']);
 }

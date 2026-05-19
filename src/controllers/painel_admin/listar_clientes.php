@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
+require_once BASE_PATH . '/src/controllers/painel_admin/require_admin.php';
 
 $termo = isset($_GET['q']) ? trim($_GET['q']) : '';
 $sql = "
@@ -36,7 +37,7 @@ if ($clientes) {
           <div class="record-company">Empresa: ' . htmlspecialchars($cliente['empresa_nome'] ?? '—') . '</div>
         </div>
         <div>
-          <button class="btn-ver" onclick="window.location.href=\'' . $url . '\'">Ver</button>
+          <a class="btn-ver" href="' . $url . '">Ver</a>
         </div>
       </div>
     ';

@@ -2,6 +2,7 @@
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 include_once BASE_PATH . '/src/config/conexao.php';
+require_once BASE_PATH . '/src/controllers/painel_admin/require_admin.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -40,5 +41,5 @@ try {
 } catch (Throwable $e) {
   if ($pdo->inTransaction()) $pdo->rollBack();
   http_response_code(500);
-  echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+  echo json_encode(['ok' => false, 'error' => 'Erro ao excluir admin']);
 }

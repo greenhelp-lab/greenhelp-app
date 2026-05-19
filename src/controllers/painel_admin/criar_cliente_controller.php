@@ -1,6 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 include_once BASE_PATH . '/src/config/conexao.php';
+require_once BASE_PATH . '/src/controllers/painel_admin/require_admin.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $nome = trim($_POST['nome'] ?? '');

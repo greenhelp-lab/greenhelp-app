@@ -1,6 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 include_once BASE_PATH . '/src/config/conexao.php';
+require_once BASE_PATH . '/src/controllers/painel_admin/require_admin.php';
 
 $id = $_GET['id'] ?? null;
 $servico = null;
@@ -26,7 +27,7 @@ $areas = $query->fetchAll();
   <title>Ver Serviço</title>
 </head>
 
-<body>
+<body data-base-url="<?= BASE_URL; ?>">
   <?php include_once BASE_PATH . '/src/pages/partials/header_admin.php'; ?>
 
   <main class="service-main center-layout">
@@ -193,127 +194,7 @@ $areas = $query->fetchAll();
     alt="Ícones decorativos"
     class="engines-icons">
 
-  <script>
-    const API = '<?php echo rtrim(BASE_URL, '/'); ?>';
-
-    document.getElementById("btnDelete").addEventListener("click", () => {
-      window.location.href = API + "/src/pages/painel_admin/painel_admin.php";
-    });
-
-    (function() {
-      const form = document.getElementById('formServico');
-      if (!form) return;
-
-      const btnEditar = document.getElementById('btnEditar');
-      const btnSalvar = document.getElementById('btnSalvar');
-      const btnDelete = document.getElementById('btnDelete');
-
-      const inputs = {
-        nome: document.getElementById('nome'),
-        area_id: document.getElementById('area'),
-        preco: document.getElementById('preco'),
-        prazo: document.getElementById('prazo'),
-        pontos: document.getElementById('pontos'),
-        categoria: document.getElementById('categoria'),
-        descricao: document.getElementById('descricao'),
-        descricao_longa: document.getElementById('descricao_longa'),
-        itens_incluidos: document.getElementById('itens_incluidos'),
-        garantia: document.getElementById('garantia'),
-        contato: document.getElementById('contato'),
-        disponivel: document.getElementById('disponivel')
-      };
-
-      function setEditing(on) {
-        inputs.nome.readOnly = !on;
-        inputs.area_id.disabled = !on;
-        inputs.preco.readOnly = !on;
-        inputs.prazo.readOnly = !on;
-        inputs.pontos.readOnly = !on;
-        inputs.categoria.readOnly = !on;
-        inputs.descricao.readOnly = !on;
-        inputs.descricao_longa.readOnly = !on;
-        inputs.itens_incluidos.readOnly = !on;
-        inputs.garantia.readOnly = !on;
-        inputs.contato.readOnly = !on;
-        inputs.disponivel.readOnly = !on;
-
-        btnEditar.style.display = on ? 'none' : 'inline-block';
-        btnSalvar.style.display = on ? 'inline-block' : 'none';
-
-        if (on) inputs.nome.focus();
-      }
-
-      setEditing(false);
-      btnEditar.addEventListener('click', () => setEditing(true));
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const payload = {
-          id: form.querySelector('input[name="id"]').value,
-          nome: inputs.nome.value.trim(),
-          area_id: inputs.area_id.value,
-          preco: inputs.preco.value,
-          prazo: inputs.prazo.value,
-          pontos: inputs.pontos.value,
-          categoria: inputs.categoria.value.trim(),
-          descricao: inputs.descricao.value.trim(),
-          descricao_longa: inputs.descricao_longa.value.trim(),
-          itens_incluidos: inputs.itens_incluidos.value.trim(),
-          garantia: inputs.garantia.value.trim(),
-          contato: inputs.contato.value.trim(),
-          disponivel: inputs.disponivel.value
-        };
-
-        if (!payload.nome) {
-          alert('Preencha o nome do serviço.');
-          return;
-        }
-
-        try {
-          btnSalvar.disabled = true;
-          const res = await fetch(`${API}/src/controllers/painel_admin/atualizar_servico_controller.php`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-          });
-
-          const j = await res.json().catch(() => ({}));
-          if (!res.ok || !j.ok) throw new Error(j.error || 'Erro ao salvar');
-
-          setEditing(false);
-          alert('Serviço atualizado com sucesso!');
-        } catch (err) {
-          alert('Falha ao salvar: ' + err.message);
-        } finally {
-          btnSalvar.disabled = false;
-        }
-      });
-      btnDelete.addEventListener('click', async () => {
-        if (!confirm('Tem certeza que deseja excluir este serviço? Esta ação não pode ser desfeita.')) return;
-        try {
-          const id = form.querySelector('input[name="id"]').value;
-          const r = await fetch(`${API}/src/controllers/painel_admin/deletar_servico_controller.php`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              id
-            })
-          });
-          const j = await r.json().catch(() => ({}));
-          if (!r.ok || !j.ok) throw new Error(j.error || 'Erro ao deletar');
-
-          window.location.href = API + "/src/pages/painel_admin/painel_admin.php";
-        } catch (err) {
-          alert('Falha ao deletar: ' + err.message);
-        }
-      });
-
-    })();
-  </script>
+  <script src="<?= BASE_URL; ?>/public/js/painel_admin/ver_servico.js"></script>
 
 </body>
 

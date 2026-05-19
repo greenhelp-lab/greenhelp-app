@@ -179,6 +179,9 @@
 }
 
 .btn-ver {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   color: var(--accent);
   border: 2px solid var(--accent);
@@ -186,6 +189,7 @@
   border-radius: 999px;
   padding: 8px 8px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .btn-import,

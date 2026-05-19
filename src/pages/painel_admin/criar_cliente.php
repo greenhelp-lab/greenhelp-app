@@ -1,7 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 include_once BASE_PATH . '/src/config/conexao.php';
-session_start();
+require_once BASE_PATH . '/src/controllers/painel_admin/require_admin.php';
 
 ?>
 <!DOCTYPE html>
@@ -15,7 +15,7 @@ session_start();
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/painel_admin/criar_registro.css" />
 </head>
 
-<body>
+<body data-base-url="<?php echo BASE_URL; ?>">
   <?php include_once BASE_PATH . '/src/pages/partials/header_admin.php'; ?>
   <div class="card">
     <div class="header">
@@ -96,50 +96,8 @@ session_start();
     </form>
   </div>
 
-  <script>
-    document.getElementById("close-btn").addEventListener("click", () => {
-      window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/painel_admin.php";
-    });
-
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('status') === 'success') {
-      document.querySelector('.pop-salvo')?.classList.add('show');
-      setTimeout(() => {
-        window.location.href = "<?php echo BASE_URL; ?>/src/pages/painel_admin/painel_admin.php";
-      }, 1600);
-    }
-    
-    (function() {
-      const empresaSelect = document.getElementById('empresa_id');
-      const newFields = document.getElementById('new-company-fields');
-      const form = document.getElementById('criarClienteForm');
-
-      if (!empresaSelect || !newFields || !form) return;
-
-      function toggle() {
-        if (empresaSelect.value === 'new') {
-          newFields.style.display = 'block';
-          newFields.querySelectorAll('input').forEach(i => i.required = true);
-        } else {
-          newFields.style.display = 'none';
-          newFields.querySelectorAll('input').forEach(i => i.required = false);
-        }
-      }
-
-      empresaSelect.addEventListener('change', toggle);
-      toggle();
-
-      form.addEventListener('submit', (e) => {
-        if (empresaSelect.value === 'new') {
-          const nome = document.getElementById('empresa_nome').value.trim();
-          if (!nome) {
-            e.preventDefault();
-            alert('Preencha o nome da empresa/associação ao criar uma nova.');
-          }
-        }
-      });
-    })();
-  </script>
+  <script src="<?php echo BASE_URL; ?>/public/js/painel_admin/registro.js"></script>
+  <script src="<?php echo BASE_URL; ?>/public/js/painel_admin/criar_cliente.js"></script>
 </body>
 
 </html>

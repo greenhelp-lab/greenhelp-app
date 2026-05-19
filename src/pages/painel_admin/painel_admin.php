@@ -1,13 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
-
-session_start();
-
-if (($_SESSION['papel'] ?? '') !== 'admin') {
-  http_response_code(403);
-  exit('Acesso negado');
-}
+require_once BASE_PATH . '/src/controllers/painel_admin/require_admin.php';
 
 $totClientes = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE papel = 'cliente'")->fetchColumn();
 $totAdmins   = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE papel = 'admin'")->fetchColumn();
