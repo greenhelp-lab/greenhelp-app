@@ -16,53 +16,126 @@
   justify-content: flex-start;
 }
 
-.container h2 {
-  font-size: 1.75rem;
-  color: var(--txt);
-}
-
-
-
-.user-photo {
+.empresa-panel {
+  width: 100%;
+  margin: 8px 0 28px;
+  padding: 20px;
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(6, 10, 25, 0.2);
   display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.empresa-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  text-align: left;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.empresa-panel-header h2 {
+  font-size: 1.45rem;
+  color: var(--txt);
+  margin: 0 0 4px;
+}
+
+.empresa-panel-header p {
+  max-width: 560px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.empresa-content {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.empresa-logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+#btnLogo {
+  width: 128px;
+  height: 128px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  margin: 12px 0;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(10, 10, 30, 0.28);
 }
 
-.user-photo img,
-#fotoUsuario {
-  width: 140px;
-  height: 140px;
-  border-radius: 999px;
+#btnLogo:not(:disabled) {
+  cursor: pointer;
+}
+
+#btnLogo img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border: 3px solid rgba(255, 255, 255, 0.04);
-  box-shadow: 0 6px 18px rgba(10, 10, 30, 0.45);
 }
-
-
-
 
 .form-empresa {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  max-width: 520px;
-  margin-bottom: 1.5rem;
+  gap: 16px;
 }
 
+.empresa-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.empresa-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  text-align: left;
+}
+
+.empresa-fields label span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.empresa-field-wide {
+  grid-column: 1 / -1;
+}
 
 .form-empresa input {
   width: 100%;
-  padding: 15px 20px;
-  background-color: var(--input);
-  border: 2px solid var(--stroke);
-  border-radius: 30px;
+  min-height: 46px;
+  padding: 12px 14px;
+  background-color: rgba(26, 27, 90, 0.86);
+  border: 1px solid rgba(74, 59, 209, 0.9);
+  border-radius: 10px;
   color: var(--txt);
-  font-size: 1rem;
+  font-size: 0.98rem;
   outline: none;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.2s ease;
-  box-shadow: none; 
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.2s ease;
+  box-shadow: none;
 }
 
 .form-empresa input::placeholder {
@@ -70,74 +143,62 @@
   opacity: 0.8;
 }
 
-.form-empresa input:focus:not(:disabled) {
-  border-color: var(--accent);
-  box-shadow: 0 0 10px var(--glow);
-}
-
-
-.form-empresa input:disabled {
-  opacity: 0.9;
-  cursor: not-allowed;
-  border-color: var(--stroke);
+.form-empresa input[readonly] {
+  opacity: 1;
+  cursor: default;
+  border-color: rgba(74, 59, 209, 0.72);
   box-shadow: none;
 }
 
-
-.form-actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 12px;
-  width: 100%;
-  max-width: 520px;
-  align-self: center;
+.form-empresa input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(53, 242, 143, 0.14);
 }
 
+.empresa-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  align-items: center;
+}
 
-.form-empresa .btn {
-  flex: 1 1 0;
-  padding: 12px 10px;
-  font-size: 1rem;
+.empresa-actions-bottom {
+  display: none;
+}
+
+.empresa-actions .btn {
+  box-sizing: border-box;
+  min-width: 130px;
+  padding: 12px 18px;
+  font-size: 0.98rem;
   font-weight: 600;
-  border-radius: 30px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  border-radius: 999px;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
   text-align: center;
 }
 
-
-.form-empresa .btn:hover:not(:disabled) {
-  transform: scale(1.02);
+.empresa-actions .btn:hover:not(:disabled) {
+  transform: translateY(-1px);
 }
 
-
-.form-empresa .edit-button {
+.empresa-actions .edit-button {
   background-color: transparent;
   color: var(--accent);
-  border: 2px solid var(--accent);
+  border: 1px solid var(--accent);
 }
 
-
-.form-empresa .save-button {
+.empresa-actions .save-button {
   background-color: var(--accent);
   color: var(--bg);
-  border: none;
+  border: 1px solid var(--accent);
 }
 
-
-.form-empresa .btn:disabled {
+.empresa-actions .btn:disabled {
   opacity: 0.6;
   pointer-events: none;
 }
-
-
-.form-empresa input[readonly] {
-  opacity: 1;
-  cursor: text;
-  border-color: var(--stroke);
-  box-shadow: none;
-}
-
-
 
 .servicos-andamento {
   width: 100%;
@@ -171,7 +232,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .servico-card:hover {
@@ -283,7 +346,6 @@
   text-decoration: underline;
 }
 
-
 .pontuacoes {
   width: 100%;
   background: var(--card-bg);
@@ -305,7 +367,6 @@
   width: 34px;
   height: 34px;
 }
-
 
 .pontuacoes-desc {
   font-size: 0.98rem;
@@ -336,93 +397,6 @@
   font-weight: 800;
 }
 
-
-.form-empresa input {
-  width: 100%;
-  padding: 15px 20px;
-  background-color: var(--input);
-  border: 2px solid var(--stroke);
-  border-radius: 30px;
-  color: var(--txt);
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.2s ease;
-  box-shadow: none; 
-}
-
-.form-empresa input::placeholder {
-  color: var(--muted);
-  opacity: 0.8;
-}
-
-.form-empresa input:focus:not(:disabled) {
-  border-color: var(--accent);
-  box-shadow: 0 0 10px var(--glow);
-}
-
-
-.form-empresa input:disabled {
-  opacity: 0.9;
-  cursor: not-allowed;
-  border-color: var(--stroke);
-  box-shadow: none;
-}
-
-
-.form-actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 12px;
-  width: 100%;
-  max-width: 520px;
-  align-self: center;
-}
-
-
-.form-empresa .btn {
-  flex: 1 1 0;
-  padding: 12px 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 30px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-  text-align: center;
-}
-
-
-.form-empresa .btn:hover:not(:disabled) {
-  transform: scale(1.02);
-}
-
-
-.form-empresa .edit-button {
-  background-color: transparent;
-  color: var(--accent);
-  border: 2px solid var(--accent);
-}
-
-
-.form-empresa .save-button {
-  background-color: var(--accent);
-  color: var(--bg);
-  border: none;
-}
-
-
-.form-empresa .btn:disabled {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-
-.form-empresa input[readonly] {
-  opacity: 1;
-  cursor: text;
-  border-color: var(--stroke);
-  box-shadow: none;
-}
-
-
 .niveis {
   display: flex;
   flex-direction: column;
@@ -443,7 +417,9 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  transition: transform 180ms ease, box-shadow 220ms ease,
+  transition:
+    transform 180ms ease,
+    box-shadow 220ms ease,
     border-color 220ms ease;
 }
 .nivel-card:hover {
@@ -493,10 +469,12 @@
 }
 
 .progress {
-  width: 0%; 
+  width: 0%;
   height: 100%;
   border-radius: 999px;
-  transition: width 700ms cubic-bezier(0.2, 0.9, 0.3, 1), background 350ms ease;
+  transition:
+    width 700ms cubic-bezier(0.2, 0.9, 0.3, 1),
+    background 350ms ease;
   background: linear-gradient(
     90deg,
     var(--level-accent, var(--accent)),
@@ -522,7 +500,6 @@
   color: var(--accent);
 }
 
-
 .nivel-card[data-nivel='1'] {
   --level-accent: #35f28f;
 }
@@ -538,7 +515,6 @@
 .nivel-card[data-nivel='5'] {
   --level-accent: #ffd166;
 }
-
 
 @media (min-width: 720px) {
   .nivel-card {
@@ -558,8 +534,52 @@
   }
 }
 
+@media (max-width: 720px) {
+  .empresa-panel-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .empresa-actions-top {
+    display: none;
+  }
+  .empresa-actions-bottom {
+    display: flex;
+    justify-content: stretch;
+    width: 100%;
+  }
+  .empresa-actions-bottom .btn {
+    flex: 1;
+    min-width: 0;
+  }
+  .empresa-content {
+    grid-template-columns: 1fr;
+  }
+  .empresa-logo-area {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .empresa-fields {
+    grid-template-columns: 1fr;
+  }
+}
 
 @media (max-width: 420px) {
+  .empresa-panel {
+    padding: 16px;
+  }
+  #btnLogo {
+    width: 108px;
+    height: 108px;
+  }
+  .empresa-fields {
+    grid-template-columns: 1fr;
+  }
+  .empresa-actions-bottom {
+    flex-direction: column;
+  }
+  .empresa-actions .btn {
+    width: 100%;
+  }
   .area-icon {
     width: 36px;
     height: 36px;

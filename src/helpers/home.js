@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('formEmpresa');
   const editButton = document.getElementById('btnEditar');
   const saveButton = document.getElementById('btnSalvar');
+  const editButtons = Array.from(document.querySelectorAll('#btnEditar, [data-edit-trigger]'));
+  const saveButtons = Array.from(document.querySelectorAll('#btnSalvar, [data-save-trigger]'));
   const logoButton = document.getElementById('btnLogo');
   const logoImage = document.getElementById('imgLogo');
   const logoInput = document.getElementById('inpLogo');
@@ -24,8 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (logoButton) logoButton.disabled = !active;
-    saveButton.disabled = false;
-    editButton.disabled = active;
+    saveButtons.forEach(button => {
+      button.disabled = false;
+    });
+    editButtons.forEach(button => {
+      button.disabled = active;
+    });
     if (active && fields.empresa) fields.empresa.focus();
   }
 
@@ -35,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         credentials: 'include'
       });
 
-      if (!response.ok) throw new Error('HTTP ' + response.status);
+      if (!response.ok) return;
 
       const data = await response.json();
       if (!data.ok || !data.empresa) return;
@@ -46,9 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       fields.perfil.value = empresa.porte || '';
       fields.industria.value = empresa.setor_atuacao || '';
       fields.endereco.value = empresa.endereco || '';
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   async function uploadLogo(file) {
@@ -113,7 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  editButton.addEventListener('click', () => setEditing(true));
+  editButtons.forEach(button => {
+    button.addEventListener('click', () => setEditing(true));
+  });
 
   form.addEventListener('submit', async event => {
     event.preventDefault();
@@ -133,7 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      saveButton.disabled = true;
+      saveButtons.forEach(button => {
+        button.disabled = true;
+      });
       const response = await fetch(`${HOME_API}/update_empresa_controller.php`, {
         method: 'POST',
         headers: {
@@ -154,7 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       alert('Falha ao salvar: ' + error.message);
     } finally {
-      saveButton.disabled = false;
+      saveButtons.forEach(button => {
+        button.disabled = false;
+      });
     }
   });
 

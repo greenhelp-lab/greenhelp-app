@@ -1,29 +1,59 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/config/conexao.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/controllers/home/areasPontuacaoController.php';
 session_start();
+
+if (empty($_SESSION['user_id'])) {
+  header('Location: ' . BASE_URL . '/src/pages/login/login.php');
+  exit;
+}
+
+$stUsuario = $pdo->prepare("SELECT id, nome, empresa_id FROM usuarios WHERE id = :id AND ativo = 1 LIMIT 1");
+$stUsuario->execute([':id' => $_SESSION['user_id']]);
+$usuarioLogado = $stUsuario->fetch(PDO::FETCH_ASSOC);
+
+if (!$usuarioLogado) {
+  session_destroy();
+  header('Location: ' . BASE_URL . '/src/pages/login/login.php');
+  exit;
+}
+
+$_SESSION['user_id'] = (int)$usuarioLogado['id'];
+$_SESSION['empresa_id'] = $usuarioLogado['empresa_id'] ? (int)$usuarioLogado['empresa_id'] : null;
+$partesNome = preg_split('/\s+/', trim($usuarioLogado['nome']));
+$_SESSION['primeiro_nome'] = $partesNome[0] ?? '';
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/greenhelp-app/src/controllers/home/areasPontuacaoController.php';
 
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
 
 $logoUrl = BASE_URL . '/public/imgs/add-photo.svg';
+$empresaDados = [
+  'nome' => '',
+  'cnpj' => '',
+  'porte' => '',
+  'setor_atuacao' => '',
+  'endereco' => ''
+];
 
-if (!empty($_SESSION['user_id'])) {
+$empresaId = $_SESSION['empresa_id'];
 
-  $empresaId = $_SESSION['empresa_id'];
-  if (!$empresaId) {
-    $st = $pdo->prepare("SELECT id FROM empresas WHERE usuario_id = :uid ORDER BY id DESC LIMIT 1");
-    $st->execute([':uid' => $_SESSION['user_id']]);
-    $empresaId = $st->fetchColumn() ?: null;
-    if ($empresaId) $_SESSION['empresa_id'] = (int)$empresaId;
-  }
-
-  if ($empresaId) {
-    $st = $pdo->prepare("SELECT logo_path FROM empresas WHERE id = :id");
-    $st->execute([':id' => $empresaId]);
-    $row = $st->fetchColumn();
-    if (!empty($row)) $logoUrl = $row;
+if ($empresaId) {
+  $st = $pdo->prepare("SELECT nome, cnpj, porte, setor_atuacao, endereco, logo_path FROM empresas WHERE id = :id");
+  $st->execute([':id' => $empresaId]);
+  $row = $st->fetch(PDO::FETCH_ASSOC);
+  if ($row) {
+    $empresaDados = [
+      'nome' => (string)($row['nome'] ?? ''),
+      'cnpj' => (string)($row['cnpj'] ?? ''),
+      'porte' => (string)($row['porte'] ?? ''),
+      'setor_atuacao' => (string)($row['setor_atuacao'] ?? ''),
+      'endereco' => (string)($row['endereco'] ?? '')
+    ];
+    if (!empty($row['logo_path'])) {
+      $logoUrl = $row['logo_path'];
+    }
   }
 }
 ?>
@@ -44,27 +74,63 @@ if (!empty($_SESSION['user_id'])) {
   <main class="container">
     <h1 class="welcome-title">Bem vindo(a), <?= htmlspecialchars($_SESSION['primeiro_nome'] ?? ''); ?>!</h1>
 
-    <div class="user-photo">
-      <button type="button" id="btnLogo" aria-label="Alterar logo da empresa" disabled>
-        <img id="imgLogo" src="<?= htmlspecialchars($logoUrl, ENT_QUOTES) ?>" alt="Logo da empresa">
-      </button>
-      <input type="file" id="inpLogo" name="logo" accept="image/*" hidden>
-    </div>
+    <section class="empresa-panel" aria-labelledby="empresa-title">
+      <div class="empresa-panel-header">
+        <div>
+          <h2 id="empresa-title">Dados da empresa</h2>
+          <p>Informações usadas para identificar sua empresa nos serviços contratados.</p>
+        </div>
 
-    <h2>Sobre Sua Empresa</h2>
-
-    <form id="formEmpresa" class="form-empresa">
-      <input readonly id="empresa" type="text" placeholder="Nome da Empresa">
-      <input readonly id="cnpj" type="text" placeholder="CNPJ">
-      <input readonly id="perfil" type="text" placeholder="Tamanho da Empresa">
-      <input readonly id="industria" type="text" placeholder="Indústria">
-      <input readonly id="endereco" type="text" placeholder="Endereço" maxlength="200"> 
-
-      <div class="form-actions" style="display:flex; gap:12px; margin-top:12px;">
-        <button type="button" class="btn edit-button" id="btnEditar">Editar</button>
-        <button type="submit" class="btn save-button" id="btnSalvar">Salvar</button>
+        <div class="empresa-actions empresa-actions-top">
+          <button type="button" class="btn edit-button" id="btnEditar">Editar</button>
+          <button type="submit" form="formEmpresa" class="btn save-button" id="btnSalvar">Salvar</button>
+        </div>
       </div>
-    </form>
+
+      <div class="empresa-content">
+        <div class="empresa-logo-area">
+          <button type="button" id="btnLogo" aria-label="Alterar logo da empresa" disabled>
+            <img id="imgLogo" src="<?= htmlspecialchars($logoUrl, ENT_QUOTES) ?>" alt="Logo da empresa">
+          </button>
+          <input type="file" id="inpLogo" name="logo" accept="image/*" hidden>
+          <span>Logo da empresa</span>
+        </div>
+
+        <form id="formEmpresa" class="form-empresa">
+          <div class="empresa-fields">
+            <label>
+              <span>Empresa</span>
+              <input readonly id="empresa" type="text" placeholder="Nome da empresa" value="<?= htmlspecialchars($empresaDados['nome'], ENT_QUOTES) ?>">
+            </label>
+
+            <label>
+              <span>CNPJ</span>
+              <input readonly id="cnpj" type="text" placeholder="CNPJ" value="<?= htmlspecialchars($empresaDados['cnpj'], ENT_QUOTES) ?>">
+            </label>
+
+            <label>
+              <span>Porte</span>
+              <input readonly id="perfil" type="text" placeholder="Tamanho da empresa" value="<?= htmlspecialchars($empresaDados['porte'], ENT_QUOTES) ?>">
+            </label>
+
+            <label>
+              <span>Setor</span>
+              <input readonly id="industria" type="text" placeholder="Indústria" value="<?= htmlspecialchars($empresaDados['setor_atuacao'], ENT_QUOTES) ?>">
+            </label>
+
+            <label class="empresa-field-wide">
+              <span>Endereço</span>
+              <input readonly id="endereco" type="text" placeholder="Endereço" maxlength="200" value="<?= htmlspecialchars($empresaDados['endereco'], ENT_QUOTES) ?>">
+            </label>
+          </div>
+
+          <div class="empresa-actions empresa-actions-bottom">
+            <button type="button" class="btn edit-button" data-edit-trigger>Editar</button>
+            <button type="submit" class="btn save-button" data-save-trigger>Salvar</button>
+          </div>
+        </form>
+      </div>
+    </section>
 
     
     <?php
@@ -115,7 +181,7 @@ if (!empty($_SESSION['user_id'])) {
             </div>
           <?php endforeach; ?>
         <?php else: ?>
-          <p class="no-services">Você ainda não tem serviços em andamento. Visite nosso <a href="<?= BASE_URL ?>/src/pages/servicos/marketplace.php">marketplace</a> para começar!</p>
+          <p class="no-services">Você ainda não tem serviços em andamento. Visite nosso <a href="<?= BASE_URL ?>/src/pages/marketplace/marketplace.php">marketplace</a> para começar!</p>
         <?php endif; ?>
       </div>
     </section>
@@ -129,6 +195,7 @@ if (!empty($_SESSION['user_id'])) {
         <span class="cor_verde">melhoras sustentáveis</span> na sua empresa
       </p>
       <div class="niveis">
+          <?php $pontuacaoTotal = 0; ?>
           <?php foreach ($areasPontuacao as $area): ?>
             <?php
 
@@ -137,7 +204,6 @@ if (!empty($_SESSION['user_id'])) {
             $iconUrl  = $area['icone'];
             $pontos   = $area['pontos'];
             $nivel    = $area['nivel'];
-            $pontuacaoTotal = 0;
             $pontuacaoTotal += $pontos;
             $progress = ($pontos % 100);
             $faltam   = 100 - $progress;
@@ -167,7 +233,7 @@ if (!empty($_SESSION['user_id'])) {
 
               <div class="nivel-card-body">
                 <div class="progress-bar" aria-hidden="true">
-                  <div class="progress" data-progress="<?= $progress ?>"></div>
+                  <div class="progress" style="width: <?= $progress ?>%"></div>
                 </div>
 
                 <div class="nivel-stats">
