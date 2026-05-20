@@ -52,6 +52,11 @@ Não há frameworks, TypeScript, Docker ou pipeline de build (ainda!). A estrutu
 
 O banco de dados é composto por tabelas para usuários, empresas, serviços, categorias, contratações e pontuações. Confira o diagrama:
 
+<p align="center">
+  <img width="545" height="533" alt="greenhelp-db-diagram" src="https://github.com/user-attachments/assets/f87eef21-e5a4-4053-aba4-77aa65715d0e" />
+</p>
+
+
 ## Estrutura
 
 ```text
