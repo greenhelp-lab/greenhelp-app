@@ -30,7 +30,6 @@ try {
   $nome     = trim($data['nome'] ?? '');
   $email    = trim($data['email'] ?? '');
   $telefone = trim($data['telefone'] ?? '');
-  $ativo  = (int)($data['ativo'] ?? '');
 
   session_write_close();
   
@@ -53,15 +52,14 @@ try {
   }
 
   $sql = 'UPDATE usuarios
-          SET nome = :nome, email = :email, telefone = :telefone, ativo = :ativo
+          SET nome = :nome, email = :email, telefone = :telefone
           WHERE id = :id';
   $st = $pdo->prepare($sql);
   $st->execute([
     ':nome'     => $nome,
     ':email'    => $email,
     ':telefone' => $telefone,
-    ':id'       => $userId,
-    ':ativo'  => $ativo
+    ':id'       => $userId
   ]);
 
   echo json_encode(['ok' => true]);

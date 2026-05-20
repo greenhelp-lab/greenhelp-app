@@ -27,7 +27,7 @@ try {
   $nome = trim($data['nome'] ?? '');
   $email = trim($data['email'] ?? '');
   $telefone = trim($data['telefone'] ?? '');
-  $ativo = (int)($data['ativo'] ?? 0);
+  $ativoBody = $data['ativo'] ?? null;
 
   if (!$nome) {
     http_response_code(422);
@@ -47,6 +47,19 @@ try {
     echo json_encode(['ok' => false, 'error' => 'Email já está em uso']);
     exit;
   }
+
+  $st = $pdo->prepare('SELECT ativo FROM usuarios WHERE id = :id LIMIT 1');
+  $st->execute([':id' => $id]);
+  $ativoAtual = $st->fetchColumn();
+
+  if ($ativoAtual === false) {
+    http_response_code(404);
+    echo json_encode(['ok' => false, 'error' => 'Admin não encontrado']);
+    exit;
+  }
+
+  $ativo = $ativoBody === null || $ativoBody === '' ? (int)$ativoAtual : (int)$ativoBody;
+  $ativo = $ativo === 1 ? 1 : 0;
 
   $sql = 'UPDATE usuarios SET
     nome = :nome,

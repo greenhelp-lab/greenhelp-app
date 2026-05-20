@@ -15,7 +15,7 @@ $id           = (int)($body['id'] ?? 0);
 $nome         = trim($body['nome'] ?? '');
 $telefone     = trim($body['telefone'] ?? '');
 $email        = trim($body['email'] ?? '');
-$ativo        = (int)($body['ativo'] ?? 0);
+$ativoBody    = $body['ativo'] ?? null;
 $empresa_sel  = $body['empresa_id'] ?? '';
 $empresa_data = $body['empresa_data'] ?? [];
 
@@ -26,14 +26,18 @@ if ($id <= 0) {
 
 try {
   $pdo->beginTransaction();
-  $st = $pdo->prepare("SELECT empresa_id FROM usuarios WHERE id = :id LIMIT 1");
+  $st = $pdo->prepare("SELECT empresa_id, ativo FROM usuarios WHERE id = :id LIMIT 1");
   $st->execute([':id' => $id]);
   $usuario = $st->fetch();
 
   if (!$usuario) {
+    $pdo->rollBack();
     echo json_encode(['ok' => false, 'error' => 'Usuário não encontrado']);
     exit;
   }
+
+  $ativo = $ativoBody === null || $ativoBody === '' ? (int)$usuario['ativo'] : (int)$ativoBody;
+  $ativo = $ativo === 1 ? 1 : 0;
 
   $empresaAtualId = $usuario['empresa_id'] ? (int)$usuario['empresa_id'] : null;
   $newEmpresaId = null;
