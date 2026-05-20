@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoButton = document.getElementById('btnLogo');
   const logoImage = document.getElementById('imgLogo');
   const logoInput = document.getElementById('inpLogo');
+  const feedback = window.GreenHelpFeedback;
 
   const fields = {
     empresa: document.getElementById('empresa'),
@@ -19,6 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   if (!form || !editButton || !saveButton) return;
+
+  function notify(message, type) {
+    if (feedback) {
+      feedback.notify(message, type);
+      return;
+    }
+
+    window.alert(message);
+  }
 
   function setEditing(active) {
     Object.values(fields).forEach(input => {
@@ -92,13 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!file) return;
 
       if (!validTypes.includes(file.type)) {
-        alert('JPG/PNG/WEBP');
+        notify('Use imagem JPG, PNG ou WEBP.', 'warning');
         logoInput.value = '';
         return;
       }
 
       if (file.size > maxSize) {
-        alert('Até 3MB');
+        notify('A imagem deve ter até 3MB.', 'warning');
         logoInput.value = '';
         return;
       }
@@ -110,8 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const url = await uploadLogo(file);
         logoImage.src = url + '?t=' + Date.now();
+        notify('Logo da empresa atualizada.', 'success');
       } catch (error) {
-        alert('Falha no upload: ' + error.message);
+        notify('Falha no upload: ' + error.message, 'error');
         logoInput.value = '';
       }
     });
@@ -133,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (!payload.nome) {
-      alert('Informe o nome da empresa.');
+      notify('Informe o nome da empresa.', 'warning');
       fields.empresa.focus();
       return;
     }
@@ -154,13 +165,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok || !data.ok) {
-        alert('Erro ao salvar: ' + (data.error || response.status));
+        notify('Erro ao salvar: ' + (data.error || response.status), 'error');
         return;
       }
 
       setEditing(false);
+      notify('Dados da empresa atualizados.', 'success');
     } catch (error) {
-      alert('Falha ao salvar: ' + error.message);
+      notify('Falha ao salvar: ' + error.message, 'error');
     } finally {
       saveButtons.forEach(button => {
         button.disabled = false;

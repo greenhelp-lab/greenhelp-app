@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveButton = document.getElementById('btnSalvar');
   const deleteButton = document.getElementById('btnDelete');
   const empresaSelect = document.getElementById('empresa_select');
+  const feedback = window.GreenHelpFeedback;
 
   const inputs = {
     nome: document.getElementById('inpNome'),
@@ -31,6 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   let editingMode = false;
+
+  function notify(message, type) {
+    if (feedback) {
+      feedback.notify(message, type);
+      return;
+    }
+
+    window.alert(message);
+  }
 
   function clearEmpresaFields() {
     empresaInputs.nome.value = '';
@@ -119,16 +129,23 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!response.ok || !data.ok) throw new Error(data.error || 'Erro ao salvar');
 
       setEditing(false);
-      alert('Cliente atualizado com sucesso!');
+      notify('Cliente atualizado com sucesso.', 'success');
     } catch (error) {
-      alert('Falha ao salvar: ' + error.message);
+      notify('Falha ao salvar: ' + error.message, 'error');
     } finally {
       saveButton.disabled = false;
     }
   });
 
   deleteButton.addEventListener('click', async () => {
-    if (!confirm('Deseja excluir este cliente?')) return;
+    const confirmed = feedback
+      ? await feedback.confirm('Deseja excluir este cliente?', {
+        title: 'Excluir cliente',
+        confirmText: 'Excluir'
+      })
+      : window.confirm('Deseja excluir este cliente?');
+
+    if (!confirmed) return;
 
     try {
       const id = form.querySelector('input[name="id"]').value;
@@ -147,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       window.location.href = `${baseUrl}/src/pages/painel_admin/painel_admin.php`;
     } catch (error) {
-      alert('Falha ao deletar: ' + error.message);
+      notify('Falha ao deletar: ' + error.message, 'error');
     }
   });
 
@@ -174,8 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok || !data.ok) throw new Error(data.error || 'Erro ao atualizar');
 
         event.target.dataset.currentStatus = newStatus;
+        notify('Status do serviço atualizado.', 'success');
       } catch (error) {
-        alert('Falha ao atualizar status: ' + error.message);
+        notify('Falha ao atualizar status: ' + error.message, 'error');
         event.target.value = oldStatus;
       }
     });

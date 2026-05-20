@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const editButton = document.getElementById('btnEditar');
   const saveButton = document.getElementById('btnSalvar');
   const deleteButton = document.getElementById('btnDelete');
+  const feedback = window.GreenHelpFeedback;
 
   if (!form || !photoButton || !photo || !fileInput || !editButton || !saveButton || !deleteButton) return;
 
@@ -27,6 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   editButton.addEventListener('click', () => setEditing(true));
 
+  function notify(message, type) {
+    if (feedback) {
+      feedback.notify(message, type);
+      return;
+    }
+
+    window.alert(message);
+  }
+
   form.addEventListener('submit', async event => {
     event.preventDefault();
 
@@ -37,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (!payload.nome || !payload.email) {
-      alert('Preencha nome e email.');
+      notify('Preencha nome e email.', 'warning');
       return;
     }
 
@@ -56,15 +66,23 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!response.ok || !data.ok) throw new Error(data.error || 'Erro ao salvar');
 
       setEditing(false);
+      notify('Suas informações foram atualizadas.', 'success');
     } catch (error) {
-      alert('Falha ao salvar: ' + error.message);
+      notify('Falha ao salvar: ' + error.message, 'error');
     } finally {
       saveButton.disabled = false;
     }
   });
 
   deleteButton.addEventListener('click', async () => {
-    if (!confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')) return;
+    const confirmed = feedback
+      ? await feedback.confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.', {
+        title: 'Excluir conta',
+        confirmText: 'Excluir'
+      })
+      : window.confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.');
+
+    if (!confirmed) return;
 
     try {
       const response = await fetch(`${baseUrl}/src/controllers/home/delete_usuario_controller.php`, {
@@ -87,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       window.location.href = data.redirect || `${baseUrl}/src/pages/login/login.php`;
     } catch (error) {
-      alert('Falha ao deletar conta: ' + error.message);
+      notify('Falha ao deletar conta: ' + error.message, 'error');
     }
   });
 
@@ -101,13 +119,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!file) return;
 
     if (!validTypes.includes(file.type)) {
-      alert('JPG/PNG/WEBP');
+      notify('Use imagem JPG, PNG ou WEBP.', 'warning');
       fileInput.value = '';
       return;
     }
 
     if (file.size > maxSize) {
-      alert('Até 3MB');
+      notify('A imagem deve ter até 3MB.', 'warning');
       fileInput.value = '';
       return;
     }
@@ -141,9 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (data.url) {
         photo.src = data.url + '?t=' + Date.now();
+        notify('Foto atualizada com sucesso.', 'success');
       }
     } catch (error) {
-      alert('Falha no upload: ' + error.message);
+      notify('Falha no upload: ' + error.message, 'error');
       fileInput.value = '';
     }
   });

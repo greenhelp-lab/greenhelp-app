@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/partials/header.css">
+<script src="<?php echo BASE_URL; ?>/public/js/ui/feedback.js"></script>
 <header class="site-header">
   <nav class="nav-container">
     <a href="<?php echo BASE_URL; ?>/src/pages/home/home.php" class="site-logo">

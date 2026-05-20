@@ -1,6 +1,15 @@
 (function () {
   'use strict';
 
+  function notify(message, type) {
+    if (window.GreenHelpFeedback) {
+      window.GreenHelpFeedback.notify(message, type);
+      return;
+    }
+
+    window.alert(message);
+  }
+
   function handleClick(event) {
     var btn = event.target && event.target.closest && event.target.closest('.btn-add-cart');
     if (!btn) return;
@@ -29,16 +38,17 @@
           btn.innerText = 'Adicionado';
           btn.disabled = true;
           btn.classList.add('added');
+          notify('Serviço adicionado ao carrinho.', 'success');
         } else {
           var msg = (data && data.message) ? data.message : 'Erro ao adicionar ao carrinho.';
-          alert(msg);
+          notify(msg, 'error');
           btn.innerText = prevText;
           btn.disabled = false;
         }
       })
       .catch(function (err) {
         console.error('add_to_cart error', err);
-        alert('Erro de rede. Tente novamente.');
+        notify('Erro de rede. Tente novamente.', 'error');
         btn.innerText = prevText;
         btn.disabled = false;
       });

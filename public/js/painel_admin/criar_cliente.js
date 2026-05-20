@@ -2,8 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const empresaSelect = document.getElementById('empresa_id');
   const newFields = document.getElementById('new-company-fields');
   const form = document.getElementById('criarClienteForm');
+  const feedback = window.GreenHelpFeedback;
 
   if (!empresaSelect || !newFields || !form) return;
+
+  function notify(message, type) {
+    if (feedback) {
+      feedback.notify(message, type);
+      return;
+    }
+
+    window.alert(message);
+  }
 
   function toggleCompanyFields() {
     const creatingCompany = empresaSelect.value === 'new';
@@ -22,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nome = document.getElementById('empresa_nome').value.trim();
     if (!nome) {
       event.preventDefault();
-      alert('Preencha o nome da empresa/associação ao criar uma nova.');
+      notify('Preencha o nome da empresa/associação ao criar uma nova.', 'warning');
     }
   });
 });

@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const editButton = document.getElementById('btnEditar');
   const saveButton = document.getElementById('btnSalvar');
   const deleteButton = document.getElementById('btnDelete');
+  const feedback = window.GreenHelpFeedback;
   const inputs = {
     nome: document.getElementById('inpNome'),
     tel: document.getElementById('inpTel'),
@@ -22,6 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (active) inputs.nome.focus();
   }
 
+  function notify(message, type) {
+    if (feedback) {
+      feedback.notify(message, type);
+      return;
+    }
+
+    window.alert(message);
+  }
+
   editButton.addEventListener('click', () => setEditing(true));
 
   form.addEventListener('submit', async event => {
@@ -36,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (!payload.nome || !payload.email) {
-      alert('Preencha nome e email.');
+      notify('Preencha nome e email.', 'warning');
       return;
     }
 
@@ -55,16 +65,23 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!response.ok || !data.ok) throw new Error(data.error || 'Erro ao salvar');
 
       setEditing(false);
-      alert('Admin atualizado com sucesso!');
+      notify('Admin atualizado com sucesso.', 'success');
     } catch (error) {
-      alert('Falha ao salvar: ' + error.message);
+      notify('Falha ao salvar: ' + error.message, 'error');
     } finally {
       saveButton.disabled = false;
     }
   });
 
   deleteButton.addEventListener('click', async () => {
-    if (!confirm('Tem certeza que deseja excluir este admin? Esta ação não pode ser desfeita.')) return;
+    const confirmed = feedback
+      ? await feedback.confirm('Tem certeza que deseja excluir este admin? Esta ação não pode ser desfeita.', {
+        title: 'Excluir admin',
+        confirmText: 'Excluir'
+      })
+      : window.confirm('Tem certeza que deseja excluir este admin? Esta ação não pode ser desfeita.');
+
+    if (!confirmed) return;
 
     try {
       const id = form.querySelector('input[name="id"]').value;
@@ -82,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       window.location.href = `${baseUrl}/src/pages/painel_admin/painel_admin.php`;
     } catch (error) {
-      alert('Falha ao deletar: ' + error.message);
+      notify('Falha ao deletar: ' + error.message, 'error');
     }
   });
 

@@ -10,7 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (params.get('status') === 'success') {
-    document.querySelector('.pop-salvo')?.classList.add('show');
+    if (window.GreenHelpFeedback) {
+      window.GreenHelpFeedback.notify('Registro salvo com sucesso.', 'success');
+    } else {
+      document.querySelector('.pop-salvo')?.classList.add('show');
+    }
     setTimeout(() => {
       window.location.href = `${baseUrl}/src/pages/painel_admin/painel_admin.php`;
     }, 1600);

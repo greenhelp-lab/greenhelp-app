@@ -8,8 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const continueButton = document.getElementById('continuar-compra');
   const cancelButton = document.getElementById('cancelar-compra');
   const confirmButton = document.getElementById('confirmar-compra');
+  const feedback = window.GreenHelpFeedback;
 
   if (!cartContainer || !totalElement || !itemsCountElement || !checkoutButton) return;
+
+  function notify(message, type) {
+    if (feedback) {
+      feedback.notify(message, type);
+      return;
+    }
+
+    window.alert(message);
+  }
 
   function selectedItems() {
     return Array.from(document.querySelectorAll('.cart-item.selected-service'));
@@ -46,18 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
 
       if (!data.success) {
-        alert(data.message || 'Erro ao remover item');
+        notify(data.message || 'Erro ao remover item.', 'error');
         return;
       }
 
       cartItem.remove();
       updateTotal();
+      notify('Serviço removido do carrinho.', 'success');
 
       if (document.querySelectorAll('.cart-item').length === 0) {
-        window.location.reload();
+        window.setTimeout(() => window.location.reload(), 700);
       }
     } catch (error) {
-      alert('Erro ao remover item do carrinho');
+      notify('Erro ao remover item do carrinho.', 'error');
     }
   }
 
@@ -65,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const items = selectedItems().map(item => item.dataset.id);
 
     if (items.length === 0) {
-      alert('Selecione pelo menos um serviço');
+      notify('Selecione pelo menos um serviço.', 'warning');
       return;
     }
 
@@ -79,20 +90,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (!response.ok) {
-        alert('Erro no servidor ao finalizar compra');
+        notify('Erro no servidor ao finalizar compra.', 'error');
         return;
       }
 
       const data = await response.json();
 
       if (data.success) {
-        window.location.href = `${baseUrl}/src/pages/home/home.php`;
+        closeModal();
+        notify('Compra finalizada com sucesso.', 'success');
+        window.setTimeout(() => {
+          window.location.href = `${baseUrl}/src/pages/home/home.php`;
+        }, 900);
         return;
       }
 
-      alert(data.message || 'Erro ao finalizar compra');
+      notify(data.message || 'Erro ao finalizar compra.', 'error');
     } catch (error) {
-      alert('Erro ao processar a compra');
+      notify('Erro ao processar a compra.', 'error');
     }
   }
 
