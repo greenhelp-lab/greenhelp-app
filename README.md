@@ -4,6 +4,10 @@ GreenHelp é uma aplicação acadêmica em PHP, HTML, CSS e JavaScript vanilla p
 
 O projeto representa uma plataforma simples onde empresas podem visualizar serviços sustentáveis, adicionar serviços ao carrinho, simular uma contratação e acompanhar o andamento pelo painel do cliente. Também existe um painel administrativo para gerenciar usuários, empresas e serviços.
 
+|                                               Home Cliente                                                |                                                 Painel Admin                                                  |
+| :-------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: |
+| ![greenhelp-home-client](https://github.com/user-attachments/assets/06b98c5f-1654-4c3d-96ad-861d6691073b) | ![greenhelp-admin-dashboard](https://github.com/user-attachments/assets/d0a3529b-1736-44cb-afb8-0f94331b68c5) |
+
 ## Objetivo
 
 O objetivo principal é demonstrar evolução incremental de uma aplicação web simples:
@@ -14,8 +18,6 @@ O objetivo principal é demonstrar evolução incremental de uma aplicação web
 - fluxo de marketplace e carrinho;
 - painel administrativo;
 - melhoria gradual de legibilidade, responsividade e manutenção.
-
-Este não é um sistema de produção. É um projeto de portfólio acadêmico com foco em clareza, funcionalidade e evolução realista.
 
 ## Funcionalidades
 
@@ -32,6 +34,10 @@ Este não é um sistema de produção. É um projeto de portfólio acadêmico co
 - Painel administrativo com métricas simples.
 - CRUD básico de clientes, administradores e serviços.
 
+|                                          Loja de Serviços                                          |                                          Detalhes do Serviço                                          |                                              Carrinho                                              |
+| :------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------: |
+| ![greenhelp-shop](https://github.com/user-attachments/assets/31287532-4e0b-4f4c-b864-6ef4e38fcc9e) | ![greenhelp-service](https://github.com/user-attachments/assets/7bbc5e5a-a1ee-4380-b792-6490cdb1a901) | ![greenhelp-cart](https://github.com/user-attachments/assets/2488f45a-2a41-458c-a7f9-02eb1d0cd846) |
+
 ## Stack
 
 - PHP
@@ -40,7 +46,11 @@ Este não é um sistema de produção. É um projeto de portfólio acadêmico co
 - CSS
 - JavaScript vanilla
 
-Não há frameworks, TypeScript, Docker ou pipeline de build. A estrutura foi mantida simples para combinar com o escopo acadêmico do projeto.
+Não há frameworks, TypeScript, Docker ou pipeline de build (ainda!). A estrutura foi mantida simples para combinar com o escopo acadêmico do projeto.
+
+## Database
+
+O banco de dados é composto por tabelas para usuários, empresas, serviços, categorias, contratações e pontuações. Confira o diagrama:
 
 ## Estrutura
 
@@ -58,24 +68,6 @@ src/
   pages/
 ```
 
-## Configuração local
-
-Crie um arquivo `.env` na raiz do projeto:
-
-```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=
-DB_NAME=greenhelp
-PORT=3306
-```
-
-O projeto espera rodar dentro de uma pasta chamada `greenhelp-app`, por exemplo:
-
-```text
-http://localhost/greenhelp-app/public/index.html
-```
-
 ## Status
 
-A V1 está em fase de refatoração e estabilização. O foco atual é manter o projeto funcional, reduzir duplicação, remover código morto e deixar a base mais fácil de apresentar e evoluir.
+A V1 (esta aplicação) está funcional. Uma demo aberta para experimentar a plataforma será disponibilizada em breve.
